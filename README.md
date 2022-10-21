@@ -17,8 +17,18 @@ pip install .
 
 ```python
 
+from numpy import sqrt, exp, dot, conj
 from kquant import bands
 
+#Let us first consider the graphene Hamiltonian in momentum space
+def hamiltonian(k):
+    a_0 = [ 1/2, sqrt(3)/2 ];
+    a_1 = [ 1/2,-sqrt(3)/2 ];
+    hop = 2.8;
+    f_k = hop*( 1 + exp( -1j*dot(k,a_0)) + exp( -1j*dot(k,a_0)) );
+    return [ [ 0        , f_k],
+             [ conj(f_k),  0 ]
+            ];
 
 
 ```
