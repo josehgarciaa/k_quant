@@ -1,0 +1,8 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+k_quant/k_quant.egg-info/PKG-INFO
+k_quant/k_quant.egg-info/SOURCES.txt
+k_quant/k_quant.egg-info/dependency_links.txt
+k_quant/k_quant.egg-info/top_level.txt
