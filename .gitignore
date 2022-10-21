@@ -1,4 +1,4 @@
-kquant.egg-info
+*.egg-info
 build
 sphinx/_build/
 README.md.save README.md.save.1

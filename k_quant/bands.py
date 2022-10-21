@@ -3,8 +3,7 @@ import numpy.typing as npt
 from numpy.linalg import eigh, eigvalsh, norm
 from numpy import exp, cos, sin , pi, kron
 
-
-class bands:
+class bandstructure:
     """This class will compute the bandstructure for different inputs of models
 
     The __init__ method may be documented in either the class level
@@ -29,7 +28,7 @@ class bands:
     def __init__(self, lat_vec, H_k ):
               
         self.lat_vec   = lat_vec;
-        self.bandpath  = np.array( ['G',1,[0,0,0]] );
+        self.bandpath  = None;
         self.H_k       = H_k;
 
     def set_hamiltonian_k(self, H_k):

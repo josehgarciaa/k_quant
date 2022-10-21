@@ -7,7 +7,7 @@
 import os
 import sys
 import kotti_docs_theme
-sys.path.insert(0, os.path.abspath('../k-quant/'))
+sys.path.insert(0, os.path.abspath('../k_quant/'))
 cwd = os.getcwd()
 print("current path",cwd)
 
@@ -15,7 +15,7 @@ print("current path",cwd)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 
-project = 'k-quant'
+project = 'k_quant'
 copyright = '2022, Jose H. Garcia'
 author = 'Jose H. Garcia'
 release = '0.0.1'
