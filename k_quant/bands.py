@@ -1,3 +1,4 @@
+from os import wait3
 import numpy as np
 import numpy.typing as npt
 from numpy.linalg import eigh, eigvalsh, norm
@@ -86,14 +87,19 @@ class bandstructure:
         Returns:
             ndarray: An array of k-points
         """
-        kpoints   = list(); 
-        init_k = self.bandpath[0][2];
-        for path_label, npoint, end_k in self.bandpath[1:]: #Not consider initial point anymore
-                path_kpoints = np.linspace(init_k,end_k,npoint, endpoint=False ); 
-                init_k  = end_k
-                for kp in path_kpoints:
-                    kpoints.append(kp)
-        kpoints.append(init_k);
+        #kpoints   = list(); 
+        #init_k = self.bandpath[0][2];
+        #for path_label, npoint, end_k in self.bandpath[1:]: #Not consider initial point anymore
+         #       path_kpoints = np.linspace(init_k,end_k,npoint, endpoint=False ); 
+        #        init_k  = end_k
+        #        for kp in path_kpoints:
+        #            kpoints.append(kp)
+        #kpoints.append(init_k);
+        
+        labels, segments, npoints = list(zip(*(self.bandpath)));
+        segments = np.array(segments);
+        segments = np.transpose( [ segments[:-1],segments[1:] ], axes=(1,0,2) )
+        print(segments)
 
         #If required, rescale to absolute value
         if absolute_coords  is True :
@@ -124,8 +130,32 @@ class bandstructure:
         Xaxis-=Xaxis[0];#Remove the initial value.
         return Xaxis;
     
+
+    def operator_k(self, operator, kpoint ):
+        """_summary_
+
+        Args:
+            proj_ops (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+
+        #In numpy eigh, the put is a matrix where column v[:, i] 
+        # is the normalized eigenvector of w[i] eigenvalue
+        w, v = np.linalg.eigh( self.H_k(kpoint) );
+
+        operator = np.array(operator(kpoint) if callable(operator) else operator, dtype=complex);
+        try:
+            ops_k = np.sum(np.conj(v)* operator.dot(v), axis=0) ;
+            return np.real(ops_k);
+        except:
+            print("problem with operators_k");
+                
+        return None;
+
     
-    def compute_band_structure(self, fermi_energy = 0.0, proj_op = None ):
+    def compute_bands(self, fermi_energy = 0.0, proj_op = None ):
         """_summary_
 
         Args:
@@ -139,31 +169,21 @@ class bandstructure:
             _type_: _description_
         """
 
+        print(self.band_kpoints())
+
         #Compute the kpoints based on the path
-        kpoints= self.band_kpoints();
-
+        #bands = np.array( [ self.operator_k( self.H_k(kp), kp)   for kp in  self.band_kpoints() ]);
+        bands = None;
         #Compute the eigenvalues and the projected values 
-        peigenvals  = self.compute_dispersion( kpoints , proj_op)  ;
+        #peigenvals  = self.compute_dispersion( kpoints , proj_op)  ;
 
-        if proj_op is None:
-            bands = peigenvals.T- fermi_energy;
-            return self.plot_band_structure( bands = bands, ax=ax );
+        #if proj_op is None:
+        #    bands = peigenvals.T- fermi_energy;
+        #    return self.plot_band_structure( bands = bands, ax=ax );
 
-        bands = peigenvals[:,0].T - fermi_energy;
-        projs = peigenvals[:,1].T;
+        #bands = peigenvals[:,0].T - fermi_energy;
+        #projs = peigenvals[:,1].T;
         
-        return self.plot_band_structure( bands = bands , projs = projs , ax=ax, plot_proj = plot_proj, proj_range=proj_range);
+        return bands;
   
-        f.close()
 
-    def projected_bands(self, proj_ops  ):
-        #When no operator submited, return only the band structure
-        if proj_op is None:
-            return ( eigvalsh( Hk ) ) ;
-
-        #If not, compute the eigen vectors
-        w, v = np.linalg.eigh( Hk );#The column w[:, i] is the normalized eigenvector of v[i] eigenvalue
-
-        w = np.diag( (np.conj(v.T) ) .dot(Hk.dot(v) ) ) ;
-        p = np.diag( (np.conj(v.T) ) .dot(proj_op.dot(v) ) ) ;
-        return ( np.real(w),np.real(p) );
