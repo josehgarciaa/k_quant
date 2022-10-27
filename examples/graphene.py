@@ -8,11 +8,11 @@ and for this purpose we choose as prototype a model for p_z electrons
  in graphene within the nearest neighbor approximation with lattice vectors
  defined in the lat_vec variable
 """
-lat_vec = [ [ 1/2, sqrt(3)/2,0 ], [ 1/2, sqrt(3)/2,0 ] ]
+lat_vec = [ [ 1/2, sqrt(3)/2,0 ], [ 1/2,-sqrt(3)/2,0 ], [ 0,0,1 ] ]
 def hamiltonian(k):
-    a_0, a_1  = lat_vec;
+    a_0, a_1, a2  = lat_vec;
     hop = 2.8;
-    f_k = hop*( 1 + exp( -2j*dot(k,a_0)) + exp( -1j*dot(k,a_1)) );
+    f_k = hop*( 1 + exp( -1j*dot(k,a_0)) + exp( -1j*dot(k,a_1)) );
     return [ [ 0        , f_k],
              [ conj(f_k),  0 ]
             ];
@@ -22,14 +22,22 @@ graphene = k.bandstructure(lat_vec, hamiltonian );
 
 #To plot a desire band-path you pass it to the class as a list of tuples
 npts= 100;
-bandpath = [ ("K", (1/3,2/3,0), npts ), ("G", (0,0,0), npts) , ("M",(1/2,1/2,0),1), ("X",(1/2,0,0),1) , ("Y",(1/3,0,0),1) ];
-graphene.set_bandpath( bandpath);
+bandpath = [ ("K", (1/3,2/3,0), 4 ), ("G", (0,0,0), 5) , ("M",(1/2,1/2,0),6), ("K'",(2/3,1/3,0),1) ];
+graphene.set_bandpath(bandpath);
 
 #The computing the band structure is as simmple as
-print( graphene.band_kpoints() );
-
 #bandstructure = graphene.compute_bands();
-#print(bandstructure.shape)
+xaxis = graphene.Xaxis();
+#labels= graphene.XLabels();
+#for band in bandstructure:
+#    plt.plot(band);
+#    plt.xticks(xaxis, labels)
+#    plt.savefig('graphene_band_structure.pdf');
+
+
+#sigma_x,sigma_y = [ [[0,1],[1,0]], [[0,-1j],[1j,0]] ];
+#bandstructure = graphene.compute_bands( proj_ops=[ sigma_x,sigma_y] );
+#print(bandstructure)
 
 #for band in bandstructure:
 #    plt.plot(band);
