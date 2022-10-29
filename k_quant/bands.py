@@ -5,16 +5,7 @@ from numpy.linalg import eigh, eigvalsh, norm
 from numpy import exp, cos, sin , pi, kron
 
 class bandstructure:
-    """This sss class will compute the bandstructure for different inputs of models
-
-    The __init__ method may be documented in either the class level
-    docstring, or as a docstring on the __init__ method itself.
-
-    Either form is acceptable, but the two should not be mixed. Choose one
-    convention to document the __init__ method and be consistent with it.
-
-    Note:
-        Do not include the `self` parameter in the ``Args`` section. grtgmrodlgmorllom
+    """This class will compute the bandstructure for different inputs of models
 
     Args:
         msg (str): Human readable string descrDFGDTRETKREPTkr111ibing the exception.
@@ -31,6 +22,12 @@ class bandstructure:
     """
        
     def __init__(self, lat_vec, H_k ):
+        """_summary_
+
+        Args:
+            lat_vec (_type_): _description_
+            H_k (_type_): _description_
+        """
               
         self.lat_vec   = lat_vec;
         self.bandpath  = None;
