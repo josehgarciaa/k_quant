@@ -170,11 +170,9 @@ class bandstructure:
         ops = [self.H_k, *proj_ops];
         proj_bands = np.array( [ [ self.operator_k(op, kp) for op in  ops] for kp in  self.band_kpoints()] );
         
-        
-        #proj_bands[0] -= fermi_energy;
-        
-        
-        
         return np.transpose(proj_bands, axes=(2,1,0));
-  
+
+def energies_inwindow(bands, energy_window):
+    Emin,Emax = energy_window;
+    return np.any(bands>Emin,axis=1)*np.any(bands<Emax,axis=1);  
 

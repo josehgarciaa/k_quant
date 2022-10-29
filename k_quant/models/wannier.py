@@ -20,9 +20,12 @@ band_lw = 1;
 class wannier_system:
        
     def __init__(self, label ):
-        wan_file =label+"_hr.dat"
-        xyz_file =label+".xyz"
-        uc_file  =label+".uc"
+
+        self.label =label;
+
+        wan_file =self.label+"_hr.dat"
+        xyz_file =self.label+".xyz"
+        uc_file  =self.label+".uc"
        
         self.lat_vec = np.loadtxt(uc_file);
         self.load_xyz(xyz_file)
@@ -57,20 +60,103 @@ class wannier_system:
 
         file = open(filename, "r");
         date = file.readline()
-        numOrbs = int(file.readline());
-        numKPT  = int(file.readline());
-        numKPT_lines = int(np.ceil(numKPT/15));
+        self.numOrbs = int(file.readline());
+        self.numKPT  = int(file.readline());
+        self.numKPT_lines = int(np.ceil(self.numKPT/15));
+        self.KPT =[];
+        for n in range(self.numKPT_lines):
+            self.KPT.append(file.readline());
         file.close();
 
         #Read and format automatically the data
-        wan_data= np.genfromtxt(filename, skip_header=numKPT_lines+3)   
+        wan_data= np.genfromtxt(filename, skip_header=self.numKPT_lines+3)   
         self.shift = (wan_data[:,0:3]).astype(int)
         self.rows  = wan_data[:,3:4].astype(int).flatten()-1
         self.cols  = wan_data[:,4:5].astype(int).flatten()-1
         values= wan_data[:,5:].astype(float)
         self.values= values[:,0]+1j*values[:,1]
-       
+
+
+    def save_wannier_file(self,filename):
+        from datetime import date
         
+        file = open(filename, "w");
+        file.write(" written on  %s\n"%date.today())
+        file.write("          %d\n"%self.numOrbs)
+        file.write("        %d\n"%self.numKPT)
+        for line in self.KPT:
+            file.write("%s"%line)
+
+        for n,s in enumerate(self.shift):
+            v  = self.values[n]
+            r,c=self.rows[n]+1,self.cols[n]+1
+            file.write("    %d    %d    %d    %d    %d    %f    %f\n"%(s[0],s[1],s[2],r,c,np.real(v),np.imag(v) ) )
+        file.close();
+
+    def save_xyz(self,filename):
+        file = open(filename, "w");
+        file.write("          %d\n"%self.numOrbs)
+        for n,xyz in enumerate(self.xyz_coord):
+            s=self.OrbsID[n]
+            x,y,z = xyz
+            file.write("%s %f %f %f\n"%(s,x,y,z) )
+        file.close();
+        
+    def save(self,label):
+        self.save_wannier_file(label+"_hr.dat");
+        self.save_xyz(label+".xyz")
+        np.savetxt(label+".uc",self.lat_vec);
+
+       
+    def num_spins(self):
+        return 2;
+
+    def orbs_per_spins(self):
+        return self.numOrbs//self.num_spins();
+        
+    #This function returns the indexes of the spin-dependent onsite terms
+    def get_onsites_indexes(self):
+        num_spins = self.num_spins();
+        orbsPerSpin = self.orbs_per_spins();
+
+        spinless_rows = self.rows%orbsPerSpin; #The orbital index without the spins for the rows
+        spinless_cols = self.cols%orbsPerSpin; #The orbital index without the spins for the cols
+        spinless_onsites = (spinless_rows-spinless_cols)==0;
+        intracell_hop= ( np.sum( np.abs(self.shift),axis=1)==0 ); # Indexes of the intracell hoppings
+
+        return np.arange(len(self.rows))[intracell_hop*spinless_onsites];#The position of these indexes in the wannier system
+
+    #This function returns the orbital index, spin index and value of the the spin-dependent onsite terms
+    def get_onsites(self):
+        num_spins = self.num_spins();
+        orbsPerSpin = self.orbs_per_spins();
+
+        onsiteIdxs= self.get_onsites_indexes();
+        spinIdx_rows = self.rows[onsiteIdxs]//orbsPerSpin; #The spin index for a particular orbital in the rows
+        spinIdx_cols = self.cols[onsiteIdxs]//orbsPerSpin; #The spin index for a particular orbital in the cols
+        onsite_values= self.values[onsiteIdxs]; #The values of the zeeman field
+ 
+        spinless_rows = self.rows%orbsPerSpin; #The orbital index without the spins for the rows
+        spinless_diag= spinless_rows[onsiteIdxs]; #This is the diagonal index in the spinless orbital space
+ 
+        #Get the indexes associated with the zeeman index
+        onsite_indexes = np.transpose([spinless_diag,spinIdx_rows, spinIdx_cols])
+
+        #Sort both the indexes and the values in terms of the orbital spinless indexes
+        #sorted_idx = np.argsort(spinless_diag);
+        #onsite_indexes= onsite_indexes[sorted_idx];
+        #onsite_values = onsite_values[sorted_idx];
+        return list(zip(map(tuple,onsite_indexes),onsite_values))
+    
+    #This function set the orbital index, spin index and value of the the spin-dependent onsite terms
+    def set_onsites(self, spinor_diag):
+        onsite_indexes = self.get_onsites_indexes();
+        to_idx = { x:onsite_indexes[i] for i,(x,v) in enumerate(self.get_onsites()) };
+        for n,En in enumerate(spinor_diag):
+            for s1,s2 in ((0,0),(0,1),(1,0),(1,1)):
+                self.values[to_idx[(n,s1,s2)]] = En[s1,s2] ;
+        return 0;
+
     def spin_operator(self , comp=None ):
         s0 = [ [ 0 , 1  ] , [ 1 , 0 ] ];
         sx = [ [ 0 , 1  ] , [ 1 , 0 ] ];
@@ -247,17 +333,7 @@ class wannier_system:
         peigvals = np.array(list(map(list,peigenvals[:,1])))
         return kpoints,peigvals[relevant_kpoints];
 
-    
-    def refine_kpoints(self, kpoints):
-
-        nkp= 2*len(kpoints);
-        kmin = np.array([ np.min(kpoints[:,0]),np.min(kpoints[:,1]),0 ] );
-        kmax = np.array([ np.max(kpoints[:,0]),np.max(kpoints[:,1]),0 ] );
-        kpoints= np.array(list(np.ndindex((nkp,nkp,1))))/(nkp-1)*(kmax-kmin) + kmin ;#kpoints in recpricola lattice vectors
-
-        return kpoints;
-    
-    
+   
     def compute_DOS(self, energies,gridpoints, fermi_energy = 0.0, broadening = 0.1,  kpoints = None ,proj_op = None ):
         
         if kpoints is None:
@@ -375,4 +451,5 @@ class wannier_system:
             for x in state:
                 f.write(str(x.real)+" "+str(x.imag)+"\n")
         f.close()
+
 

@@ -1,8 +1,6 @@
-from numpy import sqrt, exp, dot, conj
+from numpy import sqrt, exp, dot, conj, min,max, abs
 import matplotlib.pyplot as plt
 import k_quant as k
-import matplotlib
-matplotlib.use('TKAgg')
 
 """
 Let us first define a Hamiltonian in momentum space
@@ -28,25 +26,25 @@ bandpath = [ ("K", (1/3,2/3,0), 111 ), ("G", (0,0,0), 35) , ("M",(1/2,1/2,0),55)
 graphene.set_bandpath(bandpath);
 
 #The computing the band structure is as simmple as
-bandstructure = graphene.compute_bands();
-xaxis = graphene.Xaxis();
-xlabels= graphene.XLabels();
-for band in bandstructure:
-    plt.plot(xaxis, band);
-
-plt.gca().set_xticks(xlabels[0])
-plt.gca().set_xticklabels(xlabels[1])
-plt.savefig('graphene_band_structure.pdf');
-
 sigma_x,sigma_y = [ [[0,1],[1,0]], [[0,-1j],[1j,0]] ];
 bandstructure = graphene.compute_bands( proj_ops=[ sigma_x,sigma_y] );
 
-print(bandstructure.shape)
 
+
+
+fig= plt.gcf();
+ax = plt.gca();
+xaxis = graphene.Xaxis();
 for proj_band in bandstructure:
-    band,sigma_x,sigma_y = proj_band ;
-    plt.plot(xaxis,band);
+    band,sigma_x,sigma_y = proj_band;
+    z   = sigma_x;
+    s   =  20*abs(z);
+    plt.plot(xaxis,band, c="k");
+    im  = ax.scatter(xaxis,band,s=s, c=z,cmap="coolwarm",vmin=-1, vmax=1);
+fig.colorbar(im, ax=ax);
 
-plt.gca().set_xticks(xlabels[0])
-plt.gca().set_xticklabels(xlabels[1])
-plt.savefig('graphene_band_structure2.pdf');
+xlabels= graphene.XLabels();
+ax.set_xticks(xlabels[0])
+ax.set_xticklabels(xlabels[1])
+plt.savefig('proj_band_sigma_x.pdf');
+plt.show();
