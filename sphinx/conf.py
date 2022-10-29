@@ -38,3 +38,8 @@ html_static_path = ['_static']
 
 html_theme = 'kotti_docs_theme'
 html_theme_path = [kotti_docs_theme.get_theme_dir()]
+
+
+
+#Module options
+add_module_names = False
