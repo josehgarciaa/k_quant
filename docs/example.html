@@ -1,0 +1,334 @@
+<!DOCTYPE html><html>
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8"/>
+    <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+        <title>Examples &mdash; k_quant 0.0.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Crete+Round' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="_static/sphinx-bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css"/>
+        <link rel="stylesheet" href="_static/pygments.css" type="text/css"/>
+        <link rel="stylesheet" href="_static/sphinx-bootstrap.css" type="text/css"/>
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+        <script type="text/javascript">
+            var DOCUMENTATION_OPTIONS = {
+                URL_ROOT:'./',
+                VERSION:'0.0.1',
+                COLLAPSE_INDEX:false,
+                FILE_SUFFIX:'.html',
+                HAS_SOURCE:  true
+            };
+        </script>
+            <script type="text/javascript" src="_static/documentation_options.js"></script>
+            <script type="text/javascript" src="_static/jquery.js"></script>
+            <script type="text/javascript" src="_static/underscore.js"></script>
+            <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+            <script type="text/javascript" src="_static/doctools.js"></script>
+            <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
+            <script type="text/javascript" src="_static/bootstrap-dropdown.js"></script>
+            <link rel="index" title="Index"
+                  href="genindex.html"/>
+            <link rel="search" title="Search" href="search.html"/>
+        <link rel="top" title="k_quant 0.0.1 documentation" href="index.html"/> 
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+    
+</head>
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+
+    <div class="related">
+        <ul class="nav">
+                <li class=""><a class="brand" href="index.html">k_quant</a></li>
+                <li>
+                    <a href="genindex.html"
+                       title="General Index" accesskey="I">index</a>
+                </li>
+                <li>
+                    <a href="py-modindex.html"
+                       title="Python Module Index" >modules</a>
+                </li> 
+        </ul>
+    </div>
+                <div class="pull-right">
+                    
+        <form class="navbar-search form-search" action="search.html"
+              method="get">
+            <input class="search-query" type="text" name="q" placeholder="search"/>
+            <input type="hidden" name="check_keywords" value="yes"/>
+            <input type="hidden" name="area" value="default"/>
+        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <div class="container">
+        <div class="content row">
+                <div class="span9">
+                    
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h1>
+<section id="installation-usage">
+<h2>Installation/Usage:<a class="headerlink" href="#installation-usage" title="Permalink to this heading">¶</a></h2>
+<p>As the package has not been published on PyPi yet, it CANNOT be install using pip.</p>
+<p>For now, the suggested method is to put the file <cite>simpleble.py</cite> in the same directory as your source files and call <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">simpleble</span> <span class="pre">import</span> <span class="pre">SimpleBleClient,</span> <span class="pre">SimpleBleDevice</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bluepy</span></code> must also be installed and imported as shown in the example below.
+For instructions about how to install, as well as the full documentation of, <code class="docutils literal notranslate"><span class="pre">bluepy</span></code> please refer <a class="reference external" href="https://github.com/IanHarvey/bluepy/">here</a></p>
+</section>
+<section id="search-for-device-connect-and-read-characteristic">
+<h2>Search for device, connect and read characteristic<a class="headerlink" href="#search-for-device-connect-and-read-characteristic" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;This example demonstrates a simple BLE client that scans for devices,</span>
+<span class="sd">connects to a device (GATT server) of choice and continuously reads a characteristic on that device.</span>
+
+<span class="sd">The GATT Server in this example runs on an ESP32 with Arduino. For the</span>
+<span class="sd">exact script used for this example see `here &lt;https://github.com/nkolban/ESP32_BLE_Arduino/blob/6bad7b42a96f0aa493323ef4821a8efb0e8815f2/examples/BLE_notify/BLE_notify.ino/&gt;`_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">bluepy.btle</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">simpleble</span> <span class="kn">import</span> <span class="n">SimpleBleClient</span><span class="p">,</span> <span class="n">SimpleBleDevice</span>
+
+<span class="c1"># The UUID of the characteristic we want to read and the name of the device # we want to read it from</span>
+<span class="n">Characteristic_UUID</span> <span class="o">=</span> <span class="s2">&quot;beb5483e-36e1-4688-b7f5-ea07361b26a8&quot;</span>
+<span class="n">Device_Name</span> <span class="o">=</span> <span class="s2">&quot;MyESP32&quot;</span>
+
+<span class="c1"># Define our scan and notification callback methods</span>
+<span class="k">def</span> <span class="nf">myScanCallback</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">isNewDevice</span><span class="p">,</span> <span class="n">isNewData</span><span class="p">):</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">_yes</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#MAC: &quot;</span> <span class="o">+</span> <span class="n">device</span><span class="o">.</span><span class="n">addr</span> <span class="o">+</span> <span class="s2">&quot; #isNewDevice: &quot;</span> <span class="o">+</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">isNewDevice</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; #isNewData: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">isNewData</span><span class="p">))</span>
+<span class="c1"># TODO: NOTIFICATIONS ARE NOT SUPPORTED YET</span>
+<span class="c1"># def myNotificationCallback(client, characteristic, data):</span>
+<span class="c1">#     print(&quot;Notification received!&quot;)</span>
+<span class="c1">#     print(&quot;  Characteristic UUID: &quot; + characteristic.uuid)</span>
+<span class="c1">#     print(&quot;  Data: &quot; + str(data))</span>
+
+<span class="c1"># Instantiate a SimpleBleClient and set it&#39;s scan callback</span>
+<span class="n">bleClient</span> <span class="o">=</span> <span class="n">SimpleBleClient</span><span class="p">()</span>
+<span class="n">bleClient</span><span class="o">.</span><span class="n">setScanCallback</span><span class="p">(</span><span class="n">myScanCallback</span><span class="p">)</span>
+<span class="c1"># TODO: NOTIFICATIONS ARE NOT SUPPORTED YET</span>
+<span class="c1"># bleClient.setNotificationCallback(myNotificationCollback)</span>
+
+<span class="c1"># Error handling to detect Keyboard interrupt (Ctrl+C)</span>
+<span class="c1"># Loop to ensure we can survive connection drops</span>
+<span class="k">while</span><span class="p">(</span><span class="ow">not</span> <span class="n">bleClient</span><span class="o">.</span><span class="n">isConnected</span><span class="p">()):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Search for 2 seconds and return a device of interest if found.</span>
+        <span class="c1"># Internally this makes a call to bleClient.scan(timeout), thus</span>
+        <span class="c1"># triggering the scan callback method when nearby devices are detected</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">bleClient</span><span class="o">.</span><span class="n">searchDevice</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MyESP32&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># If the device was found print out it&#39;s info</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found device!!&quot;</span><span class="p">)</span>
+            <span class="n">device</span><span class="o">.</span><span class="n">printInfo</span><span class="p">()</span>
+
+            <span class="c1"># Proceed to connect to the device</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Proceeding to connect....&quot;</span><span class="p">)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">bleClient</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">device</span><span class="p">)):</span>
+
+                <span class="c1"># Have a peek at the services provided by the device</span>
+                <span class="n">services</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">getServices</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">services</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Service [&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">service</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;]&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Check to see if the device provides a characteristic with the</span>
+                <span class="c1"># desired UUID</span>
+                <span class="n">counter</span> <span class="o">=</span> <span class="n">bleClient</span><span class="o">.</span><span class="n">getCharacteristics</span><span class="p">(</span>
+                    <span class="n">uuids</span><span class="o">=</span><span class="p">[</span><span class="n">Characteristic_UUID</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
+                    <span class="c1"># If it does, then we proceed to read its value every second</span>
+                    <span class="k">while</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+                        <span class="c1"># Error handling ensures that we can survive from</span>
+                        <span class="c1"># potential connection drops</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="c1"># Read the data as bytes and convert to string</span>
+                            <span class="n">data_bytes</span> <span class="o">=</span> <span class="n">bleClient</span><span class="o">.</span><span class="n">readCharacteristic</span><span class="p">(</span>
+                                <span class="n">counter</span><span class="p">)</span>
+                            <span class="n">data_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span> <span class="n">data_bytes</span><span class="p">))</span>
+
+                            <span class="c1"># Now print the data and wait for a second</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data: &quot;</span> <span class="o">+</span> <span class="n">data_str</span><span class="p">)</span>
+                            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="n">BTLEException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                            <span class="c1"># If we get disconnected from the device, keep</span>
+                            <span class="c1"># looping until we have reconnected</span>
+                            <span class="k">if</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">BTLEException</span><span class="o">.</span><span class="n">DISCONNECTED</span><span class="p">):</span>
+                                <span class="n">bleClient</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+                                <span class="nb">print</span><span class="p">(</span>
+                                    <span class="s2">&quot;Connection to BLE device has been lost!&quot;</span><span class="p">)</span>
+                                <span class="k">break</span>
+                                <span class="c1"># while(not bleClient.isConnected()):</span>
+                                <span class="c1">#     bleClient.connect(device)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not connect to device! Retrying in 3 sec...&quot;</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Device not found! Retrying in 3 sec...&quot;</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">BTLEException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># If we get disconnected from the device, keep</span>
+        <span class="c1"># looping until we have reconnected</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">BTLEException</span><span class="o">.</span><span class="n">DISCONNECTED</span><span class="p">):</span>
+            <span class="n">bleClient</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Connection to BLE device has been lost!&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Detect keyboard interrupt and close down</span>
+        <span class="c1"># bleClient gracefully</span>
+        <span class="n">bleClient</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">e</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                    
+                </div>
+                <div class="span3">
+                    
+        <div class="sphinxsidebar">
+            <ul class="nav nav-list well">
+    <li class="nav-header">
+        Table Of Contents
+    </li>
+    <li>
+        <ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#installation-usage">Installation/Usage:</a></li>
+<li><a class="reference internal" href="#search-for-device-connect-and-read-characteristic">Search for device, connect and read characteristic</a></li>
+</ul>
+</li>
+</ul>
+
+    </li>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/example.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+            </ul>
+            <p>&nbsp;</p>
+            <ul class="nav nav-list well">
+                <li class="nav-header">GitHub</li>
+                <li>
+                    <a href="https://github.com/Pylons/Kotti/">Repo</a>
+                </li>
+                <li>
+                    <a href="https://github.com/Pylons/Kotti/issues?state=open">Issues</a>
+                </li>
+                <li>
+                    <iframe class="github-btn"
+                            src="http://ghbtns.com/github-btn.html?user=Pylons&repo=Kotti&type=watch&count=true"
+                            allowtransparency="true" frameborder="0" scrolling="0"
+                            width="110px" height="20px"></iframe>
+                </li>
+                <li>
+                    <iframe class="github-btn"
+                            src="http://ghbtns.com/github-btn.html?user=Pylons&repo=Kotti&type=fork&count=true"
+                            allowtransparency="true" frameborder="0" scrolling="0"
+                            width="94px" height="20px"></iframe>
+                </li>
+            </ul>
+            <p>&nbsp;</p>
+            <ul class="nav nav-list well">
+                <li class="nav-header">Getting Help</li>
+                <li>
+                    <a href="http://groups.google.com/group/kotti">Mailing list</a>
+                </li>
+                <li>
+                    <a href="irc://irc.freenode.net/#kotti">IRC</a>
+                </li>
+            </ul>
+            <p>&nbsp;</p>
+            <ul class="nav nav-list well">
+                <li class="nav-header">Social</li>
+                <li class="follow-btn">
+                    <a href="https://twitter.com/KottiCMS"
+                       class="twitter-follow-button" data-width="145px"
+                       data-link-color="#0069D6" data-show-count="false">Follow
+                        @KottiCMS</a>
+                </li>
+                <li class="tweet-btn">
+                    <a href="https://twitter.com/share" class="twitter-share-button"
+                       data-url="http://kotti.pylonsproject.org/" data-count="horizontal"
+                       data-via="twbootstrap"
+                       data-related="KottiCMS:Creator of k_quant">Tweet</a>
+                </li>
+                <li class="plusone-container">
+                    <g:plusone size="medium"></g:plusone>
+                </li>
+            </ul>
+        </div>
+                </div>
+            
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div class="container">
+                    &copy;
+                        Copyright 2022, Jose H. Garcia.
+                    <br />
+                Created using <a
+                        href="http://sphinx.pocoo.org/">Sphinx</a> 5.3.0
+                    .
+                Theme based on
+                <a href="https://github.com/scotch/sphinx-bootstrap">
+                    Sphinx-Bootstrap
+                </a>
+                adapted from
+                <a href="http://twitter.github.com/bootstrap/">
+                    Twitter's Bootstrap
+                </a>
+                by <a href="http://www.scotchmedia.com">Scotch Media</a>
+        </div>
+    </div>
+
+
+
+<script type="text/javascript">
+    $('.nav .active').on('click', function () {
+        e.preventDefault()
+        $(this).siblings().toggle()
+    });
+</script>
+
+<!-- plusone -->
+<script type="text/javascript">
+    (function () {
+        var po = document.createElement('script');
+        po.type = 'text/javascript';
+        po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(po, s);
+    })();
+</script>
+
+<!-- twitter -->
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+
+</body>
+</html>

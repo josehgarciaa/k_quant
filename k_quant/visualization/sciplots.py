@@ -1,3 +1,9 @@
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
+
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -51,15 +57,14 @@ def plot(x,y, z=None,**kwargs):
 #        fig.colorbar(im, ax=_ax);
     
     ax.plot(x,y, label=label);
-
+    return ax;
 
 def add_legends( ax, legends ):
-    
     lines = [ line for line in ax.lines ]
     for i,legend in enumerate(legends):
         lines[i].set_label(r"$"+legend+" $")
         ax.legend(fontsize=int(18), frameon=False,labelspacing=0.2, handlelength=1,borderpad=0.2,handletextpad=0.2);
-        
+    return None;
         
         
 def plot4fig( Xs, Ys, **kwargs ):

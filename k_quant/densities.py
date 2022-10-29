@@ -12,6 +12,7 @@
 #   |        |
 #   |________|
 # kmin
+
 def create_2Dkgrid( kwindow=None, npoints=(1,1) ):
     if kwindow is None:
         kwindow = [ [0.0,0.0],[1.0,1.0]]

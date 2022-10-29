@@ -1,8 +1,7 @@
-k-quant
+k_quant
 =======
 
 .. toctree::
    :maxdepth: 4
 
-   bands
-   plot
+   k_quant

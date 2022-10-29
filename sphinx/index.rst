@@ -11,7 +11,7 @@ Welcome to k-quant's documentation!
    :caption: Contents:
 
    intro
-   modules
+   autodoc/modules
    example
 
 Indices and tables
