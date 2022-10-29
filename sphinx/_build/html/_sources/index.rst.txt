@@ -12,7 +12,7 @@ Welcome to k-quant's documentation!
 
    intro
    modules
-   bands
+   example
 
 Indices and tables
 ==================
