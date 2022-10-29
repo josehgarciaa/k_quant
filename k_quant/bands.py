@@ -1,9 +1,3 @@
-"""_summary_
-
-    Returns:
-        _type_: _description_
-"""
-
 from os import wait3
 import numpy as np
 import numpy.typing as npt
@@ -20,10 +14,10 @@ class bandstructure:
     convention to document the __init__ method and be consistent with it.
 
     Note:
-        Do not include the `self` parameter in the ``Args`` section.
+        Do not include the `self` parameter in the ``Args`` section. grtgmrodlgmorllom
 
     Args:
-        msg (str): Human readable string describing the exception.
+        msg (str): Human readable string descrDFGDTRETKREPTkr111ibing the exception.
         code (:obj:`int`, optional): Error code.
 
     Attributes:
@@ -46,7 +40,7 @@ class bandstructure:
         """_summary_
 
         Args:
-            H_k (_type_): _description_
+            H_k (_type_): aaaaaah
         """
         self.H_k = H_k;
 
