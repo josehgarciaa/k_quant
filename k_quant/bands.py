@@ -1,8 +1,11 @@
-from os import wait3
+""" The band module
+
+    Returns:
+        _type_: _description_
+"""
+
 import numpy as np
-import numpy.typing as npt
 from numpy.linalg import eigh, eigvalsh, norm
-from numpy import exp, cos, sin , pi, kron
 
 class bandstructure:
     """This class will compute the bandstructure for different inputs of models

@@ -1,6 +1,11 @@
 k\_quant package
 ================
 
+.. automodule:: k_quant
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Subpackages
 -----------
 
@@ -12,26 +17,8 @@ Subpackages
 Submodules
 ----------
 
-k\_quant.bands module
----------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: k_quant.bands
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-k\_quant.densities module
--------------------------
-
-.. automodule:: k_quant.densities
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: k_quant
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   k_quant.bands
+   k_quant.densities

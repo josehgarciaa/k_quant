@@ -1,21 +1,15 @@
 k\_quant.visualization package
 ==============================
 
-Submodules
-----------
-
-k\_quant.visualization.sciplots module
---------------------------------------
-
-.. automodule:: k_quant.visualization.sciplots
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
 .. automodule:: k_quant.visualization
    :members:
    :undoc-members:
    :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   k_quant.visualization.sciplots
