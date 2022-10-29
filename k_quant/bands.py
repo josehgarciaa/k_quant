@@ -27,6 +27,10 @@ class bandstructure:
         code (:obj:`int`, optional): Error code.
 
     Attributes:
+        lat_vec (arrray): a ver
+        bandpath (tuple): a ver
+        H_k (function):   a ver
+
         msg (str): Human readable string describing the exception.
         code (int): Exception error code.
 

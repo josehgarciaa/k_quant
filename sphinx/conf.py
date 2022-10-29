@@ -42,4 +42,4 @@ html_theme_path = [kotti_docs_theme.get_theme_dir()]
 
 
 #Module options
-add_module_names = False
+#add_module_names = False
