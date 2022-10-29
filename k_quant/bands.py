@@ -1,14 +1,8 @@
-""" The band module
-
-    Returns:
-        _type_: _description_
-"""
-
 import numpy as np
 from numpy.linalg import eigh, eigvalsh, norm
 
 class bandstructure:
-    """This class will compute the bandstructure for different inputs of models
+    """ThisSSS class will compute the bandstructure for different inputs of models
 
     Args:
         msg (str): Human readable string descrDFGDTRETKREPTkr111ibing the exception.

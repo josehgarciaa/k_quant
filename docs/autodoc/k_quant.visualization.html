@@ -17,7 +17,6 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="k_quant.visualization.sciplots.html" />
     <link rel="prev" title="k_quant package" href="k_quant.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -35,18 +34,44 @@
 
           <div class="body" role="main">
             
-  <section id="module-k_quant.visualization">
-<span id="k-quant-visualization-package"></span><h1>k_quant.visualization package<a class="headerlink" href="#module-k_quant.visualization" title="Permalink to this heading">¶</a></h1>
+  <section id="k-quant-visualization-package">
+<h1>k_quant.visualization package<a class="headerlink" href="#k-quant-visualization-package" title="Permalink to this heading">¶</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="k_quant.visualization.sciplots.html"><code class="docutils literal notranslate"><span class="pre">add_legends()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="k_quant.visualization.sciplots.html#k_quant.visualization.sciplots.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="k_quant.visualization.sciplots.html#k_quant.visualization.sciplots.plot4fig"><code class="docutils literal notranslate"><span class="pre">plot4fig()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="k_quant.visualization.sciplots.html#k_quant.visualization.sciplots.plot_ZwithArrows"><code class="docutils literal notranslate"><span class="pre">plot_ZwithArrows()</span></code></a></li>
-</ul>
-</div>
+</section>
+<section id="module-k_quant.visualization.sciplots">
+<span id="k-quant-visualization-sciplots-module"></span><h2>k_quant.visualization.sciplots module<a class="headerlink" href="#module-k_quant.visualization.sciplots" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="k_quant.visualization.sciplots.add_legends">
+<span class="sig-name descname"><span class="pre">add_legends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legends</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.visualization.sciplots.add_legends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="k_quant.visualization.sciplots.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.visualization.sciplots.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>x (_type_): _description_
+y (_type_): _description_
+z (_type_, optional): _description_. Defaults to None.
+ax (_type_, optional): _description_. Defaults to None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="k_quant.visualization.sciplots.plot4fig">
+<span class="sig-name descname"><span class="pre">plot4fig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ys</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.visualization.sciplots.plot4fig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="k_quant.visualization.sciplots.plot_ZwithArrows">
+<span class="sig-name descname"><span class="pre">plot_ZwithArrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">XX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">YY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ZZ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">UU</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VV</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Zlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">3)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.visualization.sciplots.plot_ZwithArrows" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-k_quant.visualization">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-k_quant.visualization" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -76,6 +101,9 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="k_quant.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_quant.html#module-k_quant.bands">k_quant.bands module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_quant.html#module-k_quant.densities">k_quant.densities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_quant.html#module-k_quant">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -89,7 +117,6 @@
   <li><a href="modules.html">k_quant</a><ul>
   <li><a href="k_quant.html">k_quant package</a><ul>
       <li>Previous: <a href="k_quant.html" title="previous chapter">k_quant package</a></li>
-      <li>Next: <a href="k_quant.visualization.sciplots.html" title="next chapter">&lt;no title&gt;</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
