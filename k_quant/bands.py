@@ -1,3 +1,8 @@
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
 
 from os import wait3
 import numpy as np
