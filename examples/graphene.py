@@ -26,18 +26,19 @@ bandpath = [ ("K", (1/3,2/3,0), 4 ), ("G", (0,0,0), 5) , ("M",(1/2,1/2,0),6), ("
 graphene.set_bandpath(bandpath);
 
 #The computing the band structure is as simmple as
-#bandstructure = graphene.compute_bands();
+bandstructure = graphene.compute_bands();
 xaxis = graphene.Xaxis();
-#labels= graphene.XLabels();
-#for band in bandstructure:
-#    plt.plot(band);
-#    plt.xticks(xaxis, labels)
-#    plt.savefig('graphene_band_structure.pdf');
+xlabels= graphene.XLabels();
+for band in bandstructure:
+    plt.plot(xaxis, band);
 
+plt.gca().set_xticks(xlabels[0])
+plt.gca().set_xticklabels(xlabels[1])
+plt.savefig('graphene_band_structure.pdf');
 
-#sigma_x,sigma_y = [ [[0,1],[1,0]], [[0,-1j],[1j,0]] ];
-#bandstructure = graphene.compute_bands( proj_ops=[ sigma_x,sigma_y] );
-#print(bandstructure)
+sigma_x,sigma_y = [ [[0,1],[1,0]], [[0,-1j],[1j,0]] ];
+bandstructure = graphene.compute_bands( proj_ops=[ sigma_x,sigma_y] );
+print(bandstructure)
 
-#for band in bandstructure:
-#    plt.plot(band);
+for band in bandstructure:
+    plt.plot(band);

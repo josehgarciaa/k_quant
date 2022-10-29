@@ -89,11 +89,11 @@ class bandstructure:
         """      
         labels, segments, npoints = list(zip(*(self.bandpath)));
         segments = np.array(segments);
+        last_pt  = segments[-1]; 
         segments = np.transpose( [ segments[:-1],segments[1:] ], axes=(1,0,2) )
-        kpoints  = np.array( [ *np.linspace( *seg, n,endpoint=False ) for seg,n in zip(segments,npoints) ] );
-        
 
-
+        kpoints  = [ np.linspace( *seg, n,endpoint=False ) for seg,n in zip(segments,npoints) ] ;
+        kpoints  = np.concatenate( [*kpoints,[last_pt]] , axis=0)
         #If required, rescale to absolute value
         if absolute_coords  is True :
             kpoints = np.dot( kpoints, np.transpose(self.Momentum_Rec2AbsMatrix() ) );
@@ -108,9 +108,9 @@ class bandstructure:
         """
         Xaxis = self.Xaxis()    
         labels, segments, npoints = list(zip(*(self.bandpath)));
-        xpos = np.cumsum( np.array([-1]+list(npoints))+1   )
-        print(Xaxis.shape, xpos, labels)
-        return (Xaxis[xpos],labels)                
+        xpos = np.concatenate([[0], np.cumsum( npoints)])[:-1]
+
+        return [list(Xaxis[xpos]),labels]                
        
     def Xaxis(self ):
         """Returns a unique x-axis parameter that respect the distance between k-points
@@ -120,6 +120,7 @@ class bandstructure:
         """
         Xaxis=np.cumsum(np.linalg.norm(np.diff( self.band_kpoints() ,axis=0, prepend = 0),axis=1));
         Xaxis-=Xaxis[0];#Remove the initial value.
+       
         return Xaxis;
     
 
