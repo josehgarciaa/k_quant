@@ -1,7 +1,7 @@
 # What is k-quant
 Quantum transport calculations in k-space
 
-https://josehgarciaa.github.io/k-quant/
+https://josehgarciaa.github.io/k_quant/
 
 
 ## Installation/Usage:
