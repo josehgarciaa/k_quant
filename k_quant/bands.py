@@ -1,8 +1,8 @@
-    """_summary_
+"""_summary_
 
     Returns:
         _type_: _description_
-    """
+"""
 
 from os import wait3
 import numpy as np
@@ -11,7 +11,7 @@ from numpy.linalg import eigh, eigvalsh, norm
 from numpy import exp, cos, sin , pi, kron
 
 class bandstructure:
-    """This class will compute the bandstructure for different inputs of models
+    """This sss class will compute the bandstructure for different inputs of models
 
     The __init__ method may be documented in either the class level
     docstring, or as a docstring on the __init__ method itself.
