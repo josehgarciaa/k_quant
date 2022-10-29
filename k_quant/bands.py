@@ -175,6 +175,6 @@ class bandstructure:
         
         
         
-        return np.transpose(proj_bands, axes=(2,0,1));
+        return np.transpose(proj_bands, axes=(2,1,0));
   
 

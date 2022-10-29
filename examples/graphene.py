@@ -1,6 +1,8 @@
 from numpy import sqrt, exp, dot, conj
 import matplotlib.pyplot as plt
 import k_quant as k
+import matplotlib
+matplotlib.use('TKAgg')
 
 """
 Let us first define a Hamiltonian in momentum space
@@ -22,7 +24,7 @@ graphene = k.bandstructure(lat_vec, hamiltonian );
 
 #To plot a desire band-path you pass it to the class as a list of tuples
 npts= 100;
-bandpath = [ ("K", (1/3,2/3,0), 4 ), ("G", (0,0,0), 5) , ("M",(1/2,1/2,0),6), ("K'",(2/3,1/3,0),1) ];
+bandpath = [ ("K", (1/3,2/3,0), 111 ), ("G", (0,0,0), 35) , ("M",(1/2,1/2,0),55), ("K'",(2/3,1/3,0),1) ];
 graphene.set_bandpath(bandpath);
 
 #The computing the band structure is as simmple as
@@ -38,7 +40,13 @@ plt.savefig('graphene_band_structure.pdf');
 
 sigma_x,sigma_y = [ [[0,1],[1,0]], [[0,-1j],[1j,0]] ];
 bandstructure = graphene.compute_bands( proj_ops=[ sigma_x,sigma_y] );
-print(bandstructure)
 
-for band in bandstructure:
-    plt.plot(band);
+print(bandstructure.shape)
+
+for proj_band in bandstructure:
+    band,sigma_x,sigma_y = proj_band ;
+    plt.plot(xaxis,band);
+
+plt.gca().set_xticks(xlabels[0])
+plt.gca().set_xticklabels(xlabels[1])
+plt.savefig('graphene_band_structure2.pdf');
