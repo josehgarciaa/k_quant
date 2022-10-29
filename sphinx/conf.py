@@ -36,8 +36,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_static_path = ['_static']
 
-html_theme = 'kotti_docs_theme'
-html_theme_path = [kotti_docs_theme.get_theme_dir()]
+#html_theme = 'kotti_docs_theme'
+#html_theme_path = [kotti_docs_theme.get_theme_dir()]
 
 
 
