@@ -2,21 +2,10 @@ import numpy as np
 from numpy.linalg import eigh, eigvalsh, norm
 
 class bandstructure:
-    """ThisSSS class will compute the bandstructure for different inputs of models
-
-    Args:
-        msg (str): Human readable string descrDFGDTRETKREPTkr111ibing the exception.
-        code (:obj:`int`, optional): Error code.
-
-    Attributes:
-        lat_vec (arrray): a ver
-        bandpath (tuple): a ver
-        H_k (function):   a ver
-
-        msg (str): Human readable string describing the exception.
-        code (int): Exception error code.
-
+    """_summary_
+    
     """
+    
        
     def __init__(self, lat_vec, H_k ):
         """_summary_

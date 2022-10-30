@@ -14,7 +14,7 @@ print("current path",cwd)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 
-project = 'kQuant'
+project = 'k Quant'
 copyright = '2022, Jose H. Garcia'
 author = 'Jose H. Garcia'
 release = '0.0.1'
@@ -39,7 +39,6 @@ html_static_path = ['_static']
 
 #html_theme = 'kotti_docs_theme'
 #html_theme_path = [kotti_docs_theme.get_theme_dir()]
-
 
 
 #Module options
