@@ -10,7 +10,7 @@ Welcome to :math:`{\boldsymbol k}` _Quant's documentation!
    :maxdepth: 4
    :caption: Contents:
 
-   autodoc/modules
+   intro
 
 Indices and tables
 ==================
