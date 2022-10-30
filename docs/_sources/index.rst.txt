@@ -14,9 +14,3 @@ Welcome to :math:`{\boldsymbol k}` Quant's documentation!
    All about strings <example>
    modules
    
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
