@@ -15,6 +15,7 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Documentation" href="../modules.html" />
@@ -37,18 +38,11 @@
             
   <section id="a-simple-band-structure-calculation">
 <h1>A simple band structure calculation<a class="headerlink" href="#a-simple-band-structure-calculation" title="Permalink to this heading">¶</a></h1>
-<section id="search-for-device-connect-and-read-characteristic">
-<h2>Search for device, connect and read characteristic<a class="headerlink" href="#search-for-device-connect-and-read-characteristic" title="Permalink to this heading">¶</a></h2>
+<p>For this example, let us first define a Hamiltonian in momentum space which we will
+use to compute the band structure. In this case, we choose as prototype a model for <span class="math notranslate nohighlight">\(p_z\)</span> electrons
+in graphene within the nearest neighbor approximation with lattice vectors
+defined in the lat_vec variable</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">conj</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span> <span class="nb">abs</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">k_quant</span> <span class="k">as</span> <span class="nn">k</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Let us first define a Hamiltonian in momentum space</span>
-<span class="sd">and for this purpose we choose as prototype a model for p_z electrons</span>
-<span class="sd">in graphene within the nearest neighbor approximation with lattice vectors</span>
-<span class="sd">defined in the lat_vec variable</span>
-<span class="sd">&quot;&quot;&quot;</span>
 <span class="n">lat_vec</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span> <span class="p">],</span> <span class="p">[</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span> <span class="p">],</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span> <span class="p">]</span> <span class="p">]</span>
 <span class="k">def</span> <span class="nf">hamiltonian</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
     <span class="n">a_0</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">a2</span>  <span class="o">=</span> <span class="n">lat_vec</span><span class="p">;</span>
@@ -57,8 +51,13 @@
     <span class="k">return</span> <span class="p">[</span> <span class="p">[</span> <span class="mi">0</span>        <span class="p">,</span> <span class="n">f_k</span><span class="p">],</span>
             <span class="p">[</span> <span class="n">conj</span><span class="p">(</span><span class="n">f_k</span><span class="p">),</span>  <span class="mi">0</span> <span class="p">]</span>
             <span class="p">];</span>
-
-<span class="c1">#The band class requires lattice vectors and the hamiltonian function</span>
+</pre></div>
+</div>
+<p>Then, we need to define the bandpath using as a list of tuples, consisting in
+the kpoint label, its position in the normalized Brilluoin zone, and the numbers
+of point between that point and the next bandpath point. Once define, this variable
+is pass to the bandstructure class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#The band class requires lattice vectors and the hamiltonian function</span>
 <span class="n">graphene</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">bandstructure</span><span class="p">(</span><span class="n">lat_vec</span><span class="p">,</span> <span class="n">hamiltonian</span> <span class="p">);</span>
 
 <span class="c1">#To plot a desire band-path you pass it to the class as a list of tuples</span>
@@ -69,8 +68,10 @@
 <span class="c1">#The computing the band structure is as simmple as</span>
 <span class="n">sigma_x</span><span class="p">,</span><span class="n">sigma_y</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span> <span class="p">];</span>
 <span class="n">bandstructure</span> <span class="o">=</span> <span class="n">graphene</span><span class="o">.</span><span class="n">compute_bands</span><span class="p">(</span> <span class="n">proj_ops</span><span class="o">=</span><span class="p">[</span> <span class="n">sigma_x</span><span class="p">,</span><span class="n">sigma_y</span><span class="p">]</span> <span class="p">);</span>
-
-<span class="n">fig</span><span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Finally we plot the result</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">();</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">();</span>
 <span class="n">xaxis</span> <span class="o">=</span> <span class="n">graphene</span><span class="o">.</span><span class="n">Xaxis</span><span class="p">();</span>
 <span class="k">for</span> <span class="n">proj_band</span> <span class="ow">in</span> <span class="n">bandstructure</span><span class="p">:</span>
@@ -88,7 +89,6 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
 </pre></div>
 </div>
-</section>
 </section>
 
 
