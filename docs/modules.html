@@ -36,6 +36,149 @@
             
   <section id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h1>
+<section id="k-quant-bands-module">
+<h2>k_quant.bands module<a class="headerlink" href="#k-quant-bands-module" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bandstructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat_vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_k</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class will compute the bandstructure for different inputs of models</p>
+<p>The __init__ method may be documented in either the class level
+docstring, or as a docstring on the __init__ method itself.</p>
+<p>Either form is acceptable, but the two should not be mixed. Choose one
+convention to document the __init__ method and be consistent with it.</p>
+<dl class="simple">
+<dt>Note:</dt><dd><p>Do not include the <cite>self</cite> parameter in the <code class="docutils literal notranslate"><span class="pre">Args</span></code> section.</p>
+</dd>
+<dt>Args:</dt><dd><p>msg (str): Human readable string describing the exception.
+code (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional): Error code.</p>
+</dd>
+<dt>Attributes:</dt><dd><p>msg (str): Human readable string describing the exception.
+code (int): Exception error code.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Momentum_Rec2AbsMatrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">XLabels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Returns the x-axis labels associated with the bandpath</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list: _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Xaxis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Returns a unique x-axis parameter that respect the distance between k-points</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>ndarray: An array of k-point</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">band_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absolute_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Compute the k-points defined in the bandpath.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>absolute_coords (bool, optional): Determine whereas the k-points are given in cartesian (in units of 2pi/a) or reciprocal units. Defaults to False.</p>
+</dd>
+<dt>Returns:</dt><dd><p>ndarray: An array of k-points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">bandpath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>bandpath (_type_): _description_
+absolute_coords (bool, optional): _description_. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">compute_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fermi_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj_ops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>fermi_energy (float, optional): _description_. Defaults to 0.0.
+proj_op (_type_, optional): _description_. Defaults to None.
+ax (_type_, optional): _description_. Defaults to None.
+plot_proj (bool, optional): _description_. Defaults to False.
+proj_range (_type_, optional): _description_. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>_type_: _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">hamiltonian_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>k (_type_): _description_</p>
+</dd>
+<dt>Returns:</dt><dd><p>_type_: _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">operator_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoint</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>proj_ops (_type_): _description_</p>
+</dd>
+<dt>Returns:</dt><dd><p>_type_: _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">set_bandpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandpath</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>bandpath (_type_): _description_
+absolute_coords (bool, optional): _description_. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">set_hamiltonian_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H_k</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>H_k (_type_): _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">toAbsoluteCoords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">energies_inwindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_window</span></span></em><span class="sig-paren">)</span></dt>
+<dd></dd></dl>
+
+</section>
 </section>
 
 
@@ -57,7 +200,7 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a></li>
 </ul>
 
 <div class="relations">

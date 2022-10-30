@@ -17,5 +17,5 @@ conductivities, spin Hall conductivities, and density of states.
    :titlesonly:
 
    Examples <example>
-   modules
+   Modules <modules>
    
