@@ -2,7 +2,15 @@ import numpy as np
 from numpy.linalg import eigh, eigvalsh, norm
 
 class bandstructure:
-    
+    """This class was created to perform handle band structure calculations. It allows 
+    to pass a band path and operators to compute the projected band structure. 
+
+        :param lat_vec: The lattice vectors of the model to be computed handle to the :class:`simpleble.SimpleBleClient` client
+            object that detected the device
+        :type lat_vec: a list of lists with the following format [[a_11,a_12,a_13],[a_21,a_22,a_23],[a_31,a_31,a_33]]
+        :param H_k: The hamiltonian operator
+        :type H_k: function, optional
+    """    
        
     def __init__(self, lat_vec, H_k ):
               
