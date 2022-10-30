@@ -26,6 +26,8 @@ is pass to the bandstructure class.
 
 .. code-block:: python
 
+    import k_quant as k
+
     #The band class requires lattice vectors and the hamiltonian function
     graphene = k.bandstructure(lat_vec, hamiltonian );
 
@@ -42,6 +44,8 @@ is pass to the bandstructure class.
 Finally we plot the result
 
 .. code-block:: python
+    
+    import matplotlib.pyplot as plt
 
     fig= plt.gcf();
     ax = plt.gca();

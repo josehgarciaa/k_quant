@@ -57,7 +57,9 @@ defined in the lat_vec variable</p>
 the kpoint label, its position in the normalized Brilluoin zone, and the numbers
 of point between that point and the next bandpath point. Once define, this variable
 is pass to the bandstructure class.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#The band class requires lattice vectors and the hamiltonian function</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">k_quant</span> <span class="k">as</span> <span class="nn">k</span>
+
+<span class="c1">#The band class requires lattice vectors and the hamiltonian function</span>
 <span class="n">graphene</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">bandstructure</span><span class="p">(</span><span class="n">lat_vec</span><span class="p">,</span> <span class="n">hamiltonian</span> <span class="p">);</span>
 
 <span class="c1">#To plot a desire band-path you pass it to the class as a list of tuples</span>
@@ -71,7 +73,9 @@ is pass to the bandstructure class.</p>
 </pre></div>
 </div>
 <p>Finally we plot the result</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">();</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">();</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">();</span>
 <span class="n">xaxis</span> <span class="o">=</span> <span class="n">graphene</span><span class="o">.</span><span class="n">Xaxis</span><span class="p">();</span>
 <span class="k">for</span> <span class="n">proj_band</span> <span class="ow">in</span> <span class="n">bandstructure</span><span class="p">:</span>
