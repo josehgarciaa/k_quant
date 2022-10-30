@@ -26,7 +26,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.mathjax']
 
 
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['*_build', '*_static', '.DS_Store', '.git*', '*egg-info*', '*pycache*',   ]
 
 
 html_theme = 'alabaster'
