@@ -14,7 +14,7 @@ print("current path",cwd)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 
-project = 'k_quant'
+project = ':math:`{\boldsymbol k}` Quant'
 copyright = '2022, Jose H. Garcia'
 author = 'Jose H. Garcia'
 release = '0.0.1'
