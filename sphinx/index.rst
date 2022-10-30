@@ -10,6 +10,7 @@ Welcome to k_quant's documentation!
    :maxdepth: 4
    :caption: Contents:
 
+   intro
    autodoc/modules
 
 Indices and tables
