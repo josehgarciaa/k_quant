@@ -11,6 +11,7 @@ Welcome to :math:`{\boldsymbol k}` _Quant's documentation!
    :caption: Contents:
 
    intro
+   example
 
 Indices and tables
 ==================
