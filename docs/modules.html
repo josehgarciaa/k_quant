@@ -36,13 +36,12 @@
             
   <section id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h1>
-<section id="module-k_quant.bands">
-<span id="bands-module"></span><h2>bands module<a class="headerlink" href="#module-k_quant.bands" title="Permalink to this heading">¶</a></h2>
+<section id="bands-module">
+<h2>bands module<a class="headerlink" href="#bands-module" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bandstructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat_vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This class will compute the bandstructure for different inputs of models</p>
+<dt class="sig sig-object py" id="k_quant.bandstructure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bandstructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lat_vec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class will compute the bandstructure for different inputs of models</p>
 <p>The __init__ method may be documented in either the class level
 docstring, or as a docstring on the __init__ method itself.</p>
 <p>Either form is acceptable, but the two should not be mixed. Choose one
@@ -58,8 +57,8 @@ code (int): Exception error code.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.XLabels">
-<span class="sig-name descname"><span class="pre">XLabels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.XLabels" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.XLabels">
+<span class="sig-name descname"><span class="pre">XLabels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.XLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the x-axis labels associated with the bandpath</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>list: _description_</p>
@@ -68,8 +67,8 @@ code (int): Exception error code.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.Xaxis">
-<span class="sig-name descname"><span class="pre">Xaxis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.Xaxis" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.Xaxis">
+<span class="sig-name descname"><span class="pre">Xaxis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.Xaxis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a unique x-axis parameter that respect the distance between k-points</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>ndarray: An array of k-point</p>
@@ -78,8 +77,8 @@ code (int): Exception error code.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.band_kpoints">
-<span class="sig-name descname"><span class="pre">band_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absolute_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.band_kpoints" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.band_kpoints">
+<span class="sig-name descname"><span class="pre">band_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">absolute_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.band_kpoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the k-points defined in the bandpath.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>absolute_coords (bool, optional): Determine whereas the k-points are given in cartesian (in units of 2pi/a) or reciprocal units. Defaults to False.</p>
@@ -90,8 +89,8 @@ code (int): Exception error code.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.bandpath">
-<span class="sig-name descname"><span class="pre">bandpath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.bandpath" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.bandpath">
+<span class="sig-name descname"><span class="pre">bandpath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.bandpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>_summary_</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>bandpath (_type_): _description_
@@ -101,8 +100,8 @@ absolute_coords (bool, optional): _description_. Defaults to False.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.compute_bands">
-<span class="sig-name descname"><span class="pre">compute_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fermi_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj_ops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.compute_bands" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.compute_bands">
+<span class="sig-name descname"><span class="pre">compute_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fermi_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj_ops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.compute_bands" title="Permalink to this definition">¶</a></dt>
 <dd><p>_summary_</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>fermi_energy (float, optional): _description_. Defaults to 0.0.
@@ -117,8 +116,8 @@ proj_range (_type_, optional): _description_. Defaults to None.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.hamiltonian_k">
-<span class="sig-name descname"><span class="pre">hamiltonian_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.hamiltonian_k" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.hamiltonian_k">
+<span class="sig-name descname"><span class="pre">hamiltonian_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.hamiltonian_k" title="Permalink to this definition">¶</a></dt>
 <dd><p>_summary_</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>k (_type_): _description_</p>
@@ -129,8 +128,8 @@ proj_range (_type_, optional): _description_. Defaults to None.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.operator_k">
-<span class="sig-name descname"><span class="pre">operator_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.operator_k" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.operator_k">
+<span class="sig-name descname"><span class="pre">operator_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.operator_k" title="Permalink to this definition">¶</a></dt>
 <dd><p>_summary_</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>proj_ops (_type_): _description_</p>
@@ -141,8 +140,8 @@ proj_range (_type_, optional): _description_. Defaults to None.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.set_bandpath">
-<span class="sig-name descname"><span class="pre">set_bandpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandpath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.set_bandpath" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.set_bandpath">
+<span class="sig-name descname"><span class="pre">set_bandpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandpath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.set_bandpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>_summary_</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>bandpath (_type_): _description_
@@ -152,8 +151,8 @@ absolute_coords (bool, optional): _description_. Defaults to False.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.bands.bandstructure.set_hamiltonian_k">
-<span class="sig-name descname"><span class="pre">set_hamiltonian_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H_k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bands.bandstructure.set_hamiltonian_k" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="k_quant.bandstructure.set_hamiltonian_k">
+<span class="sig-name descname"><span class="pre">set_hamiltonian_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H_k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.bandstructure.set_hamiltonian_k" title="Permalink to this definition">¶</a></dt>
 <dd><p>_summary_</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>H_k (_type_): _description_</p>
@@ -163,6 +162,9 @@ absolute_coords (bool, optional): _description_. Defaults to False.</p>
 
 </dd></dl>
 
+<p>#.. automodule:: k_quant.bands
+#   :members:
+#   :show-inheritance:</p>
 </section>
 </section>
 

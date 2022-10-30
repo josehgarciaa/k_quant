@@ -4,6 +4,10 @@ Documentation
 bands module
 ------------
 
-.. automodule:: k_quant.bands
+.. autoclass:: k_quant.bandstructure
    :members:
-   :show-inheritance:
+
+
+#.. automodule:: k_quant.bands
+#   :members:
+#   :show-inheritance:
