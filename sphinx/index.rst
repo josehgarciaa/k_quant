@@ -6,13 +6,11 @@
 Welcome to :math:`{\boldsymbol k}` Quant's documentation!
 ============================================================
 
-intro
-
 .. toctree::
    :caption: Contents:
    :titlesonly:
 
-   
+   intro
    All about strings <example>
    modules
    
