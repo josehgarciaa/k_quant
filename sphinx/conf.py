@@ -6,7 +6,6 @@
 
 import os
 import sys
-import kotti_docs_theme
 sys.path.insert(0, os.path.abspath('../k_quant/'))
 cwd = os.getcwd()
 print("current path",cwd)
