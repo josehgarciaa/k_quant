@@ -23,11 +23,8 @@ release = '0.0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.mathjax']
-
-
 templates_path = ['_templates']
-exclude_patterns = ['*_build', '*_static', '.DS_Store', '.git*', '*egg-info*', '*pycache*',   ]
-
+exclude_patterns = ['*_build', '*_static', '.DS_Store', '.git*', '*egg-info*', '*pycache*' ]
 
 html_theme = 'alabaster'
 
@@ -42,4 +39,4 @@ html_static_path = ['_static']
 
 
 #Module options
-add_module_names = False
+#add_module_names = False
