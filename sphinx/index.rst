@@ -9,7 +9,6 @@ Welcome to :math:`{\boldsymbol k}` Quant's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   :hidden:
    
    intro
    All about strings <example>
