@@ -7,11 +7,11 @@ Welcome to :math:`{\boldsymbol k}` Quant's documentation!
 ============================================================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
    :caption: Contents:
 
    intro
-   example
+   All about strings <example>
    modules
    
 Indices and tables
