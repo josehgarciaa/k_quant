@@ -29,9 +29,6 @@ graphene.set_bandpath(bandpath);
 sigma_x,sigma_y = [ [[0,1],[1,0]], [[0,-1j],[1j,0]] ];
 bandstructure = graphene.compute_bands( proj_ops=[ sigma_x,sigma_y] );
 
-
-
-
 fig= plt.gcf();
 ax = plt.gca();
 xaxis = graphene.Xaxis();

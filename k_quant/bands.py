@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.linalg import eigh, eigvalsh, norm
 
-class bandstructure:
+class BandStructure:
     """This class was created to perform handle band structure calculations. It allows 
     to pass a band path and operators to compute the projected band structure. 
 
@@ -65,7 +65,6 @@ class bandstructure:
        
         return Xaxis;
     
-
     def operator_k(self, operator, kpoint ):
         w, v = np.linalg.eigh( self.H_k(kpoint) );
 
