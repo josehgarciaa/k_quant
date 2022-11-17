@@ -1,9 +1,12 @@
 from numpy import sqrt, exp, dot, conj, min,max, abs
 import matplotlib.pyplot as plt
 import k_quant as k
-from k_quant import operators as ops
 
 import numpy as np
+
+print(np.show_config())
+
+
 """
 Let us first define a Hamiltonian in momentum space
 and for this purpose we choose as prototype a model for p_z electrons
@@ -21,9 +24,38 @@ def hamiltonian(k):
 
 #The band class requires lattice vectors and the hamiltonian function
 kdens = k.Density(lat_vec, hamiltonian );
-kdens.set_scdim(scdim=(10,10,1));
+kdens.set_scdim(scdim=(1000,1000,1));
 
-ops.energy
+
+print("Filling the hamiltonians")
 ham_k = kdens.operator( hamiltonian ); 
 
-print( np.eigvals.shape );
+print("computing eigenvalues")
+U_k   = kdens.eigenU(ham_k)
+H_new = kdens.change_basis(U_k, ham_k);
+
+print("diagonal elements")
+
+eigvals= np.array([ np.diag(h) for h in H_new]).flatten();
+
+
+#Chebyshev polynomials
+emin = np.min(eigvals);
+emax = np.max(eigvals);
+
+alpha = 0.9;
+W = (emax+emin)/2;
+DE = emax - emin;
+eigvals = 2*alpha*(eigvals - W )/DE; 
+
+#DOS
+M=3000;
+mu = [];
+
+print("KPM")
+
+for m in range(M):
+    T_m = np.cos( m *np.arccos(eigvals) );
+    mu.append( np.sum(T_m) );
+
+print(mu)
