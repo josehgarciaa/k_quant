@@ -22,6 +22,12 @@ def hamiltonian(k):
              [ conj(f_k),  0 ]
             ];
 
+
+
+
+
+
+
 #The band class requires lattice vectors and the hamiltonian function
 kdens = k.Density(lat_vec, hamiltonian );
 kdens.set_scdim(scdim=(1000,1000,1));
