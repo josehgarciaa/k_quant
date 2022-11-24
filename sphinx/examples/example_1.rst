@@ -66,7 +66,7 @@ will offer different flavors for performing calculations. At this point, the mos
 
     from k_quant.spectral_solvers import kpm
 
-    syst = System( dimensions=(100,100,1), w90_in = "", model="_he", deploy=True);
+    syst = System( dimensions=(100,100,1), w90_inp = "", model="_he", deploy=True);
 
     energies = np.linspace(-1,1,100);
     dos = kpm.Density(System, broadening = 10, Op=None, energies=energies );

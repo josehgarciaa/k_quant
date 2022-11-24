@@ -3,21 +3,21 @@ from numpy.linalg import inv, dot, pi
 
 
 class Lattice():
-    """ The Lattice class handles all structural information of a given system. 
+    """ Storage and handles all structural information of a given system. 
 
     Args:
-        msg (str): Human readable string describing the exception.
-        code (:obj:`int`, optional): Error code.
+        primitive_vectors (array): An array containing the three primitive_vectors that spams the lattice
+        orbital_positions (array): an array containing the positions and labels of all hoppings in the system
 
     Attributes:
         primitive_vectors (array): An array containing the three primitive_vectors that spams the lattice
-    
+        orbital_positions (array): an array containing the positions and labels of all hoppings in the system
     """
-
-    primitive_vectors = None; 
-    
    
-    def __init__(self, msg, *kwaars):
+   
+    def __init__(self, primitive_vectors= None, orbital_positions= None):
+        self.primitive_vectors = primitive_vectors;
+        self.orbital_positions = orbital_positions;
         pass
     
  

@@ -1,23 +1,14 @@
 import numpy as np
 from numpy.linalg import eigh, eigvalsh, norm
 from numpy import exp, cos, sin , pi, kron
-
-import matplotlib.pyplot as plt
-from matplotlib.collections import LineCollection
-from matplotlib.colors import ListedColormap, BoundaryNorm
-import matplotlib.tri as mtri #tricontourf
-from matplotlib import rc
-rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-rc('text', usetex=True)
-
 from scipy.sparse import coo_matrix
-import time
+
+class WannierSystem:
+
+    pass
 
 
-proj_s = 50 ;
-cmap_name="seismic";
-band_lw = 1;
-class wannier_system:
+"""
        
     def __init__(self, label ):
 
@@ -27,7 +18,7 @@ class wannier_system:
         xyz_file =self.label+".xyz"
         uc_file  =self.label+".uc"
        
-        self.lat_vec = np.loadtxt(uc_file);
+        self.primitive_vectors = np.loadtxt(uc_file);
         self.load_xyz(xyz_file)
         self.load_wannier_file(wan_file)
 
@@ -40,7 +31,7 @@ class wannier_system:
         pos_j = np.array([ coord2idx[j] for j in self.cols]);
         #Add both to the shift vectors to obtain a real position
         #in lattice vector units
-        self.pos = self.shift+pos_j-pos_i;
+        self.orbital_positions = self.shift+pos_j-pos_i;
 
         self.bandpath = np.array( ['G',1,[0,0,0]] );
         
@@ -177,7 +168,7 @@ class wannier_system:
             print( "Nonexistent direction in spin_operator. Returning Identity" )
             return np.identity( len(self.xyz_coord) ) ;
         
-    def ham_operator(self,k):
+    def hamiltonian(self,k):
         data = self.values*np.exp(np.pi*2j*(self.pos).dot(k));
         return coo_matrix((data, (self.rows, self.cols)), shape=(self.numOrbs,self.numOrbs)).toarray();
         
@@ -453,3 +444,4 @@ class wannier_system:
         f.close()
 
 
+"""
