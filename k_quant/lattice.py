@@ -3,6 +3,7 @@ from numpy.linalg import inv, dot, pi
 
 
 class Lattice():
+
     """ Storage and handles all structural information of a given system. 
 
     Args:

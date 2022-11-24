@@ -8,6 +8,7 @@ class System():
         dimensions (tuple): A three integer tuple that defines the dimensions of the system in terms of repeating unit cells. 
         
     :Keyword Arguments:
+
         The arguments are presented in order of preference, i.e, w90_inp will be used over model. 
         
         w90_inp (str): The filename of a Wannier90 input file. Calling this argument will look for the label_hr.dat and label.xyz files in the same directory
