@@ -1,5 +1,5 @@
-from numpy.linalg import inv, dot, pi
-
+from numpy.linalg import inv
+from numpy import dot, pi
 
 
 class Lattice():

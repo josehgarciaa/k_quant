@@ -1,10 +1,20 @@
 import numpy as np
 import pandas as pd
+import scipy as scp
 from scipy.sparse import bmat, coo_matrix, block_diag
 
 block_mat = bmat;
 coo_mat   = coo_matrix;
-bdiag_mat = block_diag
+BlockDiag = block_diag
+
+
+
+
+
+
+
+
+
 
 
 def write_csr( A, ofname ):

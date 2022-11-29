@@ -1,6 +1,9 @@
 from numpy import meshgrid, transpose,linspace, apply_along_axis
 from k_quant.models.wannier import WannierSystem  
-from .lattice import Lattice
+from k_quant.lattice import Lattice
+from k_quant.linalg.sparse import BlockDiag
+
+
 class System():
     """ Storage and handle the momentum-space model and structural information of the system  
 
@@ -21,20 +24,20 @@ class System():
     dimensions= None;
     lattice   = Lattice();
     Ham_fun   = None;
-    reciprocal_lattice = None; 
+    rec_lat = None; 
 
     def __init__(self, dimensions, **kwargs):
 
-        self.dimensions= dimensions;
-        self.bz_points = self.bz_points();
+        self.dimensions= dimensions ;
+        self.rec_lat   = self.ReciprocalLattice();
 
         #When the user submit a Wannier90 input, use it to initialice the system
         if "w90_inp" in kwargs:
             w90_fname = kwargs["w90_inp"];
-            syst = WannierSystem(w90_fname);
+            syst = WannierSystem(label=w90_fname);
             self.lattice = Lattice( primitive_vectors = syst.primitive_vectors,
                                     orbital_positions = syst.primitive_vectors );
-            self.Ham_fun = syst.hamiltonian;
+            self.Ham_fun = syst.Hamiltonian;
 
         if "model" in kwargs:
             w90_fname = kwargs["model"];
@@ -45,23 +48,23 @@ class System():
 
 
             
-    def reciprocal_lattice(self):
+    def ReciprocalLattice(self):
         """Returns the points in the first Brilluoin zone that defines the reciprocal lattice.
             
             Note:
             This functions compute these points on a first call. Therefore, that first call could take significantly more time than subsequent calls.    
         
         """
-        if self.reciprocal_lattice is None:
+        if self.rec_lat is None:
             
             dim = self.dimensions;
             meshkgrid    = meshgrid( *[ linspace(0,1,d, endpoint=False)  for d in dim ], indexing='ij');  
-            self.reciprocal_lattice = transpose( [ x.flatten() for x in meshkgrid] );      
+            self.rec_lat = transpose( [ x.flatten() for x in meshkgrid] );      
 
-        return self.reciprocal_lattice;   
+        return self.rec_lat;   
             
 
-    def H_k(kpoint):
+    def H_k(self, kpoint):
         """ The k-dependent hamiltonian of the system evaluted in a particular kpoint
 
         :param kpoint: An arbitrary kpoint within the Brilluoin zone
@@ -77,8 +80,15 @@ class System():
 
         :return: A complex sparse matrix in the block-diagonal form
         """
-        return apply_along_axis( self.H_k, arr=self.reciprocal_lattice, axis=1 );
+        return apply_along_axis( self.H_k, arr=self.rec_lat, axis=1 );
             
+
+    def Hamiltonian(self):
+        """The hamiltonian matrix in the Block diagonal sparse format the first Brilluoin zone that defines the reciprocal lattice.
+
+        :return: A complex sparse matrix in the block-diagonal form
+        """
+        return apply_along_axis( self.H_k, arr=self.rec_lat, axis=1 );
             
     
     

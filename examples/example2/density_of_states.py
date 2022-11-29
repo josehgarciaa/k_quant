@@ -1,9 +1,9 @@
 import numpy as np
 
-import wannier as wan
+from system import System 
 
 
-wannsyst = wan.WannierSystem(label="linear_chain")
+wann_syst = System( dimensions = (100,1,1), w90_inp="linear_chain")
 
+print(wann_syst.Hamiltonian() )
 
-wannsyst.Hamiltonian(k = [1,20,300])
