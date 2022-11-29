@@ -1,8 +1,6 @@
 import numpy as np
 import multiprocessing as mp
 
-from _hamiltonian import CHamiltonian
-
 # parallel loop here
 
 class WeightedEdge:
@@ -20,12 +18,6 @@ class WeightedEdge:
 
     def bloch_hopping(self):
         self.kpoint = self.weight*np.exp(-2j*np.pi*np.dot( self.kpoint, self.direction) );
-
-   
-        
-
-
-
 
 class WannierSystem:
     """A class that handles Wannier-based Tight binding models in different Wannier 
