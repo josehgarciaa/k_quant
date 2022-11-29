@@ -1,6 +1,9 @@
 import numpy as np
 import multiprocessing as mp
 
+from _hamiltonian import CHamiltonian
+
+# parallel loop here
 
 class WeightedEdge:
     
@@ -101,16 +104,18 @@ class WannierSystem:
         edges    = set( map(tuple,wann_data[:,0:3] ) );
         edge2idx = { e:i for i,e in enumerate(edges) };
         num_edges= len(edges);
-        wann_ham = np.full( (num_orbs,num_orbs,num_edges), WeightedEdge((0.,0.,0.), 0.j) )  ;
+        
+        hop_vecs = np.zeros( (num_orbs,num_orbs,num_edges,3), dtype=float)
+        hop_vals = np.zeros( (num_orbs,num_orbs,num_edges), dtype=complex)
 
         for s1,s2,s3,i,j,rv,iv in wann_data:
             edge = (s1,s2,s3);
             i,j  = int(i)-1, int(j)-1 ;
-            
             assert edge in edge2idx, "Trying to include a hopping with an edge not present in the set of edges"           
-            wedge = WeightedEdge(edge, rv+1j*iv);
-            wann_ham[i,j, edge2idx[edge] ] = wedge;           
-             
+            hop_vecs[i,j, edge2idx[edge] ] = np.array(edge, dtype=float);
+            hop_vals[i,j, edge2idx[edge] ] = rv+1j*iv;
+
+        wann_ham = [ hop_vecs, hop_vals ] ;
         return wann_ham;
 
 
@@ -145,7 +150,7 @@ class WannierSystem:
         return np.loadtxt(filename)
 
 
-    def hamiltonian(self,k):
+    def Hamiltonian(self,k):
         """
         Calculates the Hamilton matrix for a given k-point or list of
         k-points.
@@ -158,31 +163,17 @@ class WannierSystem:
             list of Hamiltonians.
         """
 
-        print( self.wann_hamiltonian[0,0,:] )
+        print( "Hamiltonians")
 
+        norb = self.OrbitalNumber();
+        hop_vecs, hop_vals = self.wann_hamiltonian;
 
+        ham_k = np.zeros( (norb,norb), dtype=complex);
 
-        #numOrbs = self.OrbitalNumber()
-        #kpoints = np.array(kpoints, ndmin=1)
-        #if kpoints.ndim == 1:
-        #    kpoints = kpoints.reshape((1, -1))
+        for i in range( norb ):
+            for j in range( norb ):
+                ham_k[i,j] = np.sum( hop_vals[i,j]*np.exp( 2j*np.pi* np.dot(hop_vecs[i,j], k)  ) );
 
-        #H = np.zeros((kpoints.shape[0], numOrbs, numOrbs), dtype=complex)
-        #tmp_array = np.empty_like(H)
-        #for R, hop in self.wann_hamiltonian.items():
-            # When the hopping matrices are very large, allocating new
-            # arrays for the result of this multiplication (which is
-            # of size len(k_array) * self.size**2) becomes expensive.
-            # To avoid this, we reuse the same temporary array - even
-            # if this is _slightly_ slower for single k-point calculations.
-        #    np.multiply(
-        #        np.exp(2j * np.pi * np.dot(kpoints, R)).reshape((-1, 1, 1)),
-        #        self._array_cast(hop)[np.newaxis, :, :],
-        #        out=tmp_array,
-        #    )
-        #    H += tmp_array
-        #H += H.conjugate().transpose((0, 2, 1))
-        #pos_exponential = np.array(
-        #        [[np.exp(2j * np.pi * np.dot(kpoints, p)) for p in self.orbital_position]] ).transpose((2, 0, 1))
-        #H = pos_exponential.conjugate().transpose((0, 2, 1)) * H * pos_exponential
-
+                
+        return ham_k;
+    
