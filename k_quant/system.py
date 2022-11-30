@@ -50,7 +50,8 @@ class System():
                                     orbital_positions = syst.primitive_vectors );
             self.ham_fun = syst.hamiltonian;
 
-
+    def Lattice(self):
+        return self.lattice;
             
     def ReciprocalLattice(self):
         """Returns the points in the first Brilluoin zone that defines the reciprocal lattice.

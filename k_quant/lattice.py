@@ -22,6 +22,13 @@ class Lattice():
         pass
     
  
+    def OrbitalNumber(self):
+        """Returns the number of orbitals in the model
+
+        :return: Total number of orbitals in the model
+        :rtype: int
+        """
+        return len(self.orbital_positions);
     
     def rec2cart(self, kpoints):
         """Transforms a set of k-points in the reciprocal units in cartesian in units 

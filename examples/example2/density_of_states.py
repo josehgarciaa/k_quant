@@ -1,22 +1,12 @@
 import numpy as np
+import k_quant as k
 
-from system import System 
+from kpm import Density
 
+wann_syst = k.System( dimensions = (3,3,1), w90_inp="linear_chain" )
 
-wann_syst = System( dimensions = (3,3,1), w90_inp="PtSe2" )
+dos = Density(wann_syst, minimum_broadening = 3 );
 
-print("Computing eigenvalues")
-Es = wann_syst.BlochEigenvalues();
-
-print("Computing hamiltonian in eigenvalue basis")
-MEs=  wann_syst.BlochToEigen( wann_syst.Hamiltonian() )
-
-print( np.sum([ np.sum( np.abs(E1 - np.diag(ME2)) ) for E1, ME2 in zip(Es, MEs )] ) ) 
+dos.compute_moments() 
 
 
-
-    def compute_moments(self,broadening):
-        return self;
-        
-    def spectral_average(self,energies):
-        return self;
