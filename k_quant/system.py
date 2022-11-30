@@ -40,14 +40,14 @@ class System():
             w90_fname = kwargs["w90_inp"];
             syst = WannierSystem(label=w90_fname);
             self.lattice = Lattice( primitive_vectors = syst.primitive_vectors,
-                                    orbital_positions = syst.primitive_vectors );
+                                    orbital_positions = syst.orbital_positions);
             self.ham_fun = syst.Hamiltonian;
 
         if "model" in kwargs:
             w90_fname = kwargs["model"];
             syst = WannierSystem(w90_fname);
             self.lattice = Lattice( primitive_vectors = syst.primitive_vectors,
-                                    orbital_positions = syst.primitive_vectors );
+                                    orbital_positions = syst.orbital_positions );
             self.ham_fun = syst.hamiltonian;
 
     def Lattice(self):
