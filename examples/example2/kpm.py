@@ -13,7 +13,7 @@ class Density:
         self.Umatrix= system.Umatrix();
         self.dims   = ( system.Lattice().OrbitalNumber()  );
     def compute_moments(self,broadening = None):
-        print("computing moments", self.Umatrix.shape )
+        print("computing moments", self.Ham.shape )
         print(self.dims)
         return self;
         
