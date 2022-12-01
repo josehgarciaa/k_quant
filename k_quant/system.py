@@ -2,8 +2,7 @@ import numpy as np
 from numpy import meshgrid, transpose,linspace, apply_along_axis
 from k_quant.models.wannier import WannierSystem  
 from k_quant.lattice import Lattice
-from k_quant.linalg.sparse import BlockDiag
-
+import k_quant.operators as op
 
 class System():
     """ Storage and handle the momentum-space model and structural information of the system  
@@ -29,6 +28,7 @@ class System():
     ham_op    = None;
     Uop       = None;
     basis     = "bloch"
+    
 
     def __init__(self, dimensions, **kwargs):
 
@@ -67,8 +67,14 @@ class System():
             self.rec_lat = transpose( [ x.flatten() for x in meshkgrid] );      
 
         return self.rec_lat;   
-            
 
+
+    def Dimensions(self):
+        return len(self.rec_lat)
+                    
+
+    def OrbitalNumber(self):
+    
     def H_k(self, kpoint):
         """ The k-dependent hamiltonian of the system evaluted in a particular kpoint
 
@@ -80,13 +86,6 @@ class System():
         return self.ham_fun(kpoint);
 
 
-    def Umatrix(self):
-        """The hamiltonian matrix in the Block diagonal sparse format the first Brilluoin zone that defines the reciprocal lattice.
-
-        :return: A complex sparse matrix in the block-diagonal form
-        """
-        return apply_along_axis( self.U_k, arr=self.rec_lat, axis=1 );
-            
 
     def Hamiltonian(self):
         """The hamiltonian matrix in the Block diagonal sparse format the first Brilluoin zone that defines the reciprocal lattice.
@@ -94,26 +93,13 @@ class System():
         :return: A complex sparse matrix in the block-diagonal form
         """
         if self.ham_op is None:
-            self.ham_op = apply_along_axis( self.H_k, arr=self.rec_lat, axis=1 );
-
+            self.ham_op = op.Hamiltonian(apply_along_axis( self.H_k, arr=self.rec_lat, axis=1 ));
+        
         return self.ham_op;
 
-    def Umatrix(self):
-        if self.Uop is None:
-            self.Uop = np.linalg.eigh( self.Hamiltonian() )[1];
-        
-        return self.Uop;
 
-
-    def BlochToEigen(self, blochOP):
-        UR = self.Umatrix();
-        UL = np.conj( np.transpose( UR, (0,2,1) ) );
-        op       = 'ijk,ikl->ijl';
-        axis_dot = np.einsum        
-        return axis_dot(op, UL, axis_dot(op, blochOP, UR ) );
     
-    def BlochEigenvalues(self):
-        return np.linalg.eigvalsh( self.Hamiltonian() )
+
         
         
             

@@ -156,11 +156,14 @@ class WannierSystem:
         """
 
         norb = self.OrbitalNumber();
-        hop_vecs, hop_vals = self.wann_hamiltonian;
-
         ham_k = np.zeros( (norb,norb), dtype=complex);
 
         #Bad loop, must be pass to C or equivalent. Issue: issues/1#issue-1467933892
+        #PRAGMA
+
+        hop_vecs, hop_vals = self.wann_hamiltonian;
+
+
         for i in range( norb ):
             for j in range( norb ):
                 ham_k[i,j] = np.sum( hop_vals[i,j]*np.exp( 2j*np.pi* np.dot(hop_vecs[i,j], k)  ) );

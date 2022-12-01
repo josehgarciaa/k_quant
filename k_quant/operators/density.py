@@ -1,5 +1,5 @@
 from .base_operator import Operator
-from ..sparse_matrices import  bdiag_mat
+from ..linalg import  sparse as sp
 import numpy as np
 
 class Density(Operator):
@@ -19,6 +19,6 @@ class Density(Operator):
         return self
 
     def CSR_representation( self ):
-        Aop= bdiag_mat( self.Dorb, format="csr");
+        Aop= sp.bdiag_mat( self.Dorb, format="csr");
         Aop.eliminate_zeros();
         return Aop

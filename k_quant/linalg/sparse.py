@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
 import scipy as scp
-from scipy.sparse import bmat, coo_matrix, block_diag
+from scipy.sparse import bmat, csr_matrix, block_diag
 
 block_mat = bmat;
-coo_mat   = coo_matrix;
+CSR       = csr_matrix;
 BlockDiag = block_diag
+
 
 
 
