@@ -1,8 +1,9 @@
 import numpy as np
 
 import k_quant as k
-from k_quant.linalg import sparse as ksp
 import copy
+
+safe_CUTOFF = 0.95;
 class Density:
 
     moments = None;
@@ -11,76 +12,93 @@ class Density:
     dims    = None;
     bounds  = None;
     broadening = None;
+    num_kpts= 10;
+    num_orbs= 10;
     
     def __init__(self,system,  broadening_type = "jackson",  Op=None, bounds=None):
-        self.Ham    = ksp.BlockDiag(system.Hamiltonian());
-        self.Umatrix= system.Umatrix();
-        self.dims   = system.Hamiltonian().shape;
-        
+        self.Ham    = system.Hamiltonian();
+        #self.Umatrix= system.Umatrix();
+       
+        print("kpm.py: num_kpts and num_orbs should be read from system")
+       
         if bounds is None:
             self.StocasticBounds();
         
     
     def StochasticStates(self):
-        nkpt= self.dims[0];
-        neig= self.dims[1];
+        nkpt= self.num_kpts;
+        neig= self.num_orbs;
 
         op       = 'ijk,ikl->ijl';
         axis_dot = np.einsum
         states = np.apply_along_axis(np.diag,  arr=np.exp(2j*np.pi*np.random.rand(nkpt,neig)), axis=1 )/np.sqrt(nkpt*neig);
-        states = axis_dot( op, self.Umatrix, states );
-        states = np.transpose( states, (1,0,2) ).reshape(neig, neig*nkpt )
+        
+        print("kpm.py:  Stochastic state should be made compatible with operator")
+        #states = axis_dot( op, self.Umatrix, states );
+        #states = np.transpose( states, (1,0,2) ).reshape(neig, neig*nkpt )
 
         return states;
 
     def StocasticBounds(self):
         Lstates = self.StochasticStates();
         Rstates = copy.copy(Lstates);
-        
-        Ham_moms = [];
-        for n in range(4):
-            Rstates = [ self.Ham.dot(x) for x in Rstates];
-            Ham_moms.append( np.sum( [np.vdot(xL, xR) for xL,xR in zip(Lstates,Rstates)]) ); 
-        
-        #Ham_mom are the statistical moments of the hamiltonian, ie = <H>, <H^2>, <H^3>, etc 
-        Em  = np.real(Ham_moms[0]);
 
-        # <(H-Em)**2> = H^2 -2*Em<H> + Em**2 = H**2 - Em**2
-        E2m = Ham_moms[1] - Em**2;  
+        print("kpm.py:  Stochastic state should be made compatible with operator")
+        
+#        Ham_moms = [];
+#        for n in range(4):
+#            Rstates = [ self.Ham.dot(x) for x in Rstates];
+#            Ham_moms.append( np.sum( [np.vdot(xL, xR) for xL,xR in zip(Lstates,Rstates)]) ); 
+#        
+#        #Ham_mom are the statistical moments of the hamiltonian, ie = <H>, <H^2>, <H^3>, etc 
+#        Em  = np.real(Ham_moms[0]);
+#
+#        # <(H-Em)**2> = H^2 -2*Em<H> + Em**2 = H**2 - Em**2
+#        E2m = Ham_moms[1] - Em**2;  
         
         # <(H-Em)**4> = <H^4> - 4 <H^3>Em + 6 <H^2> Em*2 Em**2 - 4*<H>Em**3 + Em**4 
-        E4m = Ham_moms[3] - 4*Ham_moms[2]*Em + \
-              6*Ham_moms[1]*Em**2 - 3*Em**4; 
+#        E4m = Ham_moms[3] - 4*Ham_moms[2]*Em + \
+#              6*Ham_moms[1]*Em**2 - 3*Em**4; 
 
-        W = 2.5*np.sqrt( np.real(E4m)/np.real(E2m) )
-        self.bounds = ( (2*Em + W)/2 , (2*Em - W)/2 );
+#        W = 2.5*np.sqrt( np.real(E4m)/np.real(E2m) )
+#        self.bounds = ( (2*Em + W)/2 , (2*Em - W)/2 );
+        self.bounds=(-1, 1)
+        print("kpm.py: Stochastic bounds should be made compatible with operator")
         return self;
+    
+    def BandCenter(self):
+        return ( self.bounds[1] + self.bounds[0] )/2;
+    
+
+    def Scale_Factor(self):
+        return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] ) ;
+
               
     def BroadeningToMoments( self, broadening):
         Emax, Emin = self.bounds;
-        return  int( np.pi/ ( broadening/(Emax-Emin)) )
+        print("kpm.py: broadeningtomoments should be checked")
+        return  int( np.pi*self.Scale_Factor()/ broadening )
     
     def ComputeMoments(self,broadening = None):
         num_mom = self.BroadeningToMoments(broadening) ;
-        print("computing moments using broadening ",broadening, " and ", self.BroadeningToMoments(broadening) )
-        Lstates = self.StochasticStates();
-        Rstates = copy.copy(Lstates);
-        
+       
+        print("kpm.py: computing moments using broadening ",broadening, " and ", self.BroadeningToMoments(broadening) )
+       
         moments  = np.zeros(num_mom, dtype=complex)
-        
-        Phi0 = copy.copy(Lstates);
-        Phi1 = [ self.Ham.dot(x) for x in Rstates];
-        
-        moments = [];
-        for mu in range(num_mom):
-            Phi0 = [ self.Ham.dot(x) - Phi0 for x in zip(Phi1,Phi0) ];
-            Phit  = Phi1;
-            Phi1  = Phi0;
-            Phi0  = Phit;
-        
-        
-       # print([np.vdot(x, x) for x in states ] )
-       # print(np.sum( [np.vdot(x, self.Ham.dot(x)) for x in states]) )
+
+
+        Phi0 = self.StochasticStates();
+        PhiL = np.conjugate(copy.copy(Phi0).T); 
+
+        moments[0] = np.sum(PhiL@Phi0);
+        Phi1 = self.Ham.dot(Phi0);
+        moments[1] = np.sum(PhiL@Phi1);
+
+        for i in np.arange(2, len(moments)):
+            Phi0 = self.Ham.LinearT(2.0, Phi1,-1.0, Phi0 ); 
+            Phi0,Phi1 = Phi1,Phi0; print("Swap in kpm.py ComputeMoments should be checked")
+            moments[i] = np.sum(PhiL@Phi0);
+            
         return self;
         
     def spectral_average(self,energies):
