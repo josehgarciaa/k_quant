@@ -4,7 +4,15 @@ import k_quant as k
 
 safe_CUTOFF = 0.95;
 class Density:
+    """ A spectral density, is a quantity defined as <X> = Tr[ X delta(H-E) ]. From its definition, 
+        this quantity computes how much of the operator X will be measured at a given en energy. 
+        
+        In the kpm module, the delta function is computed by expanding it in terms of Chebyshev polynomials
+        and regularized using a kernel function.  
 
+        
+    """
+    
     moments = None;
     Ham     = None;
     Op      = None;
@@ -14,7 +22,20 @@ class Density:
     num_kpts= None;
     num_orbs= None;
     
-    def __init__(self,system,  broadening_type = "jackson",  Op=None, bounds=None):
+    def __init__(self,system,  kernel = "jackson",  Op=None, bounds=None):
+        """Construct an instance of the Density class 
+
+        Args:
+            system (object): A system as defined in the system module. 
+            kernel (str, optional): The choice of kernel for the regularization. Defaults to "jackson".
+            Op (Operator, optional): An operator as described in the operator module.
+            bounds (tuple, optional): A tuple defining the spectral bound.
+
+        Note:
+            Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
+            to the original one, please call the method self.OriginalHam().
+        """
+
         self.Ham    = system.Hamiltonian();
         self.num_kpts = system.KpointNumber();
         self.num_orbs = system.OrbitalNumber();
@@ -23,13 +44,8 @@ class Density:
             self.StocasticBounds();
         else:
             self.bounds = bounds;
-        print("Initializing k_quant.kpm.Density will rescale the Hamiltonian spectrum : (",-safe_CUTOFF,safe_CUTOFF,")")
+        
         self.Ham.Rescale(self.ScaleFactor(),-self.ShiftFactor());
-
-        self.StocasticBounds();
-
-        print("If you plan to use the original Hamiltonian call k_quant.kpm.Density.OriginalHam()")
-
 
     
     def StochasticStates(self):
@@ -44,39 +60,13 @@ class Density:
         return states;
 
     def StocasticBounds(self):
-        Rstates = self.StochasticStates();
-        Lstates = np.conj(Rstates.T);
-
-        #R2 = np.array( [ self.Ham.dot(x) for x in Rstates.T]).T;
-        Rstates = self.Ham@Rstates
         
-        Ham_moms = [];
-        #Ham_moms2 = [];
-        for n in range(4):
-            Ham_moms.append( np.trace(Lstates@Rstates) );
-            #Ham_moms2.append( np.sum( [np.dot(xL, xR) for xL,xR in zip(Lstates,R2.T)]) ); 
-            Rstates = self.Ham@Rstates
-            #R2 = np.array( [ self.Ham.dot(x) for x in R2.T]).T;
-     
-#        #Ham_mom are the statistical moments of the hamiltonian, ie = <H>, <H^2>, <H^3>, etc 
-        Em  = np.real(Ham_moms[0]);
-
-#        # <(H-Em)**2> = H^2 -2*Em<H> + Em**2 = H**2 - Em**2
-        E2m = Ham_moms[1] - Em**2;  
-        
-        # <(H-Em)**4> = <H^4> - 4 <H^3>Em + 6 <H^2> Em*2 Em**2 - 4*<H>Em**3 + Em**4 
-        E4m = Ham_moms[3] - 4*Ham_moms[2]*Em + \
-              6*Ham_moms[1]*Em**2 - 3*Em**4; 
-
-        W = 2.5*np.sqrt( np.real(E4m)/np.real(E2m) )
-        self.bounds = ( (2*Em - W)/2 , (2*Em + W)/2 );
-        
-        print("Bounds computing using the stochastic approach are",self.bounds)
+        print("Stochastic Bonds not implemented. Please define a bound")
 
         return self;
     
     def ShiftFactor(self):
-        return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] )*( self.bounds[1] + self.bounds[0] );
+        return safe_CUTOFF/( self.bounds[1] - self.bounds[0] )*( self.bounds[1] + self.bounds[0] );
     
 
     def ScaleFactor(self):
@@ -93,25 +83,30 @@ class Density:
 
         num_mom = self.BroadeningToMoments(broadening) ;
         print("kpm.py: computing moments using broadening ",broadening, " and ", self.BroadeningToMoments(broadening) )
-        moments  = np.zeros(num_mom, dtype=complex)
+        self.moments  = np.zeros(num_mom, dtype=complex)
        
         Phi0 = self.StochasticStates();
         PhiL = np.conj(Phi0.T); 
-        moments[0] = np.trace(PhiL@Phi0);     
+        self.moments[0] = 0.5*np.trace(PhiL@Phi0);     
         
         Phi1 = self.Ham@(Phi0);
-        moments[1] = np.trace(PhiL@Phi1);
+        self.moments[1] = np.trace(PhiL@Phi1);
 
-        for i in np.arange(2, len(moments)):
-            Phi0      = 2.0 * self.Ham @ Phi1 - Phi0; 
-            Phi0,Phi1 = Phi1,Phi0;
-            moments[i]= np.sum(PhiL@Phi0);
-            print(moments[i])
+        for i in np.arange(2, len(self.moments)):
+            Phi0= 2.0 * self.Ham @ Phi1 - Phi0; 
+            Phit=Phi1; Phi1 = Phi0; Phi0=Phit;
+            self.moments[i]= np.sum(PhiL@Phi0);
             
+        self.moments = np.real(self.moments)
         return self;
         
-    def spectral_average(self,energies):
-        return self;
+    def spectral_average(self,energies = None):
+
+        if energies is None:        
+            energies = np.linspace(-safe_CUTOFF,safe_CUTOFF, 1000);
+            densities= [np.sum([ mu*np.cos(m*np.arccos(x))/np.sqrt(1-x**2) for m,mu in enumerate(self.moments)]) for x in energies];        
+        return (energies, densities)
+        
     
     
     def OriginalHam(self):
