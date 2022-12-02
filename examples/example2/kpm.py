@@ -94,8 +94,8 @@ class Density:
 
         for i in np.arange(2, len(self.moments)):
             Phi0= 2.0 * self.Ham @ Phi1 - Phi0; 
-            Phit=Phi1; Phi1 = Phi0; Phi0=Phit;
             self.moments[i]= np.sum(PhiL@Phi0);
+            Phit=Phi1; Phi1 = Phi0; Phi0=Phit;
             
         self.moments = np.real(self.moments)
         return self;
@@ -104,7 +104,7 @@ class Density:
 
         if energies is None:        
             energies = np.linspace(-safe_CUTOFF,safe_CUTOFF, 1000);
-            densities= [np.sum([ mu*np.cos(m*np.arccos(x))/np.sqrt(1-x**2) for m,mu in enumerate(self.moments)]) for x in energies];        
+            densities= [np.sum([ mu*np.cos(m*np.arccos(x)) for m,mu in enumerate(self.moments)])/np.sqrt(1-x**2) for x in energies];        
         return (energies, densities)
         
     
