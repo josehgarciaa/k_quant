@@ -27,11 +27,12 @@ class Operator:
         _type_: _description_
     """
 
-    mat_rep = None;
-    basis   = {"bloch",1};
-    dim     = None;
-
-    def __init__(self, mat_rep=None, basis=None):
+    mat_rep= None;
+    basis  = None;
+    U      = None;
+    dim    = None;
+    
+    def __init__(self, mat_rep=None, basis_info=None):
         """
         Constructs an arbitrary operator
         
@@ -44,22 +45,21 @@ class Operator:
             basis : dictionary
                 tuple tha contain as first element the name of the basis and as second the change-of-basis transformation U. 
         """
-        self.basis = ("eigen", None);
-        if basis is not None:
-            bname, bvalue = basis
-            if bvalue is not None:
+        self.basis_info = ("eigen", None);
+        if basis_info is not None:
+            self.basis, self.U = basis_info
+            if self.U is not None:
                 try:
-                    bvalue_ = sp.BlockDiag(bvalue);
+                    self.U = sp.BlockDiag(self.U);
                 except:
                     try:
-                        bvalue_ = sp.CSR(bvalue);
+                        self.U = sp.CSR(self.U);
                     except:
                         print("The matrix representation in operators is not mapable neither into CSR nor BlockDiag objects in linalg.sparse module")
-            self.basis = (bname, bvalue_);
        
         if mat_rep is not None:
             try:
-                self.mat_rep = sp.BlockDiag(mat_rep);
+                self.mat_rep = sp.BlockDiag(mat_rep);               
             except:
                 try:
                     self.mat_rep = sp.CSR(mat_rep);
@@ -96,15 +96,13 @@ class Operator:
 
     def __rmul__(self,a):
         return a*self.mat_rep;
-        
-        
+           
 
-    
     def dot(self,x):
         return self.mat_rep.dot(x);
-
-
-    def LinearT(self, a,x,b,y):
-        a*self.mat_rep
-        print("hamiltonian.py should perform a*self.mat_rep.dot(x)+b*y")
-        return x;
+   
+    def Rescale(self, a,b):
+        dim0,dim1 = self.mat_rep.shape
+        one = sp.identity(dim0,  dtype=complex, format= self.mat_rep.format);
+        self.mat_rep = a*self.mat_rep + b*one
+        return self;

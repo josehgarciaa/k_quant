@@ -7,7 +7,8 @@ class Hamiltonian(Operator):
     and has as one of its main properties the capacity to generate the U matrices of the system
 
     """
-     
+    U = None;
+    
     def __init__(self, mat_rep=None):
         """
         Constructs the Hamiltonian operator.
@@ -21,8 +22,7 @@ class Hamiltonian(Operator):
         if mat_rep is not None:      
             U = self.Umatrix(mat_rep);
 
-        basis = ("bloch", U);
-        super().__init__(mat_rep, basis = basis);
+        super().__init__(mat_rep, basis_info = ("bloch", U));
 
 
     def Umatrix(self, bloch_op):

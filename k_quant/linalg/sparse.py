@@ -1,11 +1,16 @@
 import numpy as np
 import pandas as pd
 import scipy as scp
-from scipy.sparse import bmat, csr_matrix, block_diag
+from scipy.sparse import bmat, csr_matrix, block_diag,eye,identity, diags
 
 block_mat = bmat;
 CSR       = csr_matrix;
 BlockDiag = block_diag
+Diag      = diags
+eye       = eye
+identity  = identity;
+
+
 
 def write_csr( A, ofname ):
     dims = A.shape;

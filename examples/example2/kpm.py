@@ -1,5 +1,5 @@
 import numpy as np
-
+import k_quant.linalg.sparse  as sp
 import k_quant as k
 
 safe_CUTOFF = 0.95;
@@ -16,7 +16,6 @@ class Density:
     
     def __init__(self,system,  broadening_type = "jackson",  Op=None, bounds=None):
         self.Ham    = system.Hamiltonian();
-        #self.Umatrix= system.Umatrix();
         self.num_kpts = system.KpointNumber();
         self.num_orbs = system.OrbitalNumber();
         
@@ -25,6 +24,10 @@ class Density:
         else:
             self.bounds = bounds;
         print("Initializing k_quant.kpm.Density will rescale the Hamiltonian spectrum : (",-safe_CUTOFF,safe_CUTOFF,")")
+        self.Ham.Rescale(self.ScaleFactor(),-self.ShiftFactor());
+
+        self.StocasticBounds();
+
         print("If you plan to use the original Hamiltonian call k_quant.kpm.Density.OriginalHam()")
 
 
@@ -32,15 +35,12 @@ class Density:
     def StochasticStates(self):
         nkpt= self.num_kpts;
         neig= self.num_orbs;
-
-        op       = 'ijk,ikl->ijl';
-        axis_dot = np.einsum
-        states = np.apply_along_axis(np.diag,  arr=np.exp(2j*np.pi*np.random.rand(nkpt,neig)), axis=1 )/np.sqrt(nkpt*neig);
-        
-        print("kpm.py:  Stochastic state should be made compatible with operator")
-        #states = axis_dot( op, self.Umatrix, states );
-        states = np.transpose( states, (0,2, 1) ).reshape(neig*nkpt, neig )
-
+        dim    = self.num_kpts * self.num_orbs;
+        states = np.zeros((dim, neig), dtype=complex);       
+        for n in range(neig):
+            expPhi = np.exp(2j*np.pi*np.random.rand(nkpt))/np.sqrt(dim)
+            states[ n::neig , n] = expPhi; #Add an exponential every neig jumps
+            states[ : , n] = (self.Ham.U)@states[:,n];
         return states;
 
     def StocasticBounds(self):
@@ -70,18 +70,16 @@ class Density:
 
         W = 2.5*np.sqrt( np.real(E4m)/np.real(E2m) )
         self.bounds = ( (2*Em - W)/2 , (2*Em + W)/2 );
-
-        print("kpm.py: StocasticBounds should be checked")
-
+        
         print("Bounds computing using the stochastic approach are",self.bounds)
 
         return self;
     
-    def BandCenter(self):
-        return ( self.bounds[1] + self.bounds[0] )/2;
+    def ShiftFactor(self):
+        return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] )*( self.bounds[1] + self.bounds[0] );
     
 
-    def Scale_Factor(self):
+    def ScaleFactor(self):
         return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] ) ;
 
               
@@ -89,7 +87,7 @@ class Density:
         print(self.bounds)
         Emax, Emin = self.bounds;
         print("kpm.py: broadeningtomoments should be checked")
-        return  int( np.pi*self.Scale_Factor()/ broadening )
+        return  int( np.pi*self.ScaleFactor()/ broadening )
     
     def ComputeMoments(self,broadening = None):
 
@@ -99,15 +97,16 @@ class Density:
        
         Phi0 = self.StochasticStates();
         PhiL = np.conj(Phi0.T); 
-
-        moments[0] = np.trace(PhiL@Phi0);
+        moments[0] = np.trace(PhiL@Phi0);     
+        
         Phi1 = self.Ham@(Phi0);
         moments[1] = np.trace(PhiL@Phi1);
 
         for i in np.arange(2, len(moments)):
             Phi0      = 2.0 * self.Ham @ Phi1 - Phi0; 
-            Phi0,Phi1 = Phi1,Phi0; print("Swap in kpm.py ComputeMoments should be checked")
+            Phi0,Phi1 = Phi1,Phi0;
             moments[i]= np.sum(PhiL@Phi0);
+            print(moments[i])
             
         return self;
         
