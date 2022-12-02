@@ -49,10 +49,7 @@ class System():
             self.lattice = Lattice( primitive_vectors = syst.primitive_vectors,
                                     orbital_positions = syst.orbital_positions );
             self.ham_fun = syst.hamiltonian;
-
-    def Lattice(self):
-        return self.lattice;
-            
+          
     def ReciprocalLattice(self):
         """Returns the points in the first Brilluoin zone that defines the reciprocal lattice.
             
@@ -69,11 +66,11 @@ class System():
         return self.rec_lat;   
 
 
-    def Dimensions(self):
-        return len(self.rec_lat)
-                    
+    def KpointNumber(self):
+        return len(self.rec_lat);                    
 
     def OrbitalNumber(self):
+        return self.lattice.OrbitalNumber();
     
     def H_k(self, kpoint):
         """ The k-dependent hamiltonian of the system evaluted in a particular kpoint

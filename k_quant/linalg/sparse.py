@@ -7,17 +7,6 @@ block_mat = bmat;
 CSR       = csr_matrix;
 BlockDiag = block_diag
 
-
-
-
-
-
-
-
-
-
-
-
 def write_csr( A, ofname ):
     dims = A.shape;
     assert dims[0]==dims[1], f"The generated operator is not a square matrix. Its shape is : {dims}";   

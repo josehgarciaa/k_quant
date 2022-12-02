@@ -1,7 +1,6 @@
 import numpy as np
 
 import k_quant as k
-import copy
 
 safe_CUTOFF = 0.95;
 class Density:
@@ -12,18 +11,23 @@ class Density:
     dims    = None;
     bounds  = None;
     broadening = None;
-    num_kpts= 10;
-    num_orbs= 10;
+    num_kpts= None;
+    num_orbs= None;
     
     def __init__(self,system,  broadening_type = "jackson",  Op=None, bounds=None):
         self.Ham    = system.Hamiltonian();
         #self.Umatrix= system.Umatrix();
-       
-        print("kpm.py: num_kpts and num_orbs should be read from system")
-       
+        self.num_kpts = system.KpointNumber();
+        self.num_orbs = system.OrbitalNumber();
+        
         if bounds is None:
             self.StocasticBounds();
-        
+        else:
+            self.bounds = bounds;
+        print("Initializing k_quant.kpm.Density will rescale the Hamiltonian spectrum : (",-safe_CUTOFF,safe_CUTOFF,")")
+        print("If you plan to use the original Hamiltonian call k_quant.kpm.Density.OriginalHam()")
+
+
     
     def StochasticStates(self):
         nkpt= self.num_kpts;
@@ -35,20 +39,31 @@ class Density:
         
         print("kpm.py:  Stochastic state should be made compatible with operator")
         #states = axis_dot( op, self.Umatrix, states );
-        #states = np.transpose( states, (1,0,2) ).reshape(neig, neig*nkpt )
+        states = np.transpose( states, (0,2, 1) ).reshape(neig*nkpt, neig )
 
         return states;
 
     def StocasticBounds(self):
-        Lstates = self.StochasticStates();
-        Rstates = copy.copy(Lstates);
+        Rstates = self.StochasticStates();
+        Lstates = np.conj(Rstates.T);
 
         print("kpm.py:  Stochastic state should be made compatible with operator")
         
-#        Ham_moms = [];
-#        for n in range(4):
-#            Rstates = [ self.Ham.dot(x) for x in Rstates];
-#            Ham_moms.append( np.sum( [np.vdot(xL, xR) for xL,xR in zip(Lstates,Rstates)]) ); 
+
+        R1 = self.Ham@Rstates
+        R2 = np.array( [ self.Ham.dot(x) for x in Rstates.T]).T;
+        
+        Ham_moms1 = [];
+        Ham_moms2 = [];
+        for n in range(4):
+            Ham_moms1.append( np.trace(Lstates@R1) );
+            Ham_moms2.append( np.sum( [np.dot(xL, xR) for xL,xR in zip(Lstates,R2.T)]) ); 
+            R1 = self.Ham@R1
+            R2 = np.array( [ self.Ham.dot(x) for x in R2.T]).T;
+
+
+        print( np.array(Ham_moms1)-np.array(Ham_moms2) )
+
 #        
 #        #Ham_mom are the statistical moments of the hamiltonian, ie = <H>, <H^2>, <H^3>, etc 
 #        Em  = np.real(Ham_moms[0]);
@@ -75,6 +90,7 @@ class Density:
 
               
     def BroadeningToMoments( self, broadening):
+        print(self.bounds)
         Emax, Emin = self.bounds;
         print("kpm.py: broadeningtomoments should be checked")
         return  int( np.pi*self.Scale_Factor()/ broadening )
@@ -82,26 +98,29 @@ class Density:
     def ComputeMoments(self,broadening = None):
         num_mom = self.BroadeningToMoments(broadening) ;
        
-        print("kpm.py: computing moments using broadening ",broadening, " and ", self.BroadeningToMoments(broadening) )
+       # print("kpm.py: computing moments using broadening ",broadening, " and ", self.BroadeningToMoments(broadening) )
        
-        moments  = np.zeros(num_mom, dtype=complex)
+       # moments  = np.zeros(num_mom, dtype=complex)
 
 
-        Phi0 = self.StochasticStates();
-        PhiL = np.conjugate(copy.copy(Phi0).T); 
+       # Phi0 = self.StochasticStates();
+       # PhiL = np.conjugate(copy.copy(Phi0).T); 
 
-        moments[0] = np.sum(PhiL@Phi0);
-        Phi1 = self.Ham.dot(Phi0);
-        moments[1] = np.sum(PhiL@Phi1);
+       # moments[0] = np.sum(PhiL@Phi0);
+       # Phi1 = self.Ham.dot(Phi0);
+       # moments[1] = np.sum(PhiL@Phi1);
 
-        for i in np.arange(2, len(moments)):
-            Phi0 = self.Ham.LinearT(2.0, Phi1,-1.0, Phi0 ); 
-            Phi0,Phi1 = Phi1,Phi0; print("Swap in kpm.py ComputeMoments should be checked")
-            moments[i] = np.sum(PhiL@Phi0);
-            
+       # for i in np.arange(2, len(moments)):
+       #     Phi0 = self.Ham.LinearT(2.0, Phi1,-1.0, Phi0 ); 
+       #     Phi0,Phi1 = Phi1,Phi0; print("Swap in kpm.py ComputeMoments should be checked")
+       #     moments[i] = np.sum(PhiL@Phi0);
+       #     
         return self;
         
     def spectral_average(self,energies):
         return self;
     
     
+    def OriginalHam(self):
+        print("The function OriginalHa, is not implemented yet")
+        return self.Ham;

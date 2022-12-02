@@ -84,10 +84,13 @@ class Operator:
         Aop.eliminate_zeros();
         return Aop
     
-    def dot(self,x):
-        print("hamiltonian.py should perform self.mat_rep.dot(x)")
+    def __matmul__(self, A):
+        return self.mat_rep@A
 
-        return x
+    
+    def dot(self,x):
+        return self.mat_rep.dot(x);
+
 
     def LinearT(self, a,x,b,y):
         print("hamiltonian.py should perform a*self.mat_rep.dot(x)+b*y")
