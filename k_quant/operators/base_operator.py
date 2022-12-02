@@ -87,11 +87,24 @@ class Operator:
     def __matmul__(self, A):
         return self.mat_rep@A
 
+    def __rmatmul__(self, A):
+        return A@self.mat_rep
+
+
+    def __mul__(self,a):
+        return self.mat_rep*a;
+
+    def __rmul__(self,a):
+        return a*self.mat_rep;
+        
+        
+
     
     def dot(self,x):
         return self.mat_rep.dot(x);
 
 
     def LinearT(self, a,x,b,y):
+        a*self.mat_rep
         print("hamiltonian.py should perform a*self.mat_rep.dot(x)+b*y")
         return x;

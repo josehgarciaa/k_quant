@@ -1,11 +1,10 @@
 import numpy as np
-import k_quant as k
 
+from k_quant.system import System 
 from kpm import Density
 
-wann_syst = k.System( dimensions = (3,3,1), w90_inp="linear_chain" )
+wann_syst = System( dimensions = (100,1,1), w90_inp="linear_chain")
+dens = Density(wann_syst)
 
-dos = Density(wann_syst );
-
-dos.ComputeMoments( broadening = 0.1) 
+dens.ComputeMoments( broadening =0.1)
 
