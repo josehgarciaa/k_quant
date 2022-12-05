@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>k_quant.models package &#8212; k Quant 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="k-quant-models-package">
+<h1>k_quant.models package<a class="headerlink" href="#k-quant-models-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-k_quant.models.wannier">
+<span id="k-quant-models-wannier-module"></span><h2>k_quant.models.wannier module<a class="headerlink" href="#module-k_quant.models.wannier" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">k_quant.models.wannier.</span></span><span class="sig-name descname"><span class="pre">WannierSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WannierSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that handles Wannier-based Tight binding models in different Wannier</p>
+<dl class="field-list">
+<dt class="field-odd">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The arguments are presented in order of preference, i.e, wout will be used over label.</p>
+<p>label (str): The label of a Wannier90 calculation. This label will be used to look for the label.uc, label_hr.dat and label.xyz files. The positions and primitive lattice vectors in
+label.xyz and label.uc respectively, should be in the same units</p>
+<p>Convention
+It is important to highlight that in our label.xyz we only include the positions of the Wannier center and not the atoms</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.Hamiltonian">
+<span class="sig-name descname"><span class="pre">Hamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.Hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the Hamilton matrix for a given k-point or list of
+k-points.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h3>
+<dl class="simple">
+<dt>k :</dt><dd><p>The k-point at which the Hamiltonian is evaluated. If a list
+of k-points is given, the result will be the corresponding
+list of Hamiltonians.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.OrbitalNumber">
+<span class="sig-name descname"><span class="pre">OrbitalNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.OrbitalNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of orbitals in the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total number of orbitals in the model</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.OrbitalPositions">
+<span class="sig-name descname"><span class="pre">OrbitalPositions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.OrbitalPositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the orbital position from a xyz file</p>
+<p>:param filename : A string containing the path to the xyz file to be loaded  
+:type filename: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.PrimitiveLatticeVectors">
+<span class="sig-name descname"><span class="pre">PrimitiveLatticeVectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.PrimitiveLatticeVectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the primitive lattice vectors from a win file
+:param filename : A string containing the path to the uc file to be loaded  
+:type filename: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.WannierHamiltonian">
+<span class="sig-name descname"><span class="pre">WannierHamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.WannierHamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the wannier hamiltonian from a _hr.dat file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – A string containing the path to the _hr.dat file to be loaded</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a tuple containing the unit cell shifts, the row and c</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.label">
+<span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.orbital_positions">
+<span class="sig-name descname"><span class="pre">orbital_positions</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.orbital_positions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.primitive_vectors">
+<span class="sig-name descname"><span class="pre">primitive_vectors</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.primitive_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WannierSystem.wann_hamiltonian">
+<span class="sig-name descname"><span class="pre">wann_hamiltonian</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#k_quant.models.wannier.WannierSystem.wann_hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WeightedEdge">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">k_quant.models.wannier.</span></span><span class="sig-name descname"><span class="pre">WeightedEdge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WeightedEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WeightedEdge.bloch_hopping">
+<span class="sig-name descname"><span class="pre">bloch_hopping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WeightedEdge.bloch_hopping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WeightedEdge.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></em><a class="headerlink" href="#k_quant.models.wannier.WeightedEdge.direction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WeightedEdge.kpoint">
+<span class="sig-name descname"><span class="pre">kpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.models.wannier.WeightedEdge.kpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.models.wannier.WeightedEdge.weight">
+<span class="sig-name descname"><span class="pre">weight</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0j</span></em><a class="headerlink" href="#k_quant.models.wannier.WeightedEdge.weight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-k_quant.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-k_quant.models" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">k Quant</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Jose H. Garcia.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/autodoc/k_quant.models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

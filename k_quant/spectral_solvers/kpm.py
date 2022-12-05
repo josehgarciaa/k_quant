@@ -1,6 +1,3 @@
-
-
-
 class Density:
 
     moments = None;

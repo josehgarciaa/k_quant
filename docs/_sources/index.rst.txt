@@ -16,6 +16,6 @@ conductivities, spin Hall conductivities, and density of states.
 .. toctree::
    :titlesonly:
 
-   Examples <example>
-   Modules <modules>
+#   Examples <example>
+#   Modules <modules>
    
