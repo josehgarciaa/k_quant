@@ -35,12 +35,14 @@ class Density:
         code : :obj:`int`, optional
             Numeric error code.
                     
-                    
-        .. _KPM:
 
         References:
         ===========
+                    
+        .. _KPM:
+
         [1] Linear Scaling Quantum Transport methodlogies, Physics Reports, Volume 903, Pages 1-69 (2021)
+        
         [2] The kernel polynomial method, Physics Reports, Volume 903, Pages 1-69 (2021)
         
     """
