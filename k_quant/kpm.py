@@ -1,6 +1,4 @@
 import numpy as np
-import k_quant.linalg.sparse  as sp
-import k_quant as k
 
 safe_CUTOFF = 0.95;
 
@@ -21,7 +19,7 @@ class Density:
 
 
         The spectral density is defined as :math:`\langle X\rangle(E) = {\rm Tr}[ X \delta(H-E) ]` and 
-        quantifies how much of the operator X will be measured at a given en energy `My target`_.
+        quantifies how much of the operator X will be measured at a given en energy `KPM`_.
         
         In this module  :math:`\delta(H-E)` is computed using the kernel polynomial method.  
 
@@ -77,7 +75,7 @@ class Density:
             Numeric error code.
             
             
-        .. _My target:
+        .. _KPM:
 
         References:
         [1] LSQt, Physics Reports, Volume 903, Pages 1-69 (2021)
