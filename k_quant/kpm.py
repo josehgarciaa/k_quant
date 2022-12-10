@@ -24,7 +24,15 @@ import time
 
 
 class Density:
-    """The summary line for a class docstring should fit on one line.
+    """The spectral density of an operator X.
+
+
+        The spectral density is defined as :math:`<X>(E) = Tr[ X delta(H-E) ]` and 
+        quantifies how much of the operator X will be measured at a given en energy. 
+        
+        In this module  :math:`delta(H-E)` is computed using the kernel polynomial method.  
+
+
 
         If the class has public attributes, they may be documented here
         in an ``Attributes`` section and follow the same formatting as a
