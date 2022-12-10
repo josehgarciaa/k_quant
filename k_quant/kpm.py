@@ -150,8 +150,16 @@ class Density:
           
         return self;
         
-    def spectral_average(self,energies = None):
+    def SpectralAverage(self,energies) -> list: 
+        """Returns the spectral average of :math:`X` in a set of energies
 
+        Parameters
+        ----------
+        energies : :obj:`list`
+            The set of energies where the average will be computed
+
+        """
+        
         if energies is None:        
             energies = np.linspace(-safe_CUTOFF,safe_CUTOFF, 1000);
             densities= [np.sum([ 2*mu*np.cos(m*np.arccos(x)) for m,mu in enumerate(self.moments)])/np.sqrt(1-x**2) for x in energies];        
