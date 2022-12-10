@@ -1,7 +1,7 @@
 
-Spectral Solvers
+System
 =================
 
-.. automodule:: k_quant.system
+-.. automodule:: k_quant.system
     :members:
 
