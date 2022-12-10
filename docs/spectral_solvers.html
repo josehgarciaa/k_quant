@@ -44,11 +44,6 @@
 <p>The spectral density is defined as <span class="math notranslate nohighlight">\(X(E) = {\rm Tr}[ \hat{X} \delta(H-E) ]\)</span> and
 quantifies how much of the operator X will be measured at a given en energy .</p>
 <p>In this module  <span class="math notranslate nohighlight">\(\delta(H-E)\)</span> is computed using the kernel polynomial method (<a class="reference internal" href="#kpm">KPM</a>).</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it
-to the original one, please call the method self.OriginalHam().</p>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -60,18 +55,45 @@ For any other option will use default: Jackson</p></li>
 </ul>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it
+to the original one, please call the method self.OriginalHam().</p>
+</div>
 <p id="kpm">[1] Linear Scaling Quantum Transport methodlogies, Physics Reports, Volume 903, Pages 1-69 (2021)</p>
 <p>[2] The kernel polynomial method, Physics Reports, Volume 903, Pages 1-69 (2021)</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="k_quant.kpm.Density.StochasticStates">
-<span class="sig-name descname"><span class="pre">StochasticStates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density.StochasticStates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a random phase state</p>
+<dt class="sig sig-object py" id="k_quant.kpm.Density.BroadeningToMoments">
+<span class="sig-name descname"><span class="pre">BroadeningToMoments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broadening</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density.BroadeningToMoments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of moments for a given broadening and kernel</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_description_</p>
+<dd class="field-odd"><p>The moments are computed following the recipes in</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>_type_</p>
+<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.ScaleFactor">
+<span class="sig-name descname"><span class="pre">ScaleFactor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density.ScaleFactor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the scale factor used in the rescaling operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.ShiftFactor">
+<span class="sig-name descname"><span class="pre">ShiftFactor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#k_quant.kpm.Density.ShiftFactor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the shift used in the rescaling operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
 </dl>
 </dd></dl>

@@ -23,11 +23,6 @@ class Density:
         
         In this module  :math:`\delta(H-E)` is computed using the kernel polynomial method (`KPM`_).  
 
-        Note
-        ----
-            Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
-            to the original one, please call the method self.OriginalHam().
-
         Parameters
         ----------
 
@@ -41,6 +36,11 @@ class Density:
         X : :class:`k_quant.operator`, optional
             The operator used to compute the density. When none submitted will use identity
                     
+        Note
+        ----
+            Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
+            to the original one, please call the method self.OriginalHam().
+
 
         References:
         ===========
@@ -78,11 +78,6 @@ class Density:
 
     
     def StochasticStates(self):
-        """Generate a random phase state
-
-        :return: _description_
-        :rtype: _type_
-        """
         
         nkpt= self.num_kpts;
         neig= self.num_orbs;
@@ -100,16 +95,39 @@ class Density:
 
         return self;
     
-    def ShiftFactor(self):
+    def ShiftFactor(self) -> float: 
+        """  Returns the shift used in the rescaling operation
+
+        Returns
+        -------
+        :obj:`float` 
+
+        """
         return safe_CUTOFF/( self.bounds[1] - self.bounds[0] )*( self.bounds[1] + self.bounds[0] );
     
 
     def ScaleFactor(self):
+        """  Returns the scale factor used in the rescaling operation
+
+        Returns
+        -------
+        :obj:`float` 
+
+        """
         return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] ) ;
 
               
     def BroadeningToMoments( self, broadening):
-        print(self.bounds)
+        """  Returns the number of moments for a given broadening and kernel
+
+        Returns
+        -------
+        :obj:`int` 
+
+            The moments are computed following the recipes in 
+
+        """
+
         Emax, Emin = self.bounds;
         print("kpm.py: broadeningtomoments should be checked")
         return  int( np.pi*self.ScaleFactor()/ broadening )
