@@ -1,8 +1,8 @@
 
 """
-main.py
-====================================
-The core module of my example project
+    main.py
+    ====================================
+    The core module of my example project
 """
 
 import numpy as np
