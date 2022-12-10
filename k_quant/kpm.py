@@ -30,7 +30,6 @@ class Density:
 
         Parameters
         ----------
-        system, kernel='jackson', Op=None, bounds=None
 
         syst : :class:`k_quant.system`
             A properly initialized system.
@@ -39,7 +38,7 @@ class Density:
         kernel : :obj:`str`, optional
             A string indicating the kernel to be used for the regularization. The options are: "jackson, lorentz". 
             For any other option will use default: Jackson
-        X : :class:`operator`, optional
+        X : :class:`k_quant.operator`, optional
             The operator used to compute the density. When none submitted will use identity
                     
 
