@@ -10,7 +10,7 @@ spectral properties from the Hamiltonian such as bandstructures and their spin a
 conductivities, spin Hall conductivities, and density of states. 
 
 
-.. automodule:: k_quant.density
+.. automodule:: density
     :members:
 
 .. toctree::
