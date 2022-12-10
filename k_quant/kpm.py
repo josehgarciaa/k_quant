@@ -29,7 +29,7 @@ class Density:
         syst : :class:`k_quant.system`
             A properly initialized system.
         bounds: :obj:`str`
-            The energy bounds used to rescaled the hamiltonian spectrum to the (-1,1) interval
+            The energy bounds (in the same units as the Hamiltonian) used to rescaled the hamiltonian spectrum to the (-1,1) interval. 
         kernel : :obj:`str`, optional
             A string indicating the kernel to be used for the regularization. The options are: "jackson, lorentz". 
             For any other option will use default: Jackson
@@ -120,7 +120,15 @@ class Density:
         return  int( np.pi*self.ScaleFactor()/ broadening )
     
     #@measure_time
-    def ComputeMoments(self,broadening = None):
+    def ComputeMoments(self,broadening) -> list:
+        """Returns the chebyshev moments required to achieve a given broadening
+
+        Parameters
+        ----------
+        broadening : :obj:`float`
+            The value of the broadening in the same units as the Hamiltonian
+
+        """
 
         num_mom = self.BroadeningToMoments(broadening) ;
         print("kpm.py: computing moments using broadening ",broadening, " and ", self.BroadeningToMoments(broadening) )

@@ -48,7 +48,7 @@ quantifies how much of the operator X will be measured at a given en energy .</p
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>syst</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">k_quant.system</span></code>) – A properly initialized system.</p></li>
-<li><p><strong>bounds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>) – The energy bounds used to rescaled the hamiltonian spectrum to the (-1,1) interval</p></li>
+<li><p><strong>bounds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>) – The energy bounds (in the same units as the Hamiltonian) used to rescaled the hamiltonian spectrum to the (-1,1) interval.</p></li>
 <li><p><strong>kernel</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, optional) – A string indicating the kernel to be used for the regularization. The options are: “jackson, lorentz”.
 For any other option will use default: Jackson</p></li>
 <li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">k_quant.operator</span></code>, optional) – The operator used to compute the density. When none submitted will use identity</p></li>
@@ -69,6 +69,17 @@ to the original one, please call the method self.OriginalHam().</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The moments are computed following the recipes in <a class="reference internal" href="#kpm">KPM</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.ComputeMoments">
+<span class="sig-name descname"><span class="pre">ComputeMoments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broadening</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#k_quant.kpm.Density.ComputeMoments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the chebyshev moments required to achieve a given broadening</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>broadening</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>) – The value of the broadening in the same units as the Hamiltonian</p>
 </dd>
 </dl>
 </dd></dl>
