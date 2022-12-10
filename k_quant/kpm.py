@@ -15,7 +15,7 @@ import time
 
 
 class Density:
-    """The spectral density of an operator :math:`X`.
+    r"""The spectral density of an operator :math:`X`.
 
 
         The spectral density is defined as :math:`\langle X\rangle(E) = {\rm Tr}[ X \delta(H-E) ]` and 
