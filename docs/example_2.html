@@ -1,17 +1,18 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>The linear chain &#8212; k_quant 0.0.0.0 documentation</title>
+    <title>The linear chain &#8212; k Quant 0.0.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -34,7 +35,7 @@
           <div class="body" role="main">
             
   <section id="the-linear-chain">
-<h1>The linear chain<a class="headerlink" href="#the-linear-chain" title="Permalink to this headline">¶</a></h1>
+<h1>The linear chain<a class="headerlink" href="#the-linear-chain" title="Permalink to this heading">¶</a></h1>
 <p>Let us consider the Hamiltonian of a periodic linea chain:</p>
 <div class="math notranslate nohighlight">
 \[H = t \sum_{i} \ket{i}\bra{i+1} + {\rm h.c}.\]</div>
@@ -42,7 +43,7 @@
 following values  <span class="math notranslate nohighlight">\(k_n=\frac{2\pi n}{aN}\)</span>. If we impose periodic boundary conditions,
 the</p>
 <section id="the-density-of-states">
-<h2>The density of states<a class="headerlink" href="#the-density-of-states" title="Permalink to this headline">¶</a></h2>
+<h2>The density of states<a class="headerlink" href="#the-density-of-states" title="Permalink to this heading">¶</a></h2>
 <p>The density of states (DOS) at a given energy <span class="math notranslate nohighlight">\(\rho(\varepsilon)\)</span> is defined as the number of states within the
 interval <span class="math notranslate nohighlight">\((\varepsilon,\varepsilon+d\varepsilon)\)</span>. In the periodic linear chain, the density of states could be computed by
 counting the allowed states within a interval, which can be achieved through the following function</p>
@@ -59,7 +60,7 @@ within the <span class="math notranslate nohighlight">\([0,1)\)</span> interval 
                   &amp;= \frac{1}{2\pi \sqrt{4t^2- \varepsilon^2} }.\end{split}\]</div>
 </section>
 <section id="the-kernel-polynomial-method">
-<h2>The kernel polynomial method<a class="headerlink" href="#the-kernel-polynomial-method" title="Permalink to this headline">¶</a></h2>
+<h2>The kernel polynomial method<a class="headerlink" href="#the-kernel-polynomial-method" title="Permalink to this heading">¶</a></h2>
 <p>If we choose the hopping energy in the periodic linear change to be <span class="math notranslate nohighlight">\(t=1/2\)</span> then the spectrum is bounded within the <span class="math notranslate nohighlight">\((-1,1)\)</span> interval and this make it suitable for KPM expansion.
 As described in the kpm_module computing the density of states in the KPM approach involves calculating the moments</p>
 <div class="math notranslate nohighlight">
@@ -84,7 +85,7 @@ As described in the kpm_module computing the density of states in the KPM approa
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">k_quant</a></h1>
+<h1 class="logo"><a href="index.html">k Quant</a></h1>
 
 
 
@@ -120,7 +121,7 @@ As described in the kpm_module computing the density of states in the KPM approa
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -137,7 +138,7 @@ As described in the kpm_module computing the density of states in the KPM approa
       &copy;2022, Jose H. Garcia.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
