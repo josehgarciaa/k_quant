@@ -18,47 +18,15 @@ class Density:
     r"""The spectral density of an operator :math:`X`.
 
 
-        The spectral density is defined as :math:`\langle X\rangle(E) = {\rm Tr}[ X \delta(H-E) ]` and 
+        The spectral density is defined as :math:`X(E) = {\rm Tr}[ \hat{X} \delta(H-E) ]` and 
         quantifies how much of the operator X will be measured at a given en energy .
         
         In this module  :math:`\delta(H-E)` is computed using the kernel polynomial method (`KPM`_).  
 
-
-
-        If the class has public attributes, they may be documented here
-        in an ``Attributes`` section and follow the same formatting as a
-        function's ``Args`` section. Alternatively, attributes may be documented
-        inline with the attribute's declaration (see __init__ method below).
-
-        Properties created with the ``@property`` decorator should be documented
-        in the property's getter method.
-
-        Attributes
-        ----------
-        attr1 : str
-            Description of `attr1`.
-        attr2 : :obj:`int`, optional
-            Description of `attr2`.
-
-    
-        A spectral density, is a quantity defined as <X> = Tr[ X delta(H-E) ]. From its definition, 
-        this quantity computes how much of the operator X will be measured at a given en energy. 
-        
-        In the kpm module, the delta function is computed by expanding it in terms of Chebyshev polynomials
-        and regularized using a kernel function.  
-
-        
-        Exceptions are documented in the same way as classes.
-
-        The __init__ method may be documented in either the class level
-        docstring, or as a docstring on the __init__ method itself.
-
-        Either form is acceptable, but the two should not be mixed. Choose one
-        convention to document the __init__ method and be consistent with it.
-
         Note
         ----
-        Do not include the `self` parameter in the ``Parameters`` section.
+            Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
+            to the original one, please call the method self.OriginalHam().
 
         Parameters
         ----------
@@ -66,19 +34,13 @@ class Density:
             Human readable string describing the exception.
         code : :obj:`int`, optional
             Numeric error code.
-
-        Attributes
-        ----------
-        msg : str
-            Human readable string describing the exception.
-        code : int
-            Numeric error code.
-            
-            
+                    
         .. _KPM:
 
         References:
-        [1] LSQt, Physics Reports, Volume 903, Pages 1-69 (2021)
+        ===========
+        [1] Linear Scaling Quantum Transport methodlogies, Physics Reports, Volume 903, Pages 1-69 (2021)
+        [2] The kernel polynomial method, Physics Reports, Volume 903, Pages 1-69 (2021)
         
     """
     
@@ -123,9 +85,7 @@ class Density:
             Op (Operator, optional): An operator as described in the operator module.
             bounds (tuple, optional): A tuple defining the spectral bound.
 
-        Note:
-            Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
-            to the original one, please call the method self.OriginalHam().
+
         """
 
         self.Ham    = system.Hamiltonian();
