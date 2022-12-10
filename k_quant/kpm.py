@@ -24,13 +24,13 @@ import time
 
 
 class Density:
-    """The spectral density of an operator X.
+    """The spectral density of an operator :math:`X`.
 
 
-        The spectral density is defined as :math:`<X>(E) = Tr[ X delta(H-E) ]` and 
-        quantifies how much of the operator X will be measured at a given en energy. 
+        The spectral density is defined as :math:`\langleX\rangle(E) = {\rm Tr}[ X \delta(H-E) ]` and 
+        quantifies how much of the operator X will be measured at a given en energy `references`_.
         
-        In this module  :math:`delta(H-E)` is computed using the kernel polynomial method.  
+        In this module  :math:`\delta(H-E)` is computed using the kernel polynomial method.  
 
 
 
@@ -82,6 +82,11 @@ class Density:
             Human readable string describing the exception.
         code : int
             Numeric error code.
+            
+            
+        .. _references
+        References:
+        [1] https://doi.org/10.1016/j.physrep.2020.12.001
 
     """
     
