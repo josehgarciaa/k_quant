@@ -48,10 +48,78 @@ conductivities, spin Hall conductivities, and density of states.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="k_quant.kpm.Density">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">k_quant.kpm.</span></span><span class="sig-name descname"><span class="pre">Density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jackson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Op</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density" title="Permalink to this definition">¶</a></dt>
-<dd><p>A spectral density, is a quantity defined as &lt;X&gt; = Tr[ X delta(H-E) ]. From its definition,
+<dd><p>The summary line for a class docstring should fit on one line.</p>
+<p>If the class has public attributes, they may be documented here
+in an <code class="docutils literal notranslate"><span class="pre">Attributes</span></code> section and follow the same formatting as a
+function’s <code class="docutils literal notranslate"><span class="pre">Args</span></code> section. Alternatively, attributes may be documented
+inline with the attribute’s declaration (see __init__ method below).</p>
+<p>Properties created with the <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> decorator should be documented
+in the property’s getter method.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.attr1">
+<span class="sig-name descname"><span class="pre">attr1</span></span><a class="headerlink" href="#k_quant.kpm.Density.attr1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description of <cite>attr1</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.attr2">
+<span class="sig-name descname"><span class="pre">attr2</span></span><a class="headerlink" href="#k_quant.kpm.Density.attr2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description of <cite>attr2</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>A spectral density, is a quantity defined as &lt;X&gt; = Tr[ X delta(H-E) ]. From its definition,
 this quantity computes how much of the operator X will be measured at a given en energy.</p>
 <p>In the kpm module, the delta function is computed by expanding it in terms of Chebyshev polynomials
 and regularized using a kernel function.</p>
+<p>Exceptions are documented in the same way as classes.</p>
+<p>The __init__ method may be documented in either the class level
+docstring, or as a docstring on the __init__ method itself.</p>
+<p>Either form is acceptable, but the two should not be mixed. Choose one
+convention to document the __init__ method and be consistent with it.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not include the <cite>self</cite> parameter in the <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> section.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<em>str</em>) – Human readable string describing the exception.</p></li>
+<li><p><strong>code</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – Numeric error code.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.msg">
+<span class="sig-name descname"><span class="pre">msg</span></span><a class="headerlink" href="#k_quant.kpm.Density.msg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Human readable string describing the exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.code">
+<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#k_quant.kpm.Density.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numeric error code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="k_quant.kpm.Density.StochasticStates">
 <span class="sig-name descname"><span class="pre">StochasticStates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density.StochasticStates" title="Permalink to this definition">¶</a></dt>
