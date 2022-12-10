@@ -3,6 +3,19 @@ import k_quant.linalg.sparse  as sp
 import k_quant as k
 
 safe_CUTOFF = 0.95;
+
+import time
+#def measure_time(function):
+#    def wrapper(arg1, broadening):
+#        print("computing moments")
+#        start = time.time()
+#        function(arg1, broadening)
+#        end = time.time()
+#        etime = end - start;
+#        print("computing moments took ",etime, "seconds")
+#    return wrapper
+
+
 class Density:
     """ A spectral density, is a quantity defined as <X> = Tr[ X delta(H-E) ]. From its definition, 
         this quantity computes how much of the operator X will be measured at a given en energy. 
@@ -85,6 +98,7 @@ class Density:
         print("kpm.py: broadeningtomoments should be checked")
         return  int( np.pi*self.ScaleFactor()/ broadening )
     
+    #@measure_time
     def ComputeMoments(self,broadening = None):
 
         num_mom = self.BroadeningToMoments(broadening) ;
@@ -104,9 +118,7 @@ class Density:
             Phit=Phi1; Phi1 = Phi0; Phi0=Phit;
             
         self.moments = np.real(self.moments)
-        
-        print(self.moments)
-        
+          
         return self;
         
     def spectral_average(self,energies = None):
