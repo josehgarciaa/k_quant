@@ -12,6 +12,7 @@ Let us consider the Hamiltonian of a periodic linea chain:
 The eigenvalues of this system :math:`\varepsilon_n =-2t \cos(k_na)` and due to the periodic boundary conditions the momentum is constrain to the 
 following values  :math:`k_n=\frac{2\pi n}{aN}`. If we impose periodic boundary conditions, 
 the 
+
 The density of states
 ---------------------
 
