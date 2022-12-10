@@ -37,17 +37,17 @@
 <h1>The linear chain<a class="headerlink" href="#the-linear-chain" title="Permalink to this headline">¶</a></h1>
 <p>Let us consider the Hamiltonian of a periodic linea chain:</p>
 <div class="math notranslate nohighlight">
-\[H = t \sum_{i} \ket{i}\bra{i+1} + h.c.\]</div>
+\[H = t \sum_{i} \ket{i}\bra{i+1} + {\rm h.c}.\]</div>
 <p>The eigenvalues of this system <span class="math notranslate nohighlight">\(\varepsilon_n =-2t \cos(k_na)\)</span> and due to the periodic boundary conditions the momentum is constrain to the
 following values  <span class="math notranslate nohighlight">\(k_n=\frac{2\pi n}{aN}\)</span>. If we impose periodic boundary conditions,
 the
 The density of states
-_____________________</p>
+———————</p>
 <p>The density of states (DOS) at a given energy <span class="math notranslate nohighlight">\(\rho(\varepsilon)\)</span> is defined as the number of states within the
 interval <span class="math notranslate nohighlight">\((\varepsilon,\varepsilon+d\varepsilon)\)</span>. In the periodic linear chain, the density of states could be computed by
 counting the allowed states within a interval, which can be achieved through the following function</p>
 <div class="math notranslate nohighlight">
-\[\rho(\varepsilon) = \frac{1}{N} \int_\varepsilon^\varepsilon+ \delta \varepsilon dE {\rm Tr} [\delta(H-E)].\]</div>
+\[\rho(\varepsilon) = \frac{1}{N} \int_{\rm all energies}  {\rm Tr} [\delta(H-E)] {\rm d}E.\]</div>
 <p>The  expression above is general and relies on the property of the delta. Alternatively, for periodic systems, one can also integrate the density of momentums,
 since it is univocally linked to the density of states. To make this simple, let us consider the limit of infinite sytem, where we can approximate <span class="math notranslate nohighlight">\(x=n/N\)</span> as a real number
 within the <span class="math notranslate nohighlight">\([0,1)\)</span> interval and <span class="math notranslate nohighlight">\(ka= 2\pi x\)</span> is also a continuum value.  Using the dispersion relation, we can compute the density of energy per momentum</p>
@@ -55,7 +55,8 @@ within the <span class="math notranslate nohighlight">\([0,1)\)</span> interval 
 \[\frac{d\varepsilon_k}{dk}  =2t a  \sin(ka)\]</div>
 <p>and through proper inversion and by exploiting the relation between momentum and state index, also the ammount of states per energy which is nothing but the DOS</p>
 <div class="math notranslate nohighlight">
-\[\rho(\varepsilon)= \frac{dx(\varepsilon) }{d\varepsilon} = {1}{2\pi \sqrt{4t^2- \varepsilon^2}.\]</div>
+\[\rho(\varepsilon)= \frac{dx(\varepsilon) }{d\varepsilon},
+\rho(\varepsilon)= \frac{1}{2\pi \sqrt{4t^2- \varepsilon^2} }.\]</div>
 <section id="the-kernel-polynomial-method">
 <h2>The kernel polynomial method<a class="headerlink" href="#the-kernel-polynomial-method" title="Permalink to this headline">¶</a></h2>
 <p>If we choose the hopping energy in the periodic linear change to be <span class="math notranslate nohighlight">\(t=1/2\)</span> then the spectrum is bounded within the <span class="math notranslate nohighlight">\((-1,1)\)</span> interval and this make it suitable for KPM expansion.
@@ -64,13 +65,11 @@ As described in the kpm_module computing the density of states in the KPM approa
 \[\mu_m  = \frac{1}{N} Tr[ T_m(H) ]\]</div>
 <p>where <span class="math notranslate nohighlight">\(T_m(x)\equiv = \cos(m \arccos(x))\)</span>. If we choose the eigenvector basis, the above is simply</p>
 <div class="math notranslate nohighlight">
-\[\mu_m  =\frac{1}{N} \sum_{n} \cos\left(m \arccos\left(\cos\left(\frac{2\pi n}{N}\right )\right)\right)\]</div>
-<p>In the limit of infinite system, the sum can be replace by an integral
-.. math:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">mu_m</span>  <span class="o">=</span> \<span class="n">int_</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="o">^</span><span class="mi">1</span> <span class="n">dx</span> \<span class="n">cos</span>\<span class="n">left</span><span class="p">(</span><span class="mi">2</span>\<span class="n">pi</span>  <span class="n">m</span> <span class="n">x</span>\<span class="n">right</span><span class="p">)</span>
-\<span class="n">mu_m</span>  <span class="o">=</span> \<span class="n">delta_</span><span class="p">{</span><span class="n">m0</span><span class="p">}</span>
-</pre></div>
-</div>
+\[\mu_m  =\frac{1}{N} \sum_{n} \cos\left[m \arccos\left(\cos\frac{2\pi n}{N}\right)\right]\]</div>
+<p>In the limit of infinite system, the sum can be replace by an integral</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mu_m   &amp;= \int_{0}^1 dx \cos\left(2\pi  m x\right) \\
+        &amp;= \delta_{m0}\end{split}\]</div>
 <p>which after replacing in the chebyshev sum leads to</p>
 <div class="math notranslate nohighlight">
 \[\rho(\varepsilon) = \frac{1}{\pi \sqrt{1- x^2}\]</div>
