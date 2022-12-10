@@ -86,7 +86,7 @@ class Density:
             
         .. _references
         References:
-        [1] :xref:`LSQT` 
+        [1] LSQt, Physics Reports, Volume 903, Pages 1-69 (2021)
         
     """
     
