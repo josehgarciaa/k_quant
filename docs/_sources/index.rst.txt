@@ -10,13 +10,13 @@ spectral properties from the Hamiltonian such as bandstructures and their spin a
 conductivities, spin Hall conductivities, and density of states. 
 
 
-.. automodule:: k_quant.system
-    :members:
+
 
 .. toctree::
    :titlesonly:
 
 	Spectral Solvers  <spectral_solvers>
+   System <system>
    Examples <example>
 
 #   Modules <modules>
