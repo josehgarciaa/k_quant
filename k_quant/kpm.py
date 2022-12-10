@@ -20,7 +20,7 @@ class Density:
     """The spectral density of an operator :math:`X`.
 
 
-        The spectral density is defined as :math:`\langleX\rangle(E) = {\rm Tr}[ X \delta(H-E) ]` and 
+        The spectral density is defined as :math:`\langle X\rangle(E) = {\rm Tr}[ X \delta(H-E) ]` and 
         quantifies how much of the operator X will be measured at a given en energy `My target`_.
         
         In this module  :math:`\delta(H-E)` is computed using the kernel polynomial method.  
