@@ -97,35 +97,22 @@ class Density:
     
     def ShiftFactor(self) -> float: 
         """  Returns the shift used in the rescaling operation
-
-        Returns
-        -------
-        :obj:`float` 
-
         """
         return safe_CUTOFF/( self.bounds[1] - self.bounds[0] )*( self.bounds[1] + self.bounds[0] );
     
 
-    def ScaleFactor(self):
+    def ScaleFactor(self) -> float:
         """  Returns the scale factor used in the rescaling operation
-
-        Returns
-        -------
-        :obj:`float` 
-
         """
         return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] ) ;
 
               
-    def BroadeningToMoments( self, broadening):
+    def BroadeningToMoments( self, broadening) -> int:
         """  Returns the number of moments for a given broadening and kernel
 
         Returns
         -------
-        :obj:`int` 
-
-            The moments are computed following the recipes in 
-
+            The moments are computed following the recipes in `KPM`_
         """
 
         Emax, Emin = self.bounds;
