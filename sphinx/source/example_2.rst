@@ -64,11 +64,10 @@ In the limit of infinite system, the sum can be replace by an integral
 which after replacing in the chebyshev sum leads to
 
 .. math::
+    
+    \rho(\varepsilon) = \frac{1}{\pi \sqrt{1- x^2}},
 
-    \rho(\varepsilon) = \frac{1}{\pi \sqrt{1- x^2}
-
-fin
-
+matching the analytic result.
 
 
 
