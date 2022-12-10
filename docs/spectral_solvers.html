@@ -39,7 +39,7 @@
 <span id="spectral-solvers"></span><h1>Spectral Solvers<a class="headerlink" href="#module-k_quant.kpm" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="k_quant.kpm.Density">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">k_quant.kpm.</span></span><span class="sig-name descname"><span class="pre">Density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jackson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Op</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">k_quant.kpm.</span></span><span class="sig-name descname"><span class="pre">Density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">syst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jackson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Op</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density" title="Permalink to this definition">¶</a></dt>
 <dd><p>The spectral density of an operator <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <p>The spectral density is defined as <span class="math notranslate nohighlight">\(X(E) = {\rm Tr}[ \hat{X} \delta(H-E) ]\)</span> and
 quantifies how much of the operator X will be measured at a given en energy .</p>
@@ -52,7 +52,11 @@ to the original one, please call the method self.OriginalHam().</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>msg</strong> (<em>str</em>) – Human readable string describing the exception.</p></li>
+<li><p><strong>system</strong> – </p></li>
+<li><p><strong>kernel='jackson'</strong> – </p></li>
+<li><p><strong>Op=None</strong> – </p></li>
+<li><p><strong>bounds=None</strong> – </p></li>
+<li><p><strong>syst</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">k_quant.system</span></code>) – Human readable string describing the exception.</p></li>
 <li><p><strong>code</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional) – Numeric error code.</p></li>
 </ul>
 </dd>

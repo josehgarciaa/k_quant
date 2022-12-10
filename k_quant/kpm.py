@@ -30,7 +30,9 @@ class Density:
 
         Parameters
         ----------
-        msg : str
+        system, kernel='jackson', Op=None, bounds=None
+
+        syst : :class:`k_quant.system`
             Human readable string describing the exception.
         code : :obj:`int`, optional
             Numeric error code.
@@ -57,43 +59,11 @@ class Density:
     num_kpts= None;
     num_orbs= None;
     
-    def __init__(self,system,  kernel = "jackson",  Op=None, bounds=None):
-        """Example of docstring on the __init__ method.
+    def __init__(self,syst,  kernel = "jackson",  Op=None, bounds=None):
 
-        The __init__ method may be documented in either the class level
-        docstring, or as a docstring on the __init__ method itself.
-
-        Either form is acceptable, but the two should not be mixed. Choose one
-        convention to document the __init__ method and be consistent with it.
-
-        Note
-        ----
-        Do not include the `self` parameter in the ``Parameters`` section.
-
-        Parameters
-        ----------
-        param1 : str
-            Description of `param1`.
-        param2 : :obj:`list` of :obj:`str`
-            Description of `param2`. Multiple
-            lines are supported.
-        param3 : :obj:`int`, optional
-            Description of `param3`.
-
-        Construct an instance of the Density class 
-
-        Args:
-            system (object): A system as defined in the system module. 
-            kernel (str, optional): The choice of kernel for the regularization. Defaults to "jackson".
-            Op (Operator, optional): An operator as described in the operator module.
-            bounds (tuple, optional): A tuple defining the spectral bound.
-
-
-        """
-
-        self.Ham    = system.Hamiltonian();
-        self.num_kpts = system.KpointNumber();
-        self.num_orbs = system.OrbitalNumber();
+        self.Ham    = syst.Hamiltonian();
+        self.num_kpts = syst.KpointNumber();
+        self.num_orbs = syst.OrbitalNumber();
         
         if bounds is None:
             self.StocasticBounds();
