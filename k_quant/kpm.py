@@ -1,10 +1,3 @@
-
-"""
-    main.py
-    ====================================
-    The core module of my example project
-"""
-
 import numpy as np
 import k_quant.linalg.sparse  as sp
 import k_quant as k
