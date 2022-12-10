@@ -49,6 +49,12 @@ class Density:
 
     
     def StochasticStates(self):
+        """Generate a random phase state
+
+        :return: _description_
+        :rtype: _type_
+        """
+        
         nkpt= self.num_kpts;
         neig= self.num_orbs;
         dim    = self.num_kpts * self.num_orbs;
@@ -87,24 +93,27 @@ class Density:
        
         Phi0 = self.StochasticStates();
         PhiL = np.conj(Phi0.T); 
-        self.moments[0] = 0.5*np.trace(PhiL@Phi0);     
-        
+        self.moments[0] = 0.5*np.sum(PhiL@Phi0);     
+     
         Phi1 = self.Ham@(Phi0);
-        self.moments[1] = np.trace(PhiL@Phi1);
+        self.moments[1] = np.sum(PhiL@Phi1);
 
-        for i in np.arange(2, len(self.moments)):
-            Phi0= 2.0 * self.Ham @ Phi1 - Phi0; 
-            self.moments[i]= np.sum(PhiL@Phi0);
+        for m in np.arange(2, len(self.moments)):
+            Phi0 = 2.0 * self.Ham @ Phi1 - Phi0;
+            self.moments[m]= np.sum(PhiL@Phi0);
             Phit=Phi1; Phi1 = Phi0; Phi0=Phit;
             
         self.moments = np.real(self.moments)
+        
+        print(self.moments)
+        
         return self;
         
     def spectral_average(self,energies = None):
 
         if energies is None:        
             energies = np.linspace(-safe_CUTOFF,safe_CUTOFF, 1000);
-            densities= [np.sum([ mu*np.cos(m*np.arccos(x)) for m,mu in enumerate(self.moments)])/np.sqrt(1-x**2) for x in energies];        
+            densities= [np.sum([ 2*mu*np.cos(m*np.arccos(x)) for m,mu in enumerate(self.moments)])/np.sqrt(1-x**2) for x in energies];        
         return (energies, densities)
         
     
