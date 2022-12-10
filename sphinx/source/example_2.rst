@@ -36,7 +36,7 @@ and through proper inversion and by exploiting the relation between momentum and
 
 .. math::
 
-    \rho(\varepsilon)   &= \frac{dx(\varepsilon) }{d\varepsilon},
+    \rho(\varepsilon)   &= \frac{dx(\varepsilon) }{d\varepsilon}, \\
                         &= \frac{1}{2\pi \sqrt{4t^2- \varepsilon^2} }.
     
 The kernel polynomial method 
