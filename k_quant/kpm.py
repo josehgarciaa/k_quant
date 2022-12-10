@@ -35,6 +35,7 @@ class Density:
         code : :obj:`int`, optional
             Numeric error code.
                     
+                    
         .. _KPM:
 
         References:
