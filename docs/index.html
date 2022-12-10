@@ -42,6 +42,68 @@ in long journey towards generating quantitative predictions of measurable quanti
 a high-level Python package which aims to provide an many different functions to compute
 spectral properties from the Hamiltonian such as bandstructures and their spin and orbital projections,
 conductivities, spin Hall conductivities, and density of states.</p>
+<span class="target" id="module-k_quant.system"></span><dl class="py class">
+<dt class="sig sig-object py" id="k_quant.system.System">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">k_quant.system.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.system.System" title="Permalink to this definition">¶</a></dt>
+<dd><p>Storage and handle the momentum-space model and structural information of the system</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dimensions</strong> (<em>tuple</em>) – A three integer tuple that defines the dimensions of the system in terms of repeating unit cells.</p>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><p>The arguments are presented in order of preference, i.e, w90_inp will be used over model.</p>
+<p>w90_inp (str): The filename of a Wannier90 input file. Calling this argument will look for the label_hr.dat and label.xyz files in the same directory</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="k_quant.system.System.dimensions">
+<span class="sig-name descname"><span class="pre">dimensions</span></span><a class="headerlink" href="#k_quant.system.System.dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>A three integer tuple that defines the dimensions of the system in terms of repeating unit cells.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.system.System.H_k">
+<span class="sig-name descname"><span class="pre">H_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.system.System.H_k" title="Permalink to this definition">¶</a></dt>
+<dd><p>The k-dependent hamiltonian of the system evaluted in a particular kpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kpoint</strong> (<em>a tuple consisting of three real numbers</em>) – An arbitrary kpoint within the Brilluoin zone</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A matrix of the hamiltonian evaluted at that particular kpoint</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.system.System.Hamiltonian">
+<span class="sig-name descname"><span class="pre">Hamiltonian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.system.System.Hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>The hamiltonian matrix in the Block diagonal sparse format the first Brilluoin zone that defines the reciprocal lattice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A complex sparse matrix in the block-diagonal form</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.system.System.ReciprocalLattice">
+<span class="sig-name descname"><span class="pre">ReciprocalLattice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.system.System.ReciprocalLattice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the points in the first Brilluoin zone that defines the reciprocal lattice.</p>
+<p>Note:
+This functions compute these points on a first call. Therefore, that first call could take significantly more time than subsequent calls.</p>
+</dd></dl>
+
+</dd></dl>
+
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="spectral_solvers.html">Spectral Solvers</a></li>
