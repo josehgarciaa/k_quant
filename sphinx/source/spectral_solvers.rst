@@ -2,7 +2,7 @@ Spectral Solvers
 =================
 
 
-.. automodule:: k_quant.kpm
+.. automodule:: k_quant.spectral_solvers.kpm
     :members:
 
 References:

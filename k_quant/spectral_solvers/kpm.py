@@ -1,13 +1,4 @@
-
-"""
-main.py
-====================================
-The core module of my example project
-"""
-
 import numpy as np
-import k_quant.linalg.sparse  as sp
-import k_quant as k
 
 safe_CUTOFF = 0.95;
 
@@ -24,14 +15,33 @@ import time
 
 
 class Density:
-    """ A spectral density, is a quantity defined as <X> = Tr[ X delta(H-E) ]. From its definition, 
-        this quantity computes how much of the operator X will be measured at a given en energy. 
-        
-        In the kpm module, the delta function is computed by expanding it in terms of Chebyshev polynomials
-        and regularized using a kernel function.  
+    r"""The spectral density of an operator :math:`X`.
 
+
+        The spectral density is defined as :math:`X(E) = {\rm Tr}[ \hat{X} \delta(H-E) ]` and 
+        quantifies how much of the operator X will be measured at a given en energy .
         
+        In this module  :math:`\delta(H-E)` is computed using the kernel polynomial method (`KPM`_).  
+
+        Parameters
+        ----------
+
+        syst : :class:`k_quant.system`
+            A properly initialized system.
+        bounds: :obj:`str`
+            The energy bounds (in the same units as the Hamiltonian) used to rescaled the hamiltonian spectrum to the (-1,1) interval. 
+        kernel : :obj:`str`, optional
+            A string indicating the kernel to be used for the regularization. The options are: "jackson, lorentz". 
+            For any other option will use default: Jackson
+        X : :class:`k_quant.operator`, optional
+            The operator used to compute the density. When none submitted will use identity
+                    
+        Note
+        ----
+            Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
+            to the original one, please call the method self.OriginalHam().       
     """
+    
     
     moments = None;
     Ham     = None;
@@ -42,23 +52,11 @@ class Density:
     num_kpts= None;
     num_orbs= None;
     
-    def __init__(self,system,  kernel = "jackson",  Op=None, bounds=None):
-        """Construct an instance of the Density class 
+    def __init__(self,syst,bounds,  kernel = "jackson",  X=None ):
 
-        Args:
-            system (object): A system as defined in the system module. 
-            kernel (str, optional): The choice of kernel for the regularization. Defaults to "jackson".
-            Op (Operator, optional): An operator as described in the operator module.
-            bounds (tuple, optional): A tuple defining the spectral bound.
-
-        Note:
-            Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
-            to the original one, please call the method self.OriginalHam().
-        """
-
-        self.Ham    = system.Hamiltonian();
-        self.num_kpts = system.KpointNumber();
-        self.num_orbs = system.OrbitalNumber();
+        self.Ham    = syst.Hamiltonian();
+        self.num_kpts = syst.KpointNumber();
+        self.num_orbs = syst.OrbitalNumber();
         
         if bounds is None:
             self.StocasticBounds();
@@ -69,11 +67,6 @@ class Density:
 
     
     def StochasticStates(self):
-        """Generate a random phase state
-
-        :return: _description_
-        :rtype: _type_
-        """
         
         nkpt= self.num_kpts;
         neig= self.num_orbs;
@@ -91,22 +84,43 @@ class Density:
 
         return self;
     
-    def ShiftFactor(self):
+    def ShiftFactor(self) -> float: 
+        """  Returns the shift used in the rescaling operation
+        
+        """
         return safe_CUTOFF/( self.bounds[1] - self.bounds[0] )*( self.bounds[1] + self.bounds[0] );
     
 
-    def ScaleFactor(self):
+    def ScaleFactor(self) -> float:
+        """  Returns the scale factor used in the rescaling operation
+        
+        """
         return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] ) ;
 
               
-    def BroadeningToMoments( self, broadening):
-        print(self.bounds)
+    def BroadeningToMoments( self, broadening) -> int:
+        """  Returns the number of moments for a given broadening and kernel
+
+        Returns
+        -------
+            The moments are computed following the recipes in `KPM`_
+            
+        """
+
         Emax, Emin = self.bounds;
         print("kpm.py: broadeningtomoments should be checked")
         return  int( np.pi*self.ScaleFactor()/ broadening )
     
     #@measure_time
-    def ComputeMoments(self,broadening = None):
+    def ComputeMoments(self,broadening) -> list:
+        """Returns the chebyshev moments required to achieve a given broadening
+
+        Parameters
+        ----------
+        broadening : :obj:`float`
+            The value of the broadening in the same units as the Hamiltonian
+
+        """
 
         num_mom = self.BroadeningToMoments(broadening) ;
         print("kpm.py: computing moments using broadening ",broadening, " and ", self.BroadeningToMoments(broadening) )
@@ -128,8 +142,16 @@ class Density:
           
         return self;
         
-    def spectral_average(self,energies = None):
+    def SpectralAverage(self,energies) -> list: 
+        """Returns the spectral average of :math:`X` in a set of energies
 
+        Parameters
+        ----------
+        energies : :obj:`list`
+            The set of energies where the average will be computed
+
+        """
+        
         if energies is None:        
             energies = np.linspace(-safe_CUTOFF,safe_CUTOFF, 1000);
             densities= [np.sum([ 2*mu*np.cos(m*np.arccos(x)) for m,mu in enumerate(self.moments)])/np.sqrt(1-x**2) for x in energies];        
