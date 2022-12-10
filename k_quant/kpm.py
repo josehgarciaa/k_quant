@@ -86,12 +86,14 @@ class Density:
     
     def ShiftFactor(self) -> float: 
         """  Returns the shift used in the rescaling operation
+        
         """
         return safe_CUTOFF/( self.bounds[1] - self.bounds[0] )*( self.bounds[1] + self.bounds[0] );
     
 
     def ScaleFactor(self) -> float:
         """  Returns the scale factor used in the rescaling operation
+        
         """
         return 2*safe_CUTOFF/( self.bounds[1] - self.bounds[0] ) ;
 
@@ -102,6 +104,7 @@ class Density:
         Returns
         -------
             The moments are computed following the recipes in `KPM`_
+            
         """
 
         Emax, Emin = self.bounds;
