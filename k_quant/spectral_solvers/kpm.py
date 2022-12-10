@@ -26,7 +26,7 @@ class Density:
         Parameters
         ----------
 
-        syst : :class:`k_quant.system`
+        syst : :class:`k_quant.system.System`
             A properly initialized system.
         bounds: :obj:`str`
             The energy bounds (in the same units as the Hamiltonian) used to rescaled the hamiltonian spectrum to the (-1,1) interval. 
