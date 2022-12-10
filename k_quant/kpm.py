@@ -33,9 +33,14 @@ class Density:
         system, kernel='jackson', Op=None, bounds=None
 
         syst : :class:`k_quant.system`
-            Human readable string describing the exception.
-        code : :obj:`int`, optional
-            Numeric error code.
+            A properly initialized system.
+        bounds: :obj:`str`
+            The energy bounds used to rescaled the hamiltonian spectrum to the (-1,1) interval
+        kernel : :obj:`str`, optional
+            A string indicating the kernel to be used for the regularization. The options are: "jackson, lorentz". 
+            For any other option will use default: Jackson
+        X : :class:`operator`, optional
+            The operator used to compute the density. When none submitted will use identity
                     
 
         References:
@@ -59,7 +64,7 @@ class Density:
     num_kpts= None;
     num_orbs= None;
     
-    def __init__(self,syst,  kernel = "jackson",  Op=None, bounds=None):
+    def __init__(self,syst,bounds,  kernel = "jackson",  X=None ):
 
         self.Ham    = syst.Hamiltonian();
         self.num_kpts = syst.KpointNumber();
