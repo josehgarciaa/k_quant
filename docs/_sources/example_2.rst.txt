@@ -59,7 +59,7 @@ In the limit of infinite system, the sum can be replace by an integral
 
 .. math::
 
-    \mu_m   &= \int_{0}^1 dx \cos\left(2\pi  m x\right)= \delta_{m0}
+    \mu_m = \int_{0}^1 dx \cos\left(2\pi  m x\right)= \delta_{m0}
 
 which after replacing in the chebyshev sum leads to
 
