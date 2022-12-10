@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>&lt;no title&gt; &#8212; k Quant 0.0.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorials" href="example.html" />
+    <link rel="prev" title="What is \({\boldsymbol k}\) Quant?" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="module-k_quant.kpm"></span><dl class="py class">
+<dt class="sig sig-object py" id="k_quant.kpm.Density">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">k_quant.kpm.</span></span><span class="sig-name descname"><span class="pre">Density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jackson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Op</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density" title="Permalink to this definition">¶</a></dt>
+<dd><p>The spectral density of an operator <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<blockquote>
+<div><p>The spectral density is defined as :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>langle X</p>
+</div></blockquote>
+<p>angle(E) = {
+m Tr}[ X delta(H-E) ]` and</p>
+<blockquote>
+<div><p>quantifies how much of the operator X will be measured at a given en energy .</p>
+<p>In this module  <span class="math notranslate nohighlight">\(\delta(H-E)\)</span> is computed using the kernel polynomial method (<a class="reference internal" href="#kpm">KPM</a>).</p>
+<p>If the class has public attributes, they may be documented here
+in an <code class="docutils literal notranslate"><span class="pre">Attributes</span></code> section and follow the same formatting as a
+function’s <code class="docutils literal notranslate"><span class="pre">Args</span></code> section. Alternatively, attributes may be documented
+inline with the attribute’s declaration (see __init__ method below).</p>
+<p>Properties created with the <code class="docutils literal notranslate"><span class="pre">&#64;property</span></code> decorator should be documented
+in the property’s getter method.</p>
+<dl>
+<dt>attr1<span class="classifier">str</span></dt><dd><p>Description of <cite>attr1</cite>.</p>
+</dd>
+<dt>attr2<span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</span></dt><dd><p>Description of <cite>attr2</cite>.</p>
+</dd>
+</dl>
+<p>A spectral density, is a quantity defined as &lt;X&gt; = Tr[ X delta(H-E) ]. From its definition,
+this quantity computes how much of the operator X will be measured at a given en energy.</p>
+<p>In the kpm module, the delta function is computed by expanding it in terms of Chebyshev polynomials
+and regularized using a kernel function.</p>
+<p>Exceptions are documented in the same way as classes.</p>
+<p>The __init__ method may be documented in either the class level
+docstring, or as a docstring on the __init__ method itself.</p>
+<p>Either form is acceptable, but the two should not be mixed. Choose one
+convention to document the __init__ method and be consistent with it.</p>
+<p>Do not include the <cite>self</cite> parameter in the <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> section.</p>
+<dl>
+<dt>msg<span class="classifier">str</span></dt><dd><p>Human readable string describing the exception.</p>
+</dd>
+<dt>code<span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>, optional</span></dt><dd><p>Numeric error code.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>msg<span class="classifier">str</span></dt><dd><p>Human readable string describing the exception.</p>
+</dd>
+<dt>code<span class="classifier">int</span></dt><dd><p>Numeric error code.</p>
+</dd>
+</dl>
+<p id="kpm">References:
+[1] LSQt, Physics Reports, Volume 903, Pages 1-69 (2021)</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="k_quant.kpm.Density.StochasticStates">
+<span class="sig-name descname"><span class="pre">StochasticStates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#k_quant.kpm.Density.StochasticStates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a random phase state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">k Quant</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">What is <span class="math notranslate nohighlight">\({\boldsymbol k}\)</span> Quant?</a></li>
+      <li>Next: <a href="example.html" title="next chapter">Tutorials</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Jose H. Garcia.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/spectral_solvers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
