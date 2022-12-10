@@ -86,8 +86,8 @@ class Density:
             
         .. _references
         References:
-        [1] https://doi.org/10.1016/j.physrep.2020.12.001
-
+        [1] :xref:`LSQT` 
+        
     """
     
     
