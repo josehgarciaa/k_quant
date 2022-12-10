@@ -39,18 +39,7 @@ class Density:
         Note
         ----
             Using this module, will result in rescaling the hamiltonian operator defined in system. For returning it 
-            to the original one, please call the method self.OriginalHam().
-
-
-        References:
-        ===========
-                    
-        .. _KPM:
-
-        [1] Linear Scaling Quantum Transport methodlogies, Physics Reports, Volume 903, Pages 1-69 (2021)
-        
-        [2] The kernel polynomial method, Physics Reports, Volume 903, Pages 1-69 (2021)
-        
+            to the original one, please call the method self.OriginalHam().       
     """
     
     
