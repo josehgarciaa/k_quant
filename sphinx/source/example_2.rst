@@ -35,8 +35,8 @@ and through proper inversion and by exploiting the relation between momentum and
 
 .. math::
 
-    \rho(\varepsilon)= \frac{dx(\varepsilon) }{d\varepsilon},
-    \rho(\varepsilon)= \frac{1}{2\pi \sqrt{4t^2- \varepsilon^2} }.
+    \rho(\varepsilon)   &= \frac{dx(\varepsilon) }{d\varepsilon},
+                        &= \frac{1}{2\pi \sqrt{4t^2- \varepsilon^2} }.
     
 The kernel polynomial method 
 -----------------------------
@@ -58,14 +58,15 @@ In the limit of infinite system, the sum can be replace by an integral
 
 .. math::
 
-    \mu_m   &= \int_{0}^1 dx \cos\left(2\pi  m x\right) \\
-            &= \delta_{m0}
+    \mu_m   &= \int_{0}^1 dx \cos\left(2\pi  m x\right)= \delta_{m0}
 
 which after replacing in the chebyshev sum leads to
 
 .. math::
 
     \rho(\varepsilon) = \frac{1}{\pi \sqrt{1- x^2}
+
+fin
 
 
 
