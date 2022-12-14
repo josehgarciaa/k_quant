@@ -4,6 +4,11 @@ Quantum transport calculations in k-space
 https://josehgarciaa.github.io/k_quant/
 
 
+![alt text](https://github.com/josehgarciaa/k_quant/blob/main/sphinx/logos/k_quant_logo.png)
+
+
+
+
 ## Installation/Usage:
 
 To install the package download the code from its [repository](https://github.com/josehgarciaa/k-quant), 
