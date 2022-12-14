@@ -1,15 +1,41 @@
-# What is k-quant
-Quantum transport calculations in k-space
 
-https://josehgarciaa.github.io/k_quant/
 
+# What is 
 
 ![alt text](https://github.com/josehgarciaa/k_quant/blob/main/sphinx/logos/k_quant_logo.png)
 
+Is a package to performe efficient quantum transport in disordered crystalline systems. 
+
+## Capabilities 
+
+[KQuant](https://josehgarciaa.github.io/k_quant/) currently allows to compute
+
+- The conductivity tensor
+
+- The momentum relaxation times
+
+- Spin Hall conductivities
+
+- Nonequilibrium spin-densities
+
+- Spin-orbit torques
+
+- Spin relaxation lengths
 
 
 
-## Installation/Usage:
+## Inputs
+
+We are currently compatible with the following model-building tools:
+
+- [Wannier90](http://www.wannier.org/)
+
+- [PAOflow](http://www.aflowlib.org/src/paoflow/)
+
+- [Kwant](https://kwant-project.org/)
+
+
+# Installation/Usage:
 
 To install the package download the code from its [repository](https://github.com/josehgarciaa/k-quant), 
 then from the k-quant directoy proceed with 
