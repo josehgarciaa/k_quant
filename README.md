@@ -37,14 +37,13 @@ We are currently compatible with the following model-building tools:
 
 # Installation/Usage:
 
-To install the package download the code from its [repository](https://github.com/josehgarciaa/k-quant), 
-then from the k-quant directoy proceed with 
-
+To install just perform the following commands
 ```
+git clone https://github.com/josehgarciaa/k_quant.git
+cd k_quant
 pip install . 
 ```
-
-## An example of k-quant
+# An example of k-quant
 
 ```python
 
