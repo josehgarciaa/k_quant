@@ -91,6 +91,8 @@ HoppingList W90::HamiltonianFromHR(const std::string& filename) {
                     >> hop.initial_orbital 
                     >> hop.final_orbital
                     >> hop.rvalue >> hop.ivalue;
+                hop.initial_orbital-=1; 
+                hop.final_orbital-=1; 
                 hops.AddHopping(hop);
             }    
         }

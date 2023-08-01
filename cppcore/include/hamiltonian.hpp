@@ -7,7 +7,7 @@
 #include <vector>
 #include <array>
 #include<limits>
-
+#include "sparse_matrices.hpp"
 typedef std::complex<double>  complex_t;
 
 struct Hopping {
@@ -83,10 +83,10 @@ std::vector<HamiltonianEntry> readHamiltonian(const std::string& filename);
 unsigned long CountLines(const std::string& filename);
 
 
-void build_k_hamiltonian(const double kx,
-                         const double ky,
-                         const double kz,
-                         const HoppingList& hoppings);
+HermitianMatrix get_k_hamiltonian(  const double k0,
+                                    const double k1,
+                                    const double k2,
+                                    const HoppingList& hoppings);
 
 
 #endif // HAMILTONIAN_READER_H
