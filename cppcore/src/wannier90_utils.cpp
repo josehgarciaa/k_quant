@@ -16,7 +16,7 @@ unsigned long W90::TotalLineNumber(const std::string& filename) {
 }
 
 
-HoppingList W90::HamiltonianFromHR(const std::string& filename) {
+HoppingList W90::HamiltonianFromHR(const std::string& filename, bool read_gridpoint) {
     HoppingList hops;
     
     //Reserve enough continious space for the hoppings
@@ -56,7 +56,7 @@ HoppingList W90::HamiltonianFromHR(const std::string& filename) {
                 }
                 read_basis_size = true;
             }
-            else if( !read_grid_points )
+            else if( !read_grid_points && read_gridpoint)
             {
                 try {
                     hops.SetNumGridPoints( std::stoi(line) );
@@ -69,7 +69,7 @@ HoppingList W90::HamiltonianFromHR(const std::string& filename) {
                 }
                 read_grid_points = true;
             }
-            else  if (!read_wz_gpoints)
+            else  if (!read_wz_gpoints&& read_gridpoint)
             {
                 std::vector<std::string> wz_gpoints;
                 // By convention there is always 15 grid points per line

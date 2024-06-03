@@ -6,7 +6,7 @@ CXX_FLAGS="-std=c++11 -Wall -fopenmp"    # Compiler flags with OpenMP support
 INCLUDE_DIR="./include"                 # Path to the include directory
 SRC_DIR="./src"                         # Path to the src directory
 LIB_DIR="./lib"                         # Path to the lib directory
-EIGEN_DIR="/home/jgarcia/projects/eigen-3.4.0/"
+EIGEN_DIR="/usr/include/eigen3/"
 OUTPUT_DIR="./bin"                      # Output directory for compiled objects
 
 # Create the output directory if it doesn't exist

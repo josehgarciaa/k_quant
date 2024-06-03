@@ -5,10 +5,39 @@
 #include "hamiltonian.hpp"
 
 
-HermitianMatrix get_k_hamiltonian(const double k0,
+DiagonalMatrix get_onsites( const double k0,
+                            const double k1,
+                            const double k2,
+                            const HoppingList& hoppings )
+{
+    const int dim = hoppings.GetBasisSize();
+    DiagonalMatrix  onsites(dim);
+    std::cout<<"dim"<<hoppings.GetBasisSize()<<std::endl;
+
+
+    for(const auto& h: hoppings.list)
+    {
+        if( h.d0== 0 && h.d1== 0 && h.d2== 0 && h.initial_orbital==h.final_orbital)
+        {
+            const real kr = ((real)h.d0)*k0 +
+                            ((real)h.d1)*k1 +
+                            ((real)h.d2)*k2 ;
+            const scalar Ikr =  scalar(0,kr);
+            const scalar t_expIkr =  scalar( h.rvalue, h.ivalue)*std::exp(Ikr);
+            DiagonalMatrix.addElement(h.initial_orbital, t_expIkr);
+        }
+    }
+    return onsites;
+}
+
+
+
+HermitianMatrix get_k_hamiltonian(  const double k0,
                                     const double k1,
                                     const double k2,
-                                    const HoppingList& hoppings)
+                                    const HoppingList& hoppings,
+                                    const HoppingList& positions 
+                                    )
 {
     const int ham_dim = hoppings.GetBasisSize();
     HermitianMatrix k_hamiltonian(ham_dim);
@@ -20,7 +49,7 @@ HermitianMatrix get_k_hamiltonian(const double k0,
                             ((real)h.d1)*k1 +
                             ((real)h.d2)*k2 ;
             const scalar Ikr =  scalar(0,kr);
-            const scalar t_expIkr =  scalar( h.rvalue,h.ivalue)*std::exp(Ikr);
+            const scalar t_expIkr =  scalar( h.rvalue, h.ivalue)*std::exp(Ikr);
             k_hamiltonian.addElement(h.initial_orbital,h.final_orbital, t_expIkr);
     }
     return k_hamiltonian;
@@ -29,7 +58,7 @@ HermitianMatrix get_k_hamiltonian(const double k0,
 
 void build_hamiltonian(std::string system_label)
 {
-    auto hoppings = W90::HamiltonianFromHR(system_label);
+    auto hoppings = W90::HamiltonianFromHR(system_label, true);
     const size_t kdim0 = 100;
     const size_t kdim1 = 100;
     const size_t kdim2 = 1;

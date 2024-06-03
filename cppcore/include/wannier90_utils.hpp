@@ -17,7 +17,7 @@ namespace W90{
  */
 unsigned long TotalLineNumber(const std::string& filename);
 
-HoppingList HamiltonianFromHR(const std::string& wannier_filename);
+HoppingList HamiltonianFromHR(const std::string& filename, bool read_gridpoint);
 
 
 
