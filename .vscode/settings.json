@@ -67,7 +67,18 @@
         "filesystem": "cpp",
         "__nullptr": "cpp",
         "__hash_table": "cpp",
-        "__split_buffer": "cpp"
+        "__split_buffer": "cpp",
+        "span": "cpp",
+        "format": "cpp",
+        "__tree": "cpp",
+        "map": "cpp",
+        "queue": "cpp",
+        "set": "cpp",
+        "stack": "cpp",
+        "charconv": "cpp",
+        "source_location": "cpp",
+        "variant": "cpp",
+        "stdfloat": "cpp"
     },
     "cmake.sourceDirectory": "/data/jgarcia/source/k_quant/cppcore"
 }

@@ -9,19 +9,17 @@
 #include<limits>
 #include "matrices.hpp"
 #include "sparse_matrices.hpp"
+#include "typedef.hpp"
 
-typedef std::complex<double>  complex_t;
 
-struct Hopping {
+struct OperatorEntry{
     int d0,d1,d2;
     int initial_orbital; ///< Initial site of the hopping
     int final_orbital; ///< Final site of the hopping
-    double rvalue, ivalue;
-
+    real_t rvalue, ivalue;
 };
 
-
-struct HoppingList
+struct Operator
 {
     int basis_size;
     int num_grid_points;

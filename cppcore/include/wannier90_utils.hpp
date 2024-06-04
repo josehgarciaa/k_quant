@@ -1,3 +1,6 @@
+#ifndef W90UTIL_PARSERS_H
+#define W90UTIL_PARSERS_H
+
 #include <string>
 #include <fstream>
 #include <limits>
@@ -27,3 +30,4 @@ HoppingList HamiltonianFromHR(const std::string& filename, bool read_gridpoint);
 
 };
 
+#endif
