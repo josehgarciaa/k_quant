@@ -18,6 +18,11 @@ namespace W90{
         //Getters
         int GetNumGridPoints() const { 
             return num_grid_points; }
+
+
+        
+
+
     };
 
     class Hamiltonian : public Operator {
