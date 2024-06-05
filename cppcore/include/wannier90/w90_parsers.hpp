@@ -132,7 +132,6 @@ namespace W90{
         return hops;
     };
 
-
     /**
      * @brief Counts the total number of lines in $label_hr.dat file.
      *
@@ -142,39 +141,8 @@ namespace W90{
      *
      * @note add note.
      */
-    int WriteHamiltonian(const W90::Hamiltonian& hops, const std::string filename)
-    {
-        /*std::cout<<"Created using k-quant"<<std::endl;
-        std::cout<<"          "<<hops.GetBasisSize()<<std::endl;
-        std::cout<<"          "<<hops.GetNumGridPoints()<<std::endl;
-        const int num_grid_points_lines = std::ceil( (double)hops.GetNumGridPoints() / 15.0);
-        for (int i=0; i <num_grid_points_lines; i++ )
-            std::cout<< hops.GetWzGpointsLine(i)<<std::endl;
-
-        for (auto &ham_entry : hops.GetEntryList()) {
-            std::cout<<ham_entry.d0<<"    ";
-            std::cout<<ham_entry.d1<<"    ";
-            std::cout<<ham_entry.d2<<"    ";
-            std::cout<<ham_entry.initial_orbital<<"    ";
-            std::cout<<ham_entry.final_orbital<<"    ";
-            std::cout<<ham_entry.rvalue<<"    ";
-            std::cout<<ham_entry.ivalue<<std::endl;
-        }*/
-        return 0;
-    };
-
-
-    /**
-     * @brief Counts the total number of lines in $label_hr.dat file.
-     *
-     * @param filename The name of the file to be processed.
-     * @return The total number of lines in the file. 
-     * @throws std::runtime_error if the file cannot be opened or read.
-     *
-     * @note add note.
-     */
-    std::vector<W90::Operator> RedPositionOperator(const std::string& filename){
-        std::vector<W90::Operator> entries_pos(3);
+    std::vector<W90::Position> RedPositionOperator(const std::string& filename){
+        std::vector<W90::Position> entries_pos(3);
         
         //Reserve enough continious space for the hoppings
         //by using the total number of lines of the file
@@ -254,6 +222,95 @@ namespace W90{
         input_file.close();
         return entries_pos;
     };
+
+
+    int WriteW90CentersFrom(const std::vector<W90::Position>& PosOp, const std::string filename){
+        std::ofstream ofs(filename);
+        std::vector< std::vector<real_t> > centres(CartDIM);
+        for(size_t i=0; i < CartDIM; i++)
+        {
+            centres[i] = PosOp[i].GetOnsitePositions();
+        }
+        if( PosOp[0].GetBasisSize()!= PosOp[1].GetBasisSize() ||
+            PosOp[1].GetBasisSize()!= PosOp[2].GetBasisSize()){
+            std::cerr<<"In PositionOpToW90Centers function the size of the Position operator is not the same "<<std::endl;
+            }
+
+        ofs<<"    "<<PosOp[0].GetBasisSize()<<std::endl;
+        ofs<<" Wannier centres, written by kquant"<<std::endl;
+        for(size_t n =0; n < PosOp[0].GetBasisSize(); n++ )
+        {
+            ofs<<"X"<<"\t "<<centres[0][n]<<"\t "<<centres[1][n]<<"\t "<<centres[2][n]<<"\t "<<std::endl;
+        }
+        ofs.close();
+    return 0;}
+
+
+    std::vector< std::vector<real_t> >  ReadW90CentersFrom(const std::string filename)
+    {
+        std::vector< std::vector<real_t> > centres;
+       
+        //Required to map the string into numbers
+        std::istringstream iss;
+        // Open the file and read each string with a fixed precision
+        std::ifstream input_file(filename);
+        if (!input_file.is_open()) {
+            throw std::runtime_error("Cannot open the file: "+filename);
+        }
+        input_file.precision(std::numeric_limits<double>::digits10 + 2);
+
+
+        std::string line,comment;
+        bool read_num_sites = false;
+        bool read_comment = false;        
+        while (std::getline(input_file, line)) {
+            if (!line.empty() && line[0] != '#'){
+                if( !read_num_sites )
+                {
+                    std::cout<<line<<std::endl;
+                    try {    
+                            const size_t num_sites = (size_t)std::stoul(line);
+                            centres.reserve(num_sites);                            
+                        } 
+                    catch(std::exception const & e)
+                    {
+                        std::cerr   << "Error while converting line:"<<line<<"from file" << filename<<" into num_sites"<<std::endl;
+                        exit(-1);
+                    }
+                    read_num_sites = true;
+                }
+                else if( !read_comment )
+                {
+                    comment = line;
+                    read_comment = true;
+                }
+                else 
+                {
+                    iss.str(line);
+                    iss.clear();
+                    std::string X;
+                    std::vector<real_t> R(3);   
+                    iss >> X 
+                        >> R[0]
+                        >> R[1] 
+                        >> R[2];
+                    if ( X == "X" ) 
+                    {
+                        centres.push_back(R);
+                    }
+                }    
+            }
+        }
+        input_file.close();
+        return centres;}
+
+
+
+
+
+
+
+
 };
 
 

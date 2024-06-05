@@ -56,6 +56,26 @@ struct Operator
         wz_gpoints = gpoints;
     }
 
+    std::vector<std::string>& GetWzGpoints() const 
+    {
+        return wz_gpoints;
+    }
+
+
+    // Conversion methods
+    std::string toString() const {
+        std::ostringstream oss;
+        oss.precision(std::numeric_limits<double>::digits10 + 2);
+        oss << "Hamiltonian created using kquant"<<std::endl;
+        oss << this->GetBasisSize()<<std::endl;
+        oss << this->GetNumGridPoints()<<std::endl;
+        for (auto &line : this->GetWzGpoints()) 
+            oss << line<<std::endl;
+//        oss << this->EntriesToString()<<std::endl;
+
+        return oss.str();
+    }
+
 
 };
 

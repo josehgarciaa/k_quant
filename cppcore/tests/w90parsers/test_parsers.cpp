@@ -23,12 +23,14 @@ int main(int argc, char* argv[]) {
 
     const auto hops = W90::ReadHamiltonian(syst_name+"_hr.dat");
     std::string output("hola_hr.dat");
-    W90::WriteHamiltonian(hops, output);
 
 
     const auto pos_hops = W90::RedPositionOperator(syst_name+"_r.dat");
 
+    //std::cout<<pos_hops[0].toString();
+    //WriteW90CentersFrom(pos_hops,"out.dat");
 
+    W90::ReadW90CentersFrom(syst_name+"_centres.xyz");
 
 
 //    HoppingList ham_entries = W90::HamiltonianFromHR(syst_name+"_hr.dat",true); 
