@@ -1,33 +1,42 @@
-#ifndef MATRICES_H
-#define MATRICES_H
+#ifndef BASEMATRIX_H
+#define BASEMATRIX_H
 
 #include <complex>
 #include <vector>
 #include <Eigen/Dense>
 #include "typedef.hpp"
 
-#include "matrices/base_matrix.hpp"
 
 
-class HermitianMatrix {
+class BaseMatrix{
 public:
-    Eigen::MatrixXcd data;
 
 public:
-    // Constructor
-    HermitianMatrix(const int size=0) : data(size, size) {        // Initialize the matrix to zero
-        data.setZero();}
 
-    // Function to set elements of the Hermitian matrix
-    void setElement(int row, int col, const std::complex<double>& value) {
-        if (row == col)
-            data(row, col) = value.real();
-        if (row < col) 
-        {
-            data(row, col) = value;
-            data(col, row) = std::conj(value);
-        }
-    }
+
+
+    /**
+     * @brief Set the value of an element in the matrixlocated at ith row and jth column using base-zero indexing.
+     *
+     * Set the value of an element in the matrix located at 
+     * the ith row and jth column using base-zero indexing.
+     * 
+     *
+     * @param[in] i Description of the first argument (e.g., an integer).
+     * @param[in] j Description of the second argument (e.g., a double).
+     * @param[in] value Description of the third argument (e.g., a string).
+     * @return Pointer to the object 
+     *
+     * @note Additional notes about the function, if any.
+     * @warning Any warnings about the function usage.
+     * @pre Precondition that must be satisfied before calling this function.
+     * @post Postcondition guaranteed after the function returns.
+     * @exception Description of any exceptions thrown by the function.
+     * @see Reference to other related functions or documentation.
+     */
+    virtual
+    void setElement(const size_t row,const size_t  col, const std::complex<double>& value);
+
 
     // Function to set elements of the Hermitian matrix
     void addElement(int row, int col, const std::complex<double>& value) {
