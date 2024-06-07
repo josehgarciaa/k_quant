@@ -4,6 +4,8 @@
 #include <vector>
 #include "operators.hpp"
 #include "typedef.hpp"
+#include "physics.hpp"
+#include "matrices.hpp"
 #include <iostream>
 
 namespace W90{
@@ -101,6 +103,75 @@ namespace W90{
             oss << this->EntriesToString()<<std::endl;
         return oss.str();};
 
+    };
+
+    class Centres
+    {
+        size_t num_wann_centres = 0; 
+        std::vector< kquant::CartVector > centres_pos;
+        DiagonalMatrix u_matrix;
+
+        public:
+        Centres(){}; 
+
+        public:
+        void Reserve(const size_t size)
+        {
+            centres_pos.reserve(size);
+        }
+
+        size_t GetNumberOfCentres() const
+        {
+            return num_wann_centres;
+        }
+    
+
+        void AddCenter(const kquant::CartVector& C)
+        {
+            centres_pos.push_back(C);
+            num_wann_centres =  centres_pos.size();
+        }
+
+        void AddCentres(const std::vector< kquant::CartVector >& Cs)
+        {
+            centres_pos= std::vector< kquant::CartVector >(Cs);
+            num_wann_centres =  centres_pos.size();
+        }
+
+        const std::vector< kquant::CartVector >& 
+        GetCentres()
+        {
+            return centres_pos;
+        }
+
+
+        const kquant::CartVector& 
+        GetCenter(const size_t idx) const 
+        {
+            return centres_pos[idx];
+        }
+
+
+        DiagonalMatrix Umatrix(const kquant::CartVector& k) 
+        {
+            kquant::CartVector x(1.,2.,3.);
+            this->AddCenter(x);
+            this->AddCenter(x);
+            
+            std::vector<complex_t> phases(num_wann_centres);
+            for( size_t idx = 0 ; idx < num_wann_centres; idx++)
+            {
+                const auto centre = this->GetCenter(idx);
+                phases[idx] = complex_t( 0, centre.dot(k));
+            }
+            u_matrix= DiagonalMatrix(phases);
+
+            for(const auto& x: u_matrix.GetDiagonal() )
+            {
+                std::cout<<u_matrix.diagonal<<std::endl;
+            }
+
+        return u_matrix;};
     };
 
 };

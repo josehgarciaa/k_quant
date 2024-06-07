@@ -32,6 +32,10 @@ int main(int argc, char* argv[]) {
 
     W90::ReadW90CentersFrom(syst_name+"_centres.xyz");
 
+    W90::Centres x;
+
+    kquant::CartVector k(1,1,1);
+    x.Umatrix(k);
 
 //    HoppingList ham_entries = W90::HamiltonianFromHR(syst_name+"_hr.dat",true); 
 //    HoppingList pos_entries = W90::HamiltonianFromHR(syst_name+"_r.dat",false); 

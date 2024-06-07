@@ -249,7 +249,6 @@ namespace W90{
     std::vector< std::vector<real_t> >  ReadW90CentersFrom(const std::string filename)
     {
         std::vector< std::vector<real_t> > centres;
-       
         //Required to map the string into numbers
         std::istringstream iss;
         // Open the file and read each string with a fixed precision
@@ -258,7 +257,6 @@ namespace W90{
             throw std::runtime_error("Cannot open the file: "+filename);
         }
         input_file.precision(std::numeric_limits<double>::digits10 + 2);
-
 
         std::string line,comment;
         bool read_num_sites = false;
@@ -303,14 +301,7 @@ namespace W90{
         }
         input_file.close();
         return centres;}
-
-
-
-
-
-
-
-
+        
 };
 
 

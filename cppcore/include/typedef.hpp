@@ -6,5 +6,9 @@
 typedef double  real_t;
 typedef std::complex<double>  complex_t;
 
+namespace kquant
+{
+    using std::conj;
+};
 
 #endif 
