@@ -6,6 +6,7 @@
 #include "typedef.hpp"
 #include "physics.hpp"
 #include "matrices.hpp"
+#include "matrices/diagonal.hpp"
 #include <iostream>
 
 namespace W90{
