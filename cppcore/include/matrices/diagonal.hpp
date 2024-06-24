@@ -12,14 +12,14 @@ public:
 
 public:
     // Constructor
-    DiagonalMatrix(const size_t size = 0) : DiagonalMatrix(),diagonal(size) {
+    DiagonalMatrix(const size_t size = 0) :  {
         this->setMatrixType("Diagonal Matrix");
         diagonal.diagonal().setZero();}
 
     DiagonalMatrix(std::vector< complex_t>& elems){
         this->setMatrixType("Diagonal Matrix");
-        if( (size_t)diagonal.diagonal().size() != (size_t)elems.size() )
-            diagonal = Eigen::DiagonalMatrix<complex_t, Eigen::Dynamic>(elems.size());
+        //if( (size_t)diagonal.diagonal().size() != (size_t)elems.size() )
+        //    diagonal = Eigen::DiagonalMatrix<complex_t, Eigen::Dynamic>(elems.size());
         this->SetElements(elems);}
 
 
