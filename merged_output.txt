@@ -1,0 +1,1773 @@
+
+
+--- File: .\linear_chain.py ---
+
+import matplotlib.pyplot as plt
+#import k_quant as k
+
+from k_quant.global_parameters import set_kmesh, get_kmesh, set_energy_grid, get_energy_grid
+import numpy as np
+from k_quant.operators.operator import Operator
+from k_quant.operators.spectral_operator import SpectralOperator
+
+from k_quant.solvers.trace.trace_calculation import Trace 
+from k_quant.solvers.trace.strategies import  ExactTrace
+
+from k_quant.solvers.spectral_representations.spectral_representation import SpectralRepresentations
+from k_quant.solvers.spectral_representations.strategies.chebyshev import ChebyshevRepresentation 
+
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+from k_quant.operators.spectral_operators_strategies.advanced_green_function import AdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.retarded_green_function import RetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_advanced_green_function import DerivateAdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_retarded_green_function import DerivateRetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.ImGreenFunction import ImAdvancedGreenFunction
+
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use("tkagg")  # Use TkAgg backend
+plt.ion()  # Turn on interactive mode
+
+
+"""
+Let us first define a Hamiltonian in momentum space
+and for this purpose we choose as prototype a model for p_z electrons
+ in graphene within the nearest neighbor approximation with lattice vectors
+ defined in the lat_vec variable
+"""
+lat_vec = [ [ 1, 0,0 ], [ 0,1,0 ], [ 0,0,1 ] ]
+
+def Ham_k(k): #MUST BE IN RECIPROCAL
+    a_0, a_1, a2  = lat_vec
+    hop = 1.0
+    f_k = 2*hop* np.cos( 2*np.pi*k[0]*a_0[0] ) #
+    return np.array([ [ f_k] ])
+
+def Vel_k(k): #MUST BE IN RECIPROCAL
+    a_0, a_1, a2  = lat_vec
+    hop = 1.0
+    f_k = 4*hop*a_0[0]* np.cos( 2*np.pi*k[0]*a_0[0] ) #
+    return np.array([ [ f_k] ])
+
+
+
+
+energies = np.linspace(-3,3,100)
+set_energy_grid(energies)
+set_kmesh( (10000, 1 , 1))
+
+
+hamiltonian_op = Operator(op_function=Ham_k, name="Hamiltonian" )
+velocity_op = Operator(op_function = Vel_k, name="VX" )
+
+
+eta = 0.001
+green_func_op = SpectralOperator( strategy = ImAdvancedGreenFunction(),
+                                  hamiltonian_op =hamiltonian_op,  
+                                  broadening = eta,
+                                  name="AdvancedGreen's Function" )
+
+
+my_trace  = Trace(ExactTrace())
+#cheb_green_func_op= SpectralRepresentations(ChebyshevRepresentation(), green_func_op)
+#dos_theo = np.array([ 1/np.sqrt(4- E*E ) for E in get_energy_grid() ])*10000
+#dos = my_trace.compute( green_func_op)
+
+#plt.plot(get_energy_grid(), dos)
+#plt.plot(get_energy_grid(), dos_theo)
+
+#plt.show()
+#input("Press Enter to exit...")  # Keeps the window open
+
+
+my_trace  = Trace(ExactTrace())
+cond = my_trace.compute(  velocity_op, green_func_op, velocity_op, green_func_op)
+
+plt.plot(get_energy_grid(), cond)
+
+plt.show()
+input("Press Enter to exit...")  # Keeps the window open
+
+
+
+--- File: .\project_to_text.py ---
+
+import os
+
+def merge_files(input_directory, output_file):
+    """Reads all text-based files from a directory and merges them into a single file."""
+    with open(output_file, 'w', encoding='utf-8') as outfile:
+        for root, _, files in os.walk(input_directory):
+            for file in files:
+                file_path = os.path.join(root, file)
+                if file.endswith(('.py',)):  
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as infile:
+                            outfile.write(f"\n\n--- File: {file_path} ---\n\n")
+                            outfile.write(infile.read() + "\n")
+                    except Exception as e:
+                        print(f"Skipping {file_path} due to error: {e}")
+
+if __name__ == "__main__":
+    directory = input("Enter the directory path: ")
+    output = "merged_output.txt"
+    merge_files(directory, output)
+    print(f"All files have been merged into {output}")
+
+
+
+--- File: .\setup.py ---
+
+from setuptools import setup, find_packages, Extension
+
+c_extension = Extension('k_quant.lib.my_c_extension', sources=['lib/src/c_extension.c'])
+# Define compiler options
+compiler_options = ['-O3']
+
+c_extension = Extension('k_quant.lib.my_c_extension',
+                        sources=['lib/src/c_extension.c'],
+                        extra_compile_args=compiler_options)
+
+setup(
+    name='k_quant',
+    version='0.0.1',
+    author='Jose H. Garcia',
+    author_email='josehugo.garcia@protonmail.com',
+    description='An utility to perform calculations in the momentum space',
+    long_description='file: README.md',
+    long_description_content_type='text/markdown',
+    url='https://josehgarciaa.github.io/k_quant/',
+    project_urls={
+        'Bug Tracker': 'https://github.com/josehgarciaa/k_quant/issues',
+    },
+    classifiers=[
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+    ],
+    packages=find_packages(),
+    python_requires='>=3.6',
+    ext_modules=[c_extension],  # Add the C extension to the setup
+)
+
+
+--- File: .\sympy_example.py ---
+
+import matplotlib.pyplot as plt
+#import k_quant as k
+
+from k_quant.global_parameters import set_kmesh, get_kmesh, set_energy_grid, get_energy_grid
+import numpy as np
+from k_quant.operators.operator import Operator
+from k_quant.operators.spectral_operator import SpectralOperator
+
+from k_quant.solvers.trace.trace_calculation import Trace 
+from k_quant.solvers.trace.strategies import  ExactTrace
+
+from k_quant.solvers.spectral_representations.spectral_representation import SpectralRepresentations
+from k_quant.solvers.spectral_representations.strategies.chebyshev import ChebyshevRepresentation 
+
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+from k_quant.operators.spectral_operators_strategies.advanced_green_function import AdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.retarded_green_function import RetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_advanced_green_function import DerivateAdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_retarded_green_function import DerivateRetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.ImGreenFunction import ImAdvancedGreenFunction
+
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use("tkagg")  # Use TkAgg backend
+plt.ion()  # Turn on interactive mode
+
+
+"""
+Let us first define a Hamiltonian in momentum space
+and for this purpose we choose as prototype a model for p_z electrons
+ in graphene within the nearest neighbor approximation with lattice vectors
+ defined in the lat_vec variable
+"""
+lat_vec = [ [ 1, 0,0 ], [ 0,1,0 ], [ 0,0,1 ] ]
+
+def Ham_k(k): #MUST BE IN RECIPROCAL
+    a_0, a_1, a2  = lat_vec
+    hop = 1.0
+    f_k = 2*hop* np.cos( 2*np.pi*k[0]*a_0[0] ) #
+    return np.array([ [ f_k] ])
+
+def Vel_k(k): #MUST BE IN RECIPROCAL
+    a_0, a_1, a2  = lat_vec
+    hop = 1.0
+    f_k = 4*hop*a_0[0]* np.cos( 2*np.pi*k[0]*a_0[0] ) #
+    return np.array([ [ f_k] ])
+
+
+
+
+
+import sympy as sp
+import numpy as np
+from numba import njit
+
+# 1. Define the symbolic Hamiltonian in 2D k-space.
+kx, ky, t = sp.symbols('kx ky t', real=True)
+I = sp.I  # imaginary unit
+
+# Define the off-diagonal element: t*(exp(i*kx) + exp(i*ky))
+f = t * (sp.exp(I * kx) + sp.exp(I * ky))
+
+# Construct the 2x2 Hamiltonian
+H_sym = sp.Matrix([[0, f],
+                   [sp.conjugate(f), 0]])
+
+# Compute the symbolic derivatives.
+dH_dkx_sym = H_sym.diff(kx)
+dH_dky_sym = H_sym.diff(ky)
+
+# Lambdify the Hamiltonian and its derivatives for numerical evaluation.
+H_func     = sp.lambdify((kx, ky, t), H_sym, modules='numpy')
+dH_dkx_func = sp.lambdify((kx, ky, t), dH_dkx_sym, modules='numpy')
+dH_dky_func = sp.lambdify((kx, ky, t), dH_dky_sym, modules='numpy')
+
+# Test the lambdified functions for a sample kx, ky, and t.
+kx_val = 0.5
+ky_val = 0.3
+t_val  = 1.0
+
+
+
+
+print("Hamiltonian using lambdify at kx=0.5, ky=0.3, t=1.0:")
+print(H_func(kx_val, ky_val, t_val))
+print("\nDerivative with respect to kx (lambdified):")
+print(dH_dkx_func(kx_val, ky_val, t_val))
+print("\nDerivative with respect to ky (lambdified):")
+print(dH_dky_func(kx_val, ky_val, t_val))
+
+import inspect
+source_code = inspect.getsource(H_func)
+
+
+energies = np.linspace(-3,3,100)
+set_energy_grid(energies)
+set_kmesh( (10000, 1 , 1))
+
+
+
+
+
+--- File: .\examples\topological_graphene.py ---
+
+import matplotlib.pyplot as plt
+import numpy as np
+import numpy as np
+
+import k_quant.global_parameters as kparam
+import k_quant.operators as kop  
+import k_quant.solvers.trace as ktr  
+import k_quant.solvers.trace.strategies as ktr_strategy  
+
+import k_quant.operators.spectral_operators_strategies as ksp_type
+from k_quant.utils.k_operator_optimizer import  optimize_k_operator
+
+
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use("tkagg")  # Use TkAgg backend
+plt.ion()  # Turn on interactive mode
+
+
+import k_quant.global_parameters as kparam
+
+from k_quant.utils.calculus import cumulative_integral
+
+lat_vec = np.array([ [3/2, np.sqrt(3)/2, 0], [3/2,-np.sqrt(3)/2, 0], [0,0,1]])
+
+t = 2.8   # Nearest-neighbor hopping energy (eV)
+lambda_soc = 1.0/3/np.sqrt(3)  # Next-nearest-neighbor hopping energy (eV)
+                                            
+    # Nearest-neighbor vectors
+delta1 = np.array([1/2, np.sqrt(3)/2, 0])
+delta2 = np.array([1/2,-np.sqrt(3)/2, 0])
+delta3 = np.array([-1, 0, 0])
+
+delta = [delta1, delta2, delta3]
+
+    # Next-nearest-neighbor vectors
+b1 = lat_vec[0]
+b2 = lat_vec[1]-lat_vec[0]
+b3 = lat_vec[1]
+
+
+# Hamiltonian function
+def Ham_k(k):
+
+    H = np.zeros((2, 2), dtype=complex)
+
+    # Nearest-neighbor contribution
+    gamma = sum(np.exp( 1j * (k.dot(d) )) for d in delta)
+    H[0, 1] = -t * gamma
+    H[1, 0] = np.conjugate(H[0, 1])
+
+    # Next-nearest-neighbor contribution
+    gamma_prime = 2*( np.sin(k.dot(b1))+ np.sin(k.dot(b2)) - np.sin(k.dot(b3)) )
+    H[0, 0] = -lambda_soc * gamma_prime
+    H[1, 1] = -H[0, 0]
+
+    return H
+
+
+# Hamiltonian function
+def Vel_x(k):
+
+    H = np.zeros((2, 2), dtype=complex)
+
+    # Nearest-neighbor contribution
+    gamma = 1j*sum( d[0]*np.exp( 1j * (k.dot(d) )) for d in delta)
+    H[0, 1] = -t * gamma
+    H[1, 0] = np.conjugate(H[0, 1])
+
+    # Next-nearest-neighbor contribution
+    gamma_prime = 2*( b1[0]*np.cos(k.dot(b1))+ b2[0]*np.cos(k.dot(b2)) - b3[0]*np.cos(k.dot(b3)) )
+    H[0, 0] = -lambda_soc * gamma_prime
+    H[1, 1] = -H[0, 0]
+
+    return H
+
+
+# Hamiltonian function
+def Vel_y(k):
+
+    H = np.zeros((2, 2), dtype=complex)
+
+    # Nearest-neighbor contribution
+    gamma = 1j*sum( d[1]*np.exp( 1j * (k.dot(d) )) for d in delta)
+    H[0, 1] = -t * gamma
+    H[1, 0] = np.conjugate(H[0, 1])
+
+    # Next-nearest-neighbor contribution
+    gamma_prime = 2*( b1[1]*np.cos(k.dot(b1))+ b2[1]*np.cos(k.dot(b2)) - b3[1]*np.cos(k.dot(b3)) )
+    H[0, 0] = -lambda_soc * gamma_prime
+    H[1, 1] = -H[0, 0]
+
+    return H
+
+
+n0,n1 =300, 300 
+energies = np.linspace(-13,13,1000)
+kparam.set_lattice_vector(lat_vec)
+kparam.set_energy_grid(energies)
+kparam.set_kmesh( (n0, n1 , 1))
+
+
+hamiltonian_op = kop.Operator(op_function=Ham_k, name="Hamiltonian" )
+velX_op = kop.Operator(op_function=Vel_x, name="VelocityX" )
+velY_op = kop.Operator(op_function=Vel_y, name="VelocityY" )
+
+
+broadening = 0.1
+ImGF_op = kop.SpectralOperator( strategy = ksp_type.ImGreenFunction(),
+                                hamiltonian_op =hamiltonian_op,  
+                                broadening = broadening,
+                                name="ImG's Function" )
+
+adv_DGF_op = kop.SpectralOperator(  strategy = ksp_type.DerivateAdvancedGreenFuntion(),
+                                    hamiltonian_op =hamiltonian_op,  
+                                    broadening = broadening,
+                                    name="Derivative AdvancedGreen's Function" )
+
+
+
+
+
+my_trace  = ktr.Trace(ktr_strategy.ExactTrace())
+energies = kparam.get_energy_grid()
+
+#condxx_KERNEL = my_trace.compute(  velX_op, adv_DGF_op, velX_op, ImGF_op)
+#plt.plot(energies, np.pi*cumulative_integral(energies, np.imag(condxx_KERNEL /n0/n1)), label='case_1')
+
+#condxx = my_trace.compute(  velX_op, ImGF_op, velX_op, ImGF_op)
+#plt.plot(energies,  np.real(condxx) /n0/n1, label='case_1')
+
+
+condxy_KERNEL = my_trace.compute(  velX_op, adv_DGF_op, velY_op, ImGF_op)
+#plt.plot(energies, np.pi*cumulative_integral(energies, np.imag(condxy_KERNEL /n0/n1)), label='case_1')
+
+
+plt.show()
+input("Press Enter to exit...")  # Keeps the window open
+
+
+
+
+--- File: .\examples\topological_graphene_profile.py ---
+
+import cProfile
+import pstats
+import io
+import numpy as np
+
+# Import the necessary k_quant modules
+import k_quant.global_parameters as kparam
+import k_quant.operators as kop  
+import k_quant.solvers.trace as ktr  
+import k_quant.solvers.trace.strategies as ktr_strategy  
+import k_quant.operators.spectral_operators_strategies as ksp_type
+from k_quant.utils.k_operator_optimizer import optimize_k_operator
+from k_quant.utils.calculus import cumulative_integral
+
+# Define the lattice vectors and parameters
+lat_vec = np.array([[3/2, np.sqrt(3)/2, 0],
+                    [3/2,-np.sqrt(3)/2, 0],
+                    [0,0,1]])
+
+t = 2.8   # Nearest-neighbor hopping energy (eV)
+lambda_soc = 1.0/3/np.sqrt(3)  # Next-nearest-neighbor hopping energy (eV)
+
+# Nearest-neighbor vectors
+delta1 = np.array([1/2, np.sqrt(3)/2, 0])
+delta2 = np.array([1/2,-np.sqrt(3)/2, 0])
+delta3 = np.array([-1, 0, 0])
+delta = [delta1, delta2, delta3]
+
+# Next-nearest-neighbor vectors
+b1 = lat_vec[0]
+b2 = lat_vec[1] - lat_vec[0]
+b3 = lat_vec[1]
+
+# Hamiltonian function
+def Ham_k(k):
+    H = np.zeros((2, 2), dtype=complex)
+    # Nearest-neighbor contribution
+    gamma = sum(np.exp(1j * (k.dot(d))) for d in delta)
+    H[0, 1] = -t * gamma
+    H[1, 0] = np.conjugate(H[0, 1])
+    # Next-nearest-neighbor contribution
+    gamma_prime = 2*(np.sin(k.dot(b1)) + np.sin(k.dot(b2)) - np.sin(k.dot(b3)))
+    H[0, 0] = -lambda_soc * gamma_prime
+    H[1, 1] = -H[0, 0]
+    return H
+
+# Velocity in x-direction
+def Vel_x(k):
+    H = np.zeros((2, 2), dtype=complex)
+    gamma = 1j * sum(d[0]*np.exp(1j * (k.dot(d))) for d in delta)
+    H[0, 1] = -t * gamma
+    H[1, 0] = np.conjugate(H[0, 1])
+    gamma_prime = 2*(b1[0]*np.cos(k.dot(b1)) + b2[0]*np.cos(k.dot(b2)) - b3[0]*np.cos(k.dot(b3)))
+    H[0, 0] = -lambda_soc * gamma_prime
+    H[1, 1] = -H[0, 0]
+    return H
+
+# Velocity in y-direction
+def Vel_y(k):
+    H = np.zeros((2, 2), dtype=complex)
+    gamma = 1j * sum(d[1]*np.exp(1j * (k.dot(d))) for d in delta)
+    H[0, 1] = -t * gamma
+    H[1, 0] = np.conjugate(H[0, 1])
+    gamma_prime = 2*(b1[1]*np.cos(k.dot(b1)) + b2[1]*np.cos(k.dot(b2)) - b3[1]*np.cos(k.dot(b3)))
+    H[0, 0] = -lambda_soc * gamma_prime
+    H[1, 1] = -H[0, 0]
+    return H
+
+def main():
+    # Set up the simulation parameters
+    n0, n1 = 100, 100 
+    energies = np.linspace(-13, 13, 1000)
+    kparam.set_lattice_vector(lat_vec)
+    kparam.set_energy_grid(energies)
+    kparam.set_kmesh((n0, n1, 1))
+    
+    # Create operators
+    hamiltonian_op = kop.Operator(op_function=Ham_k, name="Hamiltonian")
+    velX_op = kop.Operator(op_function=Vel_x, name="VelocityX")
+    velY_op = kop.Operator(op_function=Vel_y, name="VelocityY")
+    
+    broadening = 0.1
+    ImGF_op = kop.SpectralOperator(strategy=ksp_type.ImGreenFunction(),
+                                   hamiltonian_op=hamiltonian_op,  
+                                   broadening=broadening,
+                                   name="ImG's Function")
+    
+    adv_DGF_op = kop.SpectralOperator(strategy=ksp_type.DerivateAdvancedGreenFuntion(),
+                                      hamiltonian_op=hamiltonian_op,  
+                                      broadening=broadening,
+                                      name="Derivative AdvancedGreen's Function")
+    
+    my_trace = ktr.Trace(ktr_strategy.ExactTrace())
+    
+    # Compute trace for different operator combinations
+    condxx_KERNEL = my_trace.compute(velX_op, adv_DGF_op, velX_op, ImGF_op)
+    condxy_KERNEL = my_trace.compute(velX_op, adv_DGF_op, velY_op, ImGF_op)
+    
+    # For demonstration, we'll print summaries of the computed results.
+    print("condxx_KERNEL summary:")
+    print(condxx_KERNEL)
+    
+    print("\ncondxy_KERNEL summary:")
+    print(condxy_KERNEL)
+
+if __name__ == "__main__":
+    profiler = cProfile.Profile()
+    profiler.enable()
+    
+    main()  # Execute the main function
+    
+    profiler.disable()
+    
+    # Create a stream to capture profiling statistics
+    stream = io.StringIO()
+    stats = pstats.Stats(profiler, stream=stream).sort_stats("cumtime")
+    stats.print_stats()
+    
+    # Output profiling results to the console
+    print("\nProfiling results:")
+    print(stream.getvalue())
+
+
+
+--- File: .\k_quant\global_parameters.py ---
+
+from k_quant.utils.space import create_mesh
+import numpy as np
+_parameters = {}
+
+def set_param(name, value):
+    """Sets a global parameter."""
+    _parameters[name] = value
+
+def get_param(name, default=None):
+    """Gets a global parameter. Returns default if not found."""
+    return _parameters.get(name, default)
+
+def reset_params():
+    """Resets all global parameters."""
+    _parameters.clear()
+
+def list_params():
+    """Lists all global parameters."""
+    return dict(_parameters)
+
+
+
+def set_lattice_vector( __lat_vec):
+    set_param("global_lattice_vectors", __lat_vec)
+
+def get_lattice_vector( ):
+    return get_param("global_lattice_vectors")
+
+
+def set_kmesh( dims):
+    
+    mesh = create_mesh(dims)
+    global_lat = get_lattice_vector()
+    rec2cart = 2*np.pi* np.linalg.inv(global_lat).T
+    kmesh =np.dot( mesh, rec2cart )
+    print(kmesh.dot(global_lat[1]))
+    set_param("kmesh", np.dot( mesh, rec2cart ) )
+
+    
+def get_kmesh():
+    return get_param("kmesh", default=None)
+
+    
+def set_energy_grid(energies):
+    set_param("energy_grid", energies)
+    print("Create a grid")
+    
+def get_energy_grid():
+    return get_param("energy_grid", default=None)
+
+
+
+--- File: .\k_quant\__init__.py ---
+
+
+
+
+--- File: .\k_quant\geometry\grid.py ---
+
+from k_quant.utils import create_mesh
+
+class Grid:
+    """
+    Represents the geometry of a 2D mesh grid based on k-point windows.
+
+    Attributes:
+        lat_vec (np.ndarray): Lattice vectors of the system.
+        kgrid (np.ndarray): The 2D mesh grid in reciprocal space.
+    """
+
+
+    def __init__(self, lat_vec, kdims):
+        """
+        Initializes the Grid object with lattice vectors and momentum grid dimensions.
+
+        Args:
+            lat_vec (np.ndarray): Lattice vectors of the system.
+            kdims (tuple): A three-dimensional tuple defining the dimensions of the momentum grid.
+        """
+        self.lat_vec = lat_vec
+        self.kdims = kdims
+
+
+    def resize(self, kdims) :
+        """
+        Generates a 2D mesh grid based on the supercell dimension (kdims).
+
+        Args:
+            kdims (tuple): A three-dimensional tuple defining the dimensions of the momentum grid.
+
+
+        """
+        self.kdims = kdims
+        return self
+    
+
+class Density:
+
+    #This function creates a 2D mesh grid based on a kpoint windows kwindow=[kmin,kmax]
+    # kmin is the position of the origin of the windows while kmax is the position of the
+    # end of the rectangle
+    #    ________ kmax
+    #   |        |
+    #   |        |
+    #   |        |
+    #   |________|
+    # kmin
+
+    def __init__(self, lat_vec, H_k ):
+              
+        self.lat_vec   = lat_vec;
+        self.bandpath  = None;
+        self.kgrid     = self.bz_grid( scdim=(1,1,1) );
+
+    def set_scdim(self, scdim):
+        return self.bz_grid(scdim=scdim );
+
+    def transform_rec2cart(self, kpoints):
+        rec2cart = 2*np.pi* np.linalg.inv(self.lat_vec).T;
+        return np.dot( kpoints, rec2cart )
+
+    def bz_grid(self, scdim=(1,1,1) ):
+        meshkgrid  = np.meshgrid( *[ np.linspace(0,1,d, endpoint=False)  for d in scdim ], indexing='ij');  
+        self.kgrid = np.transpose( [ x.flatten() for x in meshkgrid] );      
+        return self;
+
+    def operator(self, Op ):
+        return np.apply_along_axis( Op, arr=self.kgrid, axis=1 );
+
+    def energies_inwindow(self, bands, energy_window):
+        Emin,Emax = energy_window;
+        return np.any(bands>Emin,axis=1)*np.any(bands<Emax,axis=1);
+
+    def CSR_representation( self ):
+        Aop= bdiag_mat( self.Dorb, format="csr");
+        Aop.eliminate_zeros();
+        return Aop
+
+
+--- File: .\k_quant\linalg\vectorized_mat_vec.py ---
+
+import numpy as np
+
+
+def batch_dot_product(matrices, vectors):
+    """
+    Efficient dot product between a collection of matrices and vectors.
+
+    Parameters:
+    -----------
+    matrices : np.ndarray
+        Array of shape (D, n, n) containing D matrices of size n x n.
+    vectors : np.ndarray
+        Array of shape (D, n) containing D vectors of size n.
+
+    Returns:
+    --------
+    np.ndarray
+        An array of shape (D, n) containing the dot products.
+    """
+    
+    
+    return np.array([ H.dot(x) for H,x in zip(matrices, vectors)])
+
+
+
+def vectorized_apply_A(blocks: np.ndarray, x: np.ndarray) -> np.ndarray:
+    """
+    Applies a block-diagonal operator (given as an array of blocks)
+    to a vector or matrix x in a vectorized fashion.
+    
+    Parameters:
+        blocks (np.ndarray): Array of shape (D, n, n) where each blocks[d] is an n×n matrix.
+        x (np.ndarray): A vector of shape (D*n,) or a matrix of shape (D*n, k).
+        
+    Returns:
+        np.ndarray: The result of applying the operator to x, with the same shape as x.
+    """
+    D, n, _ = blocks.shape
+    if x.ndim == 1:
+        # Reshape x to (D, n, 1)
+        x_block = x.reshape(D, n, 1)
+        y_block = np.matmul(blocks, x_block)  # (D, n, 1)
+        return y_block.reshape(D * n)
+    elif x.ndim == 2:
+        # Assume shape is (D*n, k)
+        k = x.shape[1]
+        x_block = x.reshape(D, n, k)
+        y_block = np.matmul(blocks, x_block)  # (D, n, k)
+        return y_block.reshape(D * n, k)
+    else:
+        raise ValueError("x must be a 1D or 2D array.")
+
+
+
+--- File: .\k_quant\operators\operator.py ---
+
+import numpy as np
+from k_quant.utils.k_operator_optimizer import optimize_k_operator, compute_hamiltonian
+from k_quant.global_parameters import get_kmesh
+
+class Operator:
+
+    def __init__(self, op_function, name="generic_operator"):
+        self.name= name
+        self.op_function =op_function
+        self.create_operator()
+        self.shape = self.matrix.shape
+
+    def GetMatrix(self):
+        return self.matrix
+
+    def create_operator(self):
+        get_kmesh()
+        self.matrix = compute_hamiltonian(get_kmesh(), self.op_function)
+        return self
+
+    def dot(self, other):
+        self.op_function(other)
+        
+        
+        
+                  
+
+
+
+
+--- File: .\k_quant\operators\spectral_operator.py ---
+
+import numpy as np
+from k_quant.operators.operator import Operator
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+from k_quant.operators.spectral_operators_strategies.advanced_green_function import AdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.retarded_green_function import RetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_advanced_green_function import DerivateAdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_retarded_green_function import DerivateRetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.ImGreenFunction import ImGreenFunction
+
+
+
+class SpectralOperator:
+
+    def __init__(self,  strategy: SpectralOperatorStrategy,
+                        hamiltonian_op, 
+                        broadening, 
+                        name="spectral_operator"):
+        self.name= name
+        self.strategy = strategy        
+        self.hamiltonian_op = hamiltonian_op
+        self.broadening = broadening
+        self.shape = hamiltonian_op.matrix.shape
+
+
+    def set_strategy(self, strategy: SpectralOperatorStrategy):
+        """
+        Sets a new strategy for trace computation.
+
+        Args:
+            strategy (TraceStrategy): The new trace computation strategy.
+        """
+        self.strategy = strategy
+        
+    def GetMatrix(self, energy):
+        return self.strategy.GetMatrix(self.hamiltonian_op, self.broadening,energy)
+
+        
+
+
+
+--- File: .\k_quant\operators\__init__.py ---
+
+from .operator import Operator
+from .spectral_operator import SpectralOperator
+
+
+
+
+--- File: .\k_quant\operators\spectral_operators_strategies\advanced_green_function.py ---
+
+import numpy as np
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+
+class AdvancedGreenFuntion(SpectralOperatorStrategy):
+
+    def GetMatrix(self, hamiltonian_op, broadening, energy):
+        """
+        Efficiently calculates the Green's function matrix using broadcasting.
+
+        Parameters:
+        -----------
+        energy : float
+            The energy value used to compute the matrix.
+
+        Returns:
+        --------
+        np.ndarray
+            The Green's function matrix with shape (D, n, n).
+        """
+        hamiltonian_matrix = np.array(hamiltonian_op.GetMatrix())  # Shape (D, n, n)
+        n = hamiltonian_matrix.shape[1]
+                
+
+        I = np.eye(n)[np.newaxis, :, :]
+        shifted_H = I*(energy - 1j * broadening) -hamiltonian_matrix    # Shape: (D, n, n)
+        green_matrix =-np.linalg.inv(shifted_H )
+
+        return green_matrix
+
+        
+    def SpectralFunction(self, x, broadening, energy):
+        return 1/(energy -x - 1j*broadening)
+
+
+--- File: .\k_quant\operators\spectral_operators_strategies\derivative_advanced_green_function.py ---
+
+import numpy as np
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+
+class DerivateAdvancedGreenFuntion(SpectralOperatorStrategy):
+
+    def GetMatrix(self, hamiltonian_op, broadening, energy):
+        """
+        Efficiently calculates the Green's function matrix using broadcasting.
+
+        Parameters:
+        -----------
+        energy : float
+            The energy value used to compute the matrix.
+
+        Returns:
+        --------
+        np.ndarray
+            The Green's function matrix with shape (D, n, n).
+        """
+        hamiltonian_matrix = np.array(hamiltonian_op.GetMatrix())  # Shape (D, n, n)
+        n = hamiltonian_matrix.shape[1]
+                
+        I = np.eye(n)[np.newaxis, :, :]
+        shifted_H = I*(energy - 1j * broadening) -hamiltonian_matrix    # Shape: (D, n, n)
+        green_matrix =-np.linalg.inv(shifted_H @ shifted_H )
+        
+        return green_matrix
+
+        
+    def SpectralFunction(self, x, broadening, energy):
+        return 1/(energy -x - 1j*broadening)/(energy -x - 1j*broadening)
+
+
+--- File: .\k_quant\operators\spectral_operators_strategies\derivative_retarded_green_function.py ---
+
+import numpy as np
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+
+class DerivateRetardedGreenFuntion(SpectralOperatorStrategy):
+
+    def GetMatrix(self, hamiltonian_op, broadening, energy):
+        """
+        Efficiently calculates the Green's function matrix using broadcasting.
+
+        Parameters:
+        -----------
+        energy : float
+            The energy value used to compute the matrix.
+
+        Returns:
+        --------
+        np.ndarray
+            The Green's function matrix with shape (D, n, n).
+        """
+        hamiltonian_matrix = np.array(hamiltonian_op.GetMatrix())  # Shape (D, n, n)
+        n = hamiltonian_matrix.shape[1]
+                
+        I = np.eye(n)[np.newaxis, :, :]
+        shifted_H = I*(energy + 1j * broadening) -hamiltonian_matrix    # Shape: (D, n, n)
+        green_matrix =-np.linalg.inv(shifted_H @ shifted_H )
+
+        return green_matrix
+
+        
+    def SpectralFunction(self, x, broadening, energy):
+        return 1/(energy -x + 1j*broadening)/(energy -x + 1j*broadening)
+
+
+--- File: .\k_quant\operators\spectral_operators_strategies\ImGreenFunction.py ---
+
+import numpy as np
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+
+class ImGreenFunction(SpectralOperatorStrategy):
+
+    def GetMatrix(self, hamiltonian_op, broadening, energy):
+        """
+        Efficiently calculates the Green's function matrix using broadcasting.
+
+        Parameters:
+        -----------
+        energy : float
+            The energy value used to compute the matrix.
+
+        Returns:
+        --------
+        np.ndarray
+            The Green's function matrix with shape (D, n, n).
+        """
+
+
+        
+        hamiltonian_matrix = np.array(hamiltonian_op.GetMatrix())  # Shape (D, n, n)
+        n = hamiltonian_matrix.shape[1]
+
+        I = np.eye(n)[np.newaxis, :, :]
+        shifted_H = hamiltonian_matrix - energy * I  # Shape: (D, n, n)
+        green_matrix = broadening*np.linalg.inv((shifted_H @ shifted_H) + (broadening**2) * I)
+
+        
+        return green_matrix
+
+        
+    def SpectralFunction(self, x, broadening, energy):
+        return 1/( (energy-x)**2 + broadening**2)
+
+
+--- File: .\k_quant\operators\spectral_operators_strategies\retarded_green_function.py ---
+
+import numpy as np
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+
+class RetardedGreenFuntion(SpectralOperatorStrategy):
+
+    def GetMatrix(self, hamiltonian_op, broadening, energy):
+        """
+        Efficiently calculates the Green's function matrix using broadcasting.
+
+        Parameters:
+        -----------
+        energy : float
+            The energy value used to compute the matrix.
+
+        Returns:
+        --------
+        np.ndarray
+            The Green's function matrix with shape (D, n, n).
+        """
+        hamiltonian_matrix = np.array(hamiltonian_op.GetMatrix())  # Shape (D, n, n)
+        n = hamiltonian_matrix.shape[1]
+                
+        I = np.eye(n)[np.newaxis, :, :]
+        shifted_H = I*(energy + 1j * broadening) -hamiltonian_matrix    # Shape: (D, n, n)
+        green_matrix =-np.linalg.inv(shifted_H )
+
+        return green_matrix
+
+
+        
+    def SpectralFunction(self, x, broadening, energy):
+        return 1/(energy -x + 1j*broadening)
+
+
+--- File: .\k_quant\operators\spectral_operators_strategies\spectra_operator_strategy.py ---
+
+from abc import ABC, abstractmethod
+
+
+class SpectralOperatorStrategy(ABC):
+
+    @abstractmethod
+    def GetMatrix(self, energy):
+        pass
+        
+
+    @abstractmethod
+    def SpectralFunction(self, x, energy):
+        pass
+        
+
+
+
+--- File: .\k_quant\operators\spectral_operators_strategies\__init__.py ---
+
+from .advanced_green_function import AdvancedGreenFuntion
+from .retarded_green_function import RetardedGreenFuntion
+from .derivative_advanced_green_function import DerivateAdvancedGreenFuntion
+from .derivative_retarded_green_function import DerivateRetardedGreenFuntion
+from .ImGreenFunction import ImGreenFunction
+
+
+
+
+
+
+
+--- File: .\k_quant\solvers\__init__.py ---
+
+
+
+
+--- File: .\k_quant\solvers\spectral_representations\spectral_representation.py ---
+
+from k_quant.utils import create_mesh
+import numpy as np
+from .strategies.representation_strategy import SpectralRepresentationStrategy
+
+class SpectralRepresentations:
+    def __init__(self, strategy: SpectralRepresentationStrategy, spectral_operator):
+        """
+        Initializes the TraceComputation with a given strategy.
+
+        Args:
+            strategy (TraceStrategy): The trace computation strategy to use.
+        """
+        self.strategy = strategy
+
+    def set_strategy(self, strategy: SpectralRepresentationStrategy):
+        """
+        Sets a new strategy for trace computation.
+
+        Args:
+            strategy (TraceStrategy): The new trace computation strategy.
+        """
+        self.strategy = strategy
+
+    def get_representation_dimension(self) -> float:
+        print("I am here", self.strategy)
+        return self.strategy.get_representation_dimension()
+
+    def representation_dot(self, representation_index: int, Lvector) -> float:
+        print("I am here", self.strategy)
+        return self.strategy.representation_dot(representation_index)
+
+
+        
+        
+
+
+
+
+--- File: .\k_quant\solvers\spectral_representations\strategies\chebyshev.py ---
+
+# strategies/exact_trace.py
+import numpy as np
+from .representation_strategy import SpectralRepresentationStrategy
+from typing import List
+
+
+class ChebyshevRepresentation(SpectralRepresentationStrategy):
+
+    def get_representation_dimension(self) -> int:
+        print("chebyshev representation computed using eta")
+        return 3
+
+    def representation_dot(self, representation_index: int, Lvector) -> float:
+        print("compute the Chebyshev Vector for", representation_index)
+        return Lvector
+
+
+
+--- File: .\k_quant\solvers\spectral_representations\strategies\exact.py ---
+
+# strategies/exact_trace.py
+import numpy as np
+from .representation_strategy import GreenFuncStrategy
+from typing import List
+
+
+class ExactRepresentation(SpectralRepresentationStrategy):
+    
+
+
+
+#    def compute(self, hamiltonian_operator: np.ndarray, energies: np.ndarray) : #returns an array of operators
+
+#        print(compute_inverse_for_E_list(hamiltonian_operator.matrix, energies))
+
+        
+#        return 0
+
+
+
+def compute_inverse_for_E_list(H: np.ndarray, E_list: List[np.ndarray]) -> List[np.ndarray]:
+    """
+    Computes the inverse of (H - E) for each E in the input list,
+    where H and each E are block-diagonal matrices with shape (D, n, n).
+    
+    For each E in E_list, this function computes:
+        (H - E)^(-1)
+    by subtracting E from H blockwise and then inverting each resulting block-diagonal matrix.
+    
+    Parameters:
+        H (np.ndarray): A block-diagonal matrix of shape (D, n, n).
+        E_list (List[np.ndarray]): A list of block-diagonal matrices, each of shape (D, n, n).
+        
+    Returns:
+        List[np.ndarray]: A list of block-diagonal matrices, each of shape (D, n, n),
+                          where each element is the inverse of (H - E) for the corresponding E.
+    """
+    inverses = []
+    for idx, E in enumerate(E_list):
+        diff = H - E  # diff is shape (D, n, n)
+        try:
+            # Try to use batched inversion if available
+            inv_diff = np.linalg.inv(diff)
+        except np.linalg.LinAlgError:
+            # Fall back to inverting each block individually
+            D, n, _ = diff.shape
+            inv_diff = np.array([np.linalg.inv(diff[d]) for d in range(D)])
+        inverses.append(inv_diff)
+    return inverses
+
+class ExactRepresentation(GreenFuncStrategy):
+    
+    def compute(self, hamiltonian_operator: np.ndarray, energies: np.ndarray) : #returns an array of operators
+
+        print(compute_inverse_for_E_list(hamiltonian_operator.matrix, energies))
+
+        
+        return 0
+
+
+
+--- File: .\k_quant\solvers\spectral_representations\strategies\representation_strategy.py ---
+
+# strategies/trace_strategy.py
+from abc import ABC, abstractmethod
+import numpy as np
+
+class SpectralRepresentationStrategy(ABC):
+    """
+    Abstract base class for trace computation strategies.
+    """
+
+    @abstractmethod
+    def get_representation_dimension(self) -> float:
+        pass
+
+    @abstractmethod
+    def representation_dot(self, representation_index: int, Lvector ) -> float:
+        pass
+
+
+
+
+--- File: .\k_quant\solvers\trace\compute_methods.py ---
+
+
+from k_quant.global_parameters import get_energy_grid
+
+from k_quant.operators.spectral_operator import SpectralOperator
+from k_quant.operators.operator import Operator
+from k_quant.utils.indices import create_iteration_indices
+from k_quant.solvers.spectral_representations.spectral_representation import SpectralRepresentations 
+
+from k_quant.linalg.vectorized_mat_vec import batch_dot_product, vectorized_apply_A
+from k_quant.utils.validators import validate_operator_dimensions
+import copy
+import numpy as np 
+
+def representation_compute(operators,trace_vectors):
+    print("Representation compute")
+
+
+def _representation_compute(operators,trace_vectors):
+
+    operators_list = []
+    sp_ops_repr_dim = []
+    # Loop over arguments to gather expansions
+    for op in operators:
+        if isinstance(op, SpectralOperator):
+            sp_rep_op = SpectralRepresentations(op)
+            operators_list.append(sp_rep_op)
+            sp_ops_repr_dim.append( sp_rep_op.get_representation_dimension())
+        elif isinstance(op, Operator) or isinstance(op, Operator):
+            operators_list.append(op)
+        else:
+            raise TypeError("Arguments must be Operators or SpectralOperators")
+
+    entire_repr_indices = create_iteration_indices( sp_ops_repr_dim )
+    representation_matrix = np.zeros(entire_repr_indices.shape, dtype=complex)
+
+    for trace_vector in trace_vectors:
+        temporal_vector = trace_vector 
+        for repr_indices in entire_repr_indices:
+
+            for op_idx, op in enumerate(operators_list):
+                if isinstance(op, SpectralRepresentations):
+                    temporal_vector = op.representation_dot(repr_indices[op_idx],temporal_vector)
+                elif isinstance(arg, Operator):
+                    temporal_vector = op.dot(temporal_vector)
+
+            representation_matrix[*repr_indices]= trace_vector.dot(temporal_vector)        
+    
+    
+
+def exact_compute(operators,trace_vectors):
+    energies = get_energy_grid()
+ 
+    Tr_Es = np.zeros(energies.shape, dtype=complex)  
+    for e_idx, energy in enumerate(energies):
+        #print(e_idx, energy)
+        Tr_Es[e_idx] = 0.0
+        trace_vectors.reset()
+        for x in trace_vectors:
+            y = copy.copy(x)
+            for op in operators:
+                if isinstance(op, Operator):
+                    this_matrix = op.GetMatrix()
+                elif isinstance(op, SpectralOperator):
+                    this_matrix = op.GetMatrix(energy)
+                else:
+                    raise ValueError(f"Unsupported operator type: {type(op)}")
+                
+                # Use vectorized_apply_A.
+                # Since vectorized_apply_A expects x to be either a flat array (if 1D)
+                # or a (D*n, k) 2D array, we first reshape y to a flat array.
+                D, n = y.shape
+                y_flat = y.reshape(-1)  # Shape (D*n,)
+                # Apply the block-diagonal operator in a vectorized way.
+                y_flat = vectorized_apply_A(this_matrix, y_flat)
+                # Reshape the result back to (D, n)
+                y = y_flat.reshape(D, n)
+
+#                    y = batch_dot_product(op.GetMatrix(energy), y)                    
+            Tr_Es[e_idx] += np.vdot(x.flatten(), y.flatten())
+    return Tr_Es
+ 
+ 
+
+
+
+
+--- File: .\k_quant\solvers\trace\trace_calculation.py ---
+
+from k_quant.utils import create_mesh
+import numpy as np
+from .strategies.trace_strategy import TraceStrategy
+
+from k_quant.operators.operator import Operator
+from k_quant.operators.spectral_operator import SpectralOperator
+from k_quant.solvers.spectral_representations.spectral_representation import SpectralRepresentations
+from .compute_methods import exact_compute, representation_compute
+from k_quant.utils.validators import validate_operator_dimensions
+
+
+
+class Trace:
+    def __init__(self, strategy: TraceStrategy):
+        """
+        Initializes the TraceComputation with a given strategy.
+
+        Args:
+            strategy (TraceStrategy): The trace computation strategy to use.
+        """
+        self.strategy = strategy
+
+    def set_strategy(self, strategy: TraceStrategy):
+        """
+        Sets a new strategy for trace computation.
+
+        Args:
+            strategy (TraceStrategy): The new trace computation strategy.
+        """
+        self.strategy = strategy
+
+
+    def get_trace_vectors(self, nkpoints, orbdim) -> float:
+        """
+        Computes the trace using the current strategy.
+
+        Args:
+            matrix (np.ndarray): The input matrix.
+
+        Returns:
+            float: The computed trace.
+        """
+        print("I got the trace vector for my strategy")
+        self.strategy.set_dimensions(nkpoints, orbdim)
+        return self.strategy
+
+
+    def compute(self, *operators) -> float:
+        """
+        Computes the trace using the current strategy.
+
+        Args:
+            matrix (np.ndarray): The input matrix.
+
+        Returns:
+            float: The computed trace.
+        """
+
+
+        
+
+        #Here we identify if the spectral are in a representation or exact
+        is_exact = False
+        is_sp_representation = False
+        illegal_type =False
+        
+        operator_list = []
+        for op in operators:
+            if isinstance(op, Operator) or isinstance(op, SpectralOperator):
+                operator_list.append(op)
+                is_exact =True
+            elif isinstance(op, SpectralRepresentations):
+                operator_list.append(op)
+                is_sp_representation =True
+                is_exact =False
+            else:
+                illegal_type =True
+
+
+        D, n, _ = validate_operator_dimensions( operators )
+        trace_vectors = self.get_trace_vectors(D,n) 
+
+
+        if is_exact:
+            return exact_compute(operator_list,trace_vectors)
+
+        if is_sp_representation:
+            return representation_compute(operator_list, trace_vectors)
+
+        if illegal_type:
+            raise("Illegal Object passed to compute function in Trace")
+
+
+        #trace_vector = self.get_trace_vectors(self, matrix: np.ndarray)
+        
+        #return self.strategy.compute_trace(matrix)
+    
+
+
+--- File: .\k_quant\solvers\trace\__init__.py ---
+
+from .trace_calculation import Trace
+
+
+
+--- File: .\k_quant\solvers\trace\strategies\bayesian_trace.py ---
+
+# strategies/bayesian_sampling.py
+import numpy as np
+from .trace_strategy import TraceStrategy
+
+class BayesianSampling(TraceStrategy):
+    def get_trace_vectors(self, D,n) -> float:
+        """
+        Computes the trace of the given matrix using Bayesian sampling.
+
+        Args:
+            matrix (np.ndarray): The input matrix.
+
+        Returns:
+            float: The estimated trace value.
+        """
+        # Placeholder implementation for Bayesian optimization
+        # Ideally, we would use a Bayesian optimization library here
+        sampled_indices = np.random.choice(matrix.shape[0], size=10, replace=False)
+        sample_trace = np.sum(np.diag(matrix)[sampled_indices])
+        return sample_trace * (matrix.shape[0] / len(sampled_indices))
+
+
+
+--- File: .\k_quant\solvers\trace\strategies\exact_trace.py ---
+
+# strategies/exact_trace.py
+import numpy as np
+from .trace_strategy import TraceStrategy
+
+        
+class ExactTrace(TraceStrategy):
+    
+    def __next__(self):
+        """
+        Returns the next trace vector. Restarts when the end is reached.
+
+        Returns:
+        -------
+        np.ndarray
+            Trace vector for the current iteration.
+        """
+        if self.iteration >= self.orbdim:
+            raise StopIteration
+
+        j = self.iteration
+        x = np.zeros( (self.nkpoints, self.orbdim), dtype=np.float64)
+        x[:, j::self.orbdim] = 1.0
+        self.iteration += 1
+        return x            
+
+
+
+--- File: .\k_quant\solvers\trace\strategies\random_phase_trace.py ---
+
+# strategies/exact_trace.py
+import numpy as np
+from .trace_strategy import TraceStrategy
+
+
+class RandomPhaseTrace(TraceStrategy):
+    
+    def __init__(self, max_iteration):
+        self.max_iteration=max_iteration
+    
+    def __next__(self):
+        """
+        Returns the next trace vector. Restarts when the end is reached.
+
+        Returns:
+        -------
+        np.ndarray
+            Trace vector for the current iteration.
+        """
+        if self.iteration >= self.max_iteration:
+            raise StopIteration
+
+        x= np.random.uniform(-np.pi, np.pi, size=(self.nkpoints, self.orbdim) )
+        self.iteration += 1
+        print(self.iteration)
+        return x
+
+
+--- File: .\k_quant\solvers\trace\strategies\trace_strategy.py ---
+
+# strategies/trace_strategy.py
+from abc import ABC, abstractmethod
+import numpy as np
+
+
+class TraceStrategy(ABC):
+    """
+    Abstract base class for trace computation strategies.
+    """
+    nkpoints = None
+    orbdim   = None
+    iteration = 0
+    
+
+    def __iter__(self):
+        self.iteration = 0  # Reset iteration on each new iteration start
+        return self
+
+
+    def reset(self):
+        """
+        Resets the iterator to start from the beginning.
+        """
+        self.iteration = 0
+
+    def set_dimensions(self, nkpoints , orbdim):
+        self.nkpoints = nkpoints
+        self.orbdim = orbdim
+        
+    @abstractmethod
+    def __next__(self):
+        pass
+
+
+ 
+
+
+
+--- File: .\k_quant\solvers\trace\strategies\__init__.py ---
+
+from .exact_trace import ExactTrace
+from .bayesian_trace import BayesianSampling
+from .random_phase_trace import RandomPhaseTrace
+
+
+--- File: .\k_quant\utils\calculus.py ---
+
+import numpy as np
+
+def cumulative_integral(E, f_E):
+    """
+    Computes the cumulative integral of f(E) using the trapezoidal rule.
+
+    Parameters:
+        E (numpy.ndarray): Array of energy values (E_0, E_1, ..., E_n).
+        f_E (numpy.ndarray): Array of function values f(E_0), f(E_1), ..., f(E_n).
+
+    Returns:
+        numpy.ndarray: Cumulative integral from E_0 to each E_i.
+    """
+    # Compute differences between consecutive energy points
+    dE = np.diff(E)
+    
+    # Compute trapezoidal areas for each interval
+    trap_areas = (f_E[:-1] + f_E[1:]) / 2 * dE
+    
+    # Cumulative sum to get the integral up to each E_i
+    cumulative_integral = np.concatenate(([0], np.cumsum(trap_areas)))
+
+    return cumulative_integral
+
+
+--- File: .\k_quant\utils\indices.py ---
+
+import numpy as np
+
+def create_iteration_indices(sp_ops_repr_dim):
+    """
+    Create iteration indices for nested loops based on dimensions provided.
+
+    Parameters:
+    -----------
+    sp_ops_repr_dim: list or array-like
+        A list containing dimensions for each loop.
+
+    Returns:
+    --------
+    indices: ndarray
+        An array of shape (total_combinations, number_of_loops) representing indices.
+    grids: list of ndarray
+        List containing meshgrid arrays corresponding to each dimension.
+    """
+    ranges = [np.arange(d) for d in sp_ops_repr_dim]
+    grids = np.meshgrid(*ranges, indexing='ij')
+    indices = np.array([grid.flatten() for grid in grids]).T
+
+    return indices
+
+
+--- File: .\k_quant\utils\k_operator_optimizer.py ---
+
+"""
+Module for optimizing user-defined Hamiltonian functions using Numba.
+"""
+
+import inspect
+import dis
+from types import FrameType
+from typing import Any, Callable, Set
+
+import numpy as np
+from numba import njit, prange
+
+
+def get_globals_used(func: Callable) -> Set[str]:
+    """
+    Analyze the given function to identify all accessed global variables.
+
+    Parameters:
+        func (Callable): The function to analyze.
+
+    Returns:
+        Set[str]: A set containing the names of global variables used.
+    """
+    bytecode = dis.Bytecode(func)
+    global_vars = {instr.argval for instr in bytecode if instr.opname == "LOAD_GLOBAL"}
+    return global_vars
+
+
+def make_contiguous(obj: Any) -> Any:
+    """
+    Convert arrays and lists to contiguous NumPy arrays.
+
+    Parameters:
+        obj (Any): The object to convert.
+
+    Returns:
+        Any: The contiguous array if conversion was applicable, otherwise the original object.
+    """
+    if isinstance(obj, np.ndarray):
+        return np.ascontiguousarray(obj)
+    if isinstance(obj, list):
+        return np.ascontiguousarray(np.array(obj))
+    return obj
+
+
+def optimize_k_operator(user_func: Callable) -> Callable:
+    """
+    JIT compile the user function with automatic detection of global variables.
+
+    Parameters:
+        user_func (Callable): The user-defined Hamiltonian function.
+
+    Returns:
+        Callable: The JIT-compiled version of the user function.
+    """
+    # Extract the source code of the function as defined by the user.
+    source_code = inspect.getsource(user_func)
+    global_vars = get_globals_used(user_func)
+
+    # Dynamically construct the namespace for the JIT-compiled function.
+    namespace = {"np": np}
+
+    # Use the caller's globals by accessing the previous frame.
+    caller_frame: FrameType = inspect.currentframe().f_back
+    globals_dict = caller_frame.f_globals
+
+    for var in global_vars:
+        if var in globals_dict:
+            value = globals_dict[var]
+            namespace[var] = make_contiguous(value)
+        else:
+            print(f"Warning: Global variable '{var}' not found in the provided globals dictionary.")
+
+    print(f"Namespace for JIT compilation: {list(namespace.keys())}")
+
+    # Execute the source code in the isolated namespace.
+    exec(source_code, namespace)
+
+    # Retrieve the function (should be an exact copy) and JIT compile it.
+    compiled_func = namespace[user_func.__name__]
+    jit_compiled_func = njit(compiled_func, fastmath=True)
+
+    # Test compilation immediately to catch errors early.
+    dummy_k = np.ascontiguousarray(np.zeros(3, dtype=np.float64))
+    jit_compiled_func(dummy_k)
+
+    return jit_compiled_func
+
+
+@njit(parallel=True, fastmath=True)
+def numba_compute_hamiltonian(points: np.ndarray, jit_ham_func: Callable) -> np.ndarray:
+    """
+    Compute Hamiltonians for multiple points using a Numba-optimized Hamiltonian function.
+
+    Parameters:
+        points (np.ndarray): An array of points with shape (D, N).
+        jit_ham_func (Callable): The JIT-compiled Hamiltonian function.
+
+    Returns:
+        np.ndarray: An array of Hamiltonians with shape (D, 2, 2).
+    """
+    D = points.shape[0]
+    ham_shape = jit_ham_func(points[0]).shape
+    ham = np.zeros( (D,ham_shape[0],ham_shape[1]), dtype=np.complex128)
+    
+    ham = np.zeros(ham_shape, dtype=np.complex128)
+    for idx in prange(D):
+        ham[idx] = jit_ham_func(points[idx])
+    return ham
+
+
+def python_compute_hamiltonian(points: np.ndarray, ham_func: Callable) -> np.ndarray:
+    """
+    Compute Hamiltonians for a set of points using pure Python.
+
+    Parameters:
+        points (np.ndarray): An array of points with shape (D, N).
+        ham_func (Callable): The Hamiltonian function (not JIT-compiled).
+
+    Returns:
+        np.ndarray: An array of Hamiltonians with shape (D, 2, 2).
+    """
+    try:
+        D = points.shape[0]
+        ham_shape = ham_func(points[0]).shape
+        ham = np.zeros( (D,ham_shape[0],ham_shape[1]), dtype=np.complex128)
+        for idx in range(D):
+            ham[idx] = ham_func(points[idx])
+        return ham
+    except Exception as e:
+        print(f"Error in Hamiltonian computation (Python): {e}")
+        raise
+
+
+def compute_hamiltonian(points: np.ndarray, ham_func: Callable) -> np.ndarray:
+    """
+    Automatically choose between the Numba-optimized and pure Python implementation
+    of Hamiltonian computation based on the provided function.
+
+    Parameters:
+        points (np.ndarray): An array of points with shape (D, N).
+        ham_func (Callable): The Hamiltonian function (either JIT-compiled or not).
+
+    Returns:
+        np.ndarray: An array of Hamiltonians with shape (D, 2, 2).
+
+    Raises:
+        RuntimeError: If both Numba and pure Python computations fail.
+    """
+    try:
+        print(f"Attempting Numba-optimized computation for function '{ham_func.__name__}'")
+        return numba_compute_hamiltonian(points, ham_func)
+    except Exception as e_numba:
+        print(f"Falling back to pure Python computation for function '{ham_func.__name__}'")
+
+    try:
+        return python_compute_hamiltonian(points, ham_func)
+    except Exception as e_python:
+        print(
+            f"Error: Pure Python computation failed for function '{ham_func.__name__}' "
+            f"with error: {e_python}"
+        )
+        raise RuntimeError(
+            f"Hamiltonian computation failed for function '{ham_func.__name__}' using both "
+            "Numba and Python implementations."
+        )
+
+
+
+--- File: .\k_quant\utils\space.py ---
+
+import numpy as np    
+    
+    
+    
+    
+    
+def create_mesh(dims) :
+    meshkgrid = np.meshgrid(*[np.linspace(0, 1, d, endpoint=False) for d in dims], indexing='ij')
+    return np.transpose([x.flatten() for x in meshkgrid])
+
+
+--- File: .\k_quant\utils\validators.py ---
+
+
+
+
+def validate_operator_dimensions(operators):
+    """
+    Check that all matrices in the list have the same dimensions.
+
+    Parameters:
+    -----------
+    operators: list of np.ndarray
+        A list of matrices to check.
+
+    Returns:
+    --------
+    tuple:
+        The shape of the matrices if all are identical.
+
+    Raises:
+    -------
+    ValueError:
+        If matrices do not all have the same shape.
+    """
+    if not operators:
+        raise ValueError("The list of operators is empty.")
+
+    shape = operators[0].shape
+    for op in operators[1:]:
+        if op.shape != shape:
+            raise ValueError(f"Operator shapes do not match. Expected {shape}, but got {op.shape}.")
+
+    return shape
+
+
+--- File: .\k_quant\utils\__init__.py ---
+
+from .space import create_mesh
+

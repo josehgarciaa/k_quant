@@ -1,14 +1,23 @@
 import matplotlib.pyplot as plt
+#import k_quant as k
+
+from k_quant.global_parameters import set_kmesh, get_kmesh, set_energy_grid, get_energy_grid
 import numpy as np
-import numpy as np
+from k_quant.operators.operator import Operator
+from k_quant.operators.spectral_operator import SpectralOperator
 
-import k_quant.global_parameters as kparam
-import k_quant.operators as kop  
-import k_quant.solvers.trace as ktr  
-import k_quant.solvers.trace.strategies as ktr_strategy  
+from k_quant.solvers.trace.trace_calculation import Trace 
+from k_quant.solvers.trace.strategies import  ExactTrace
 
-import k_quant.operators.spectral_operators_strategies as ksp_type
+from k_quant.solvers.spectral_representations.spectral_representation import SpectralRepresentations
+from k_quant.solvers.spectral_representations.strategies.chebyshev import ChebyshevRepresentation 
 
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+from k_quant.operators.spectral_operators_strategies.advanced_green_function import AdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.retarded_green_function import RetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_advanced_green_function import DerivateAdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_retarded_green_function import DerivateRetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.ImGreenFunction import ImAdvancedGreenFunction
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -16,126 +25,61 @@ matplotlib.use("tkagg")  # Use TkAgg backend
 plt.ion()  # Turn on interactive mode
 
 
-import k_quant.global_parameters as kparam
+"""
+Let us first define a Hamiltonian in momentum space
+and for this purpose we choose as prototype a model for p_z electrons
+ in graphene within the nearest neighbor approximation with lattice vectors
+ defined in the lat_vec variable
+"""
+lat_vec = [ [ 1, 0,0 ], [ 0,1,0 ], [ 0,0,1 ] ]
 
-from k_quant.utils.calculus import cumulative_integral
+def Ham_k(k): #MUST BE IN RECIPROCAL
+    a_0, a_1, a2  = lat_vec
+    hop = 1.0
+    f_k = 2*hop* np.cos( 2*np.pi*k[0]*a_0[0] ) #
+    return np.array([ [ f_k] ])
 
-lat_vec = np.array([ [3/2, np.sqrt(3)/2, 0], [3/2,-np.sqrt(3)/2, 0], [0,0,1]])
-
-t = 2.8   # Nearest-neighbor hopping energy (eV)
-lambda_soc = 1.0/3/np.sqrt(3)  # Next-nearest-neighbor hopping energy (eV)
-                                            
-    # Nearest-neighbor vectors
-delta1 = np.array([1/2, np.sqrt(3)/2, 0])
-delta2 = np.array([1/2,-np.sqrt(3)/2, 0])
-delta3 = np.array([-1, 0, 0])
-
-delta = [delta1, delta2, delta3]
-
-    # Next-nearest-neighbor vectors
-b1 = lat_vec[0]
-b2 = lat_vec[1]-lat_vec[0]
-b3 = lat_vec[1]
-
-
-# Hamiltonian function
-def Ham_k(k):
-
-    H = np.zeros((2, 2), dtype=complex)
-
-    # Nearest-neighbor contribution
-    gamma = sum(np.exp( 1j * (k.dot(d) )) for d in delta)
-    H[0, 1] = -t * gamma
-    H[1, 0] = np.conjugate(H[0, 1])
-
-    # Next-nearest-neighbor contribution
-    gamma_prime = 2*( np.sin(k.dot(b1))+ np.sin(k.dot(b2)) - np.sin(k.dot(b3)) )
-    H[0, 0] = -lambda_soc * gamma_prime
-    H[1, 1] = -H[0, 0]
-
-    return H
-
-
-# Hamiltonian function
-def Vel_x(k):
-
-    H = np.zeros((2, 2), dtype=complex)
-
-    # Nearest-neighbor contribution
-    gamma = 1j*sum( d[0]*np.exp( 1j * (k.dot(d) )) for d in delta)
-    H[0, 1] = -t * gamma
-    H[1, 0] = np.conjugate(H[0, 1])
-
-    # Next-nearest-neighbor contribution
-    gamma_prime = 2*( b1[0]*np.cos(k.dot(b1))+ b2[0]*np.cos(k.dot(b2)) - b3[0]*np.cos(k.dot(b3)) )
-    H[0, 0] = -lambda_soc * gamma_prime
-    H[1, 1] = -H[0, 0]
-
-    return H
-
-
-# Hamiltonian function
-def Vel_y(k):
-
-    H = np.zeros((2, 2), dtype=complex)
-
-    # Nearest-neighbor contribution
-    gamma = 1j*sum( d[1]*np.exp( 1j * (k.dot(d) )) for d in delta)
-    H[0, 1] = -t * gamma
-    H[1, 0] = np.conjugate(H[0, 1])
-
-    # Next-nearest-neighbor contribution
-    gamma_prime = 2*( b1[1]*np.cos(k.dot(b1))+ b2[1]*np.cos(k.dot(b2)) - b3[1]*np.cos(k.dot(b3)) )
-    H[0, 0] = -lambda_soc * gamma_prime
-    H[1, 1] = -H[0, 0]
-
-    return H
-
-
-n0,n1 =100, 100 
-energies = np.linspace(-13,13,1000)
-kparam.set_lattice_vector(lat_vec)
-kparam.set_energy_grid(energies)
-kparam.set_kmesh( (n0, n1 , 1))
-
-
-hamiltonian_op = kop.Operator(op_function=Ham_k, name="Hamiltonian" )
-velX_op = kop.Operator(op_function=Vel_x, name="VelocityX" )
-velY_op = kop.Operator(op_function=Vel_y, name="VelocityY" )
-
-
-broadening = 0.1
-ImGF_op = kop.SpectralOperator( strategy = ksp_type.ImGreenFunction(),
-                                hamiltonian_op =hamiltonian_op,  
-                                broadening = broadening,
-                                name="ImG's Function" )
-
-adv_DGF_op = kop.SpectralOperator(  strategy = ksp_type.DerivateAdvancedGreenFuntion(),
-                                    hamiltonian_op =hamiltonian_op,  
-                                    broadening = broadening,
-                                    name="Derivative AdvancedGreen's Function" )
+def Vel_k(k): #MUST BE IN RECIPROCAL
+    a_0, a_1, a2  = lat_vec
+    hop = 1.0
+    f_k = 4*hop*a_0[0]* np.cos( 2*np.pi*k[0]*a_0[0] ) #
+    return np.array([ [ f_k] ])
 
 
 
 
-
-my_trace  = ktr.Trace(ktr_strategy.ExactTrace())
-
-
-
+energies = np.linspace(-3,3,100)
+set_energy_grid(energies)
+set_kmesh( (10000, 1 , 1))
 
 
-#condxx_KERNEL = my_trace.compute(  velX_op, adv_DGF_op, velX_op, ImGF_op)
-#plt.plot(get_energy_grid(), np.pi*cumulative_integral(get_energy_grid(), np.imag(condxx_KERNEL /n0/n1)), label='case_1')
-
-#condxx = my_trace.compute(  velX_op, ImGF_op, velX_op, ImGF_op)
-#plt.plot(get_energy_grid(),  np.real(condxx) /n0/n1, label='case_1')
+hamiltonian_op = Operator(op_function=Ham_k, name="Hamiltonian" )
+velocity_op = Operator(op_function = Vel_k, name="VX" )
 
 
-#condxy_KERNEL = my_trace.compute(  velX_op, adv_DGF_op, velY_op, ImGF_op)
-#plt.plot(get_energy_grid(), np.pi*cumulative_integral(get_energy_grid(), np.imag(condxy_KERNEL /n0/n1)), label='case_1')
+eta = 0.001
+green_func_op = SpectralOperator( strategy = ImAdvancedGreenFunction(),
+                                  hamiltonian_op =hamiltonian_op,  
+                                  broadening = eta,
+                                  name="AdvancedGreen's Function" )
 
+
+my_trace  = Trace(ExactTrace())
+#cheb_green_func_op= SpectralRepresentations(ChebyshevRepresentation(), green_func_op)
+#dos_theo = np.array([ 1/np.sqrt(4- E*E ) for E in get_energy_grid() ])*10000
+#dos = my_trace.compute( green_func_op)
+
+#plt.plot(get_energy_grid(), dos)
+#plt.plot(get_energy_grid(), dos_theo)
 
 #plt.show()
 #input("Press Enter to exit...")  # Keeps the window open
 
+
+my_trace  = Trace(ExactTrace())
+cond = my_trace.compute(  velocity_op, green_func_op, velocity_op, green_func_op)
+
+plt.plot(get_energy_grid(), cond)
+
+plt.show()
+input("Press Enter to exit...")  # Keeps the window open

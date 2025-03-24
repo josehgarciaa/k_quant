@@ -30,7 +30,7 @@ class Trace:
         self.strategy = strategy
 
 
-    def get_trace_vectors(self, D,n) -> float:
+    def get_trace_vectors(self, nkpoints, orbdim) -> float:
         """
         Computes the trace using the current strategy.
 
@@ -41,7 +41,8 @@ class Trace:
             float: The computed trace.
         """
         print("I got the trace vector for my strategy")
-        return self.strategy.get_trace_vectors(D,n)
+        self.strategy.set_dimensions(nkpoints, orbdim)
+        return self.strategy
 
 
     def compute(self, *operators) -> float:

@@ -1,18 +1,26 @@
-# strategies/random_phase.py
+# strategies/exact_trace.py
 import numpy as np
 from .trace_strategy import TraceStrategy
 
-class RandomPhaseTrace(TraceStrategy):
-    def get_trace_vectors(self, D,n) -> float:
-        """
-        Computes the trace of the given matrix using random phase estimation.
 
-        Args:
-            matrix (np.ndarray): The input matrix.
+class RandomPhaseTrace(TraceStrategy):
+    
+    def __init__(self, max_iteration):
+        self.max_iteration=max_iteration
+    
+    def __next__(self):
+        """
+        Returns the next trace vector. Restarts when the end is reached.
 
         Returns:
-            float: The estimated trace value.
+        -------
+        np.ndarray
+            Trace vector for the current iteration.
         """
-        random_vector = np.exp(2j * np.pi * np.random.rand(matrix.shape[0]))
-        trace_estimate = np.vdot(random_vector, matrix @ random_vector)
-        return np.real(trace_estimate)
+        if self.iteration >= self.max_iteration:
+            raise StopIteration
+
+        x= np.random.uniform(-np.pi, np.pi, size=(self.nkpoints, self.orbdim) )
+        self.iteration += 1
+        print(self.iteration)
+        return x
