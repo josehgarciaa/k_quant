@@ -10,6 +10,8 @@ k_quant.egg-info/SOURCES.txt
 k_quant.egg-info/dependency_links.txt
 k_quant.egg-info/requires.txt
 k_quant.egg-info/top_level.txt
+k_quant/linalg/__init__.py
+k_quant/linalg/vectorized_mat_vec.py
 k_quant/operators/__init__.py
 k_quant/operators/operator.py
 k_quant/operators/spectral_operator.py
@@ -21,6 +23,12 @@ k_quant/operators/spectral_operators_strategies/derivative_retarded_green_functi
 k_quant/operators/spectral_operators_strategies/retarded_green_function.py
 k_quant/operators/spectral_operators_strategies/spectra_operator_strategy.py
 k_quant/solvers/__init__.py
+k_quant/solvers/spectral_representations/__init__.py
+k_quant/solvers/spectral_representations/spectral_representation.py
+k_quant/solvers/spectral_representations/strategies/__init__.py
+k_quant/solvers/spectral_representations/strategies/chebyshev.py
+k_quant/solvers/spectral_representations/strategies/exact.py
+k_quant/solvers/spectral_representations/strategies/representation_strategy.py
 k_quant/solvers/trace/__init__.py
 k_quant/solvers/trace/compute_methods.py
 k_quant/solvers/trace/trace_calculation.py
