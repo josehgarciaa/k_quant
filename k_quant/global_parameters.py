@@ -33,7 +33,6 @@ def set_kmesh( dims):
     global_lat = get_lattice_vector()
     rec2cart = 2*np.pi* np.linalg.inv(global_lat).T
     kmesh =np.dot( mesh, rec2cart )
-    print(kmesh.dot(global_lat[1]))
     set_param("kmesh", np.dot( mesh, rec2cart ) )
 
     
