@@ -17,7 +17,9 @@ def batch_dot_product(matrices, vectors):
     np.ndarray
         An array of shape (D, n) containing the dot products.
     """
-    return np.einsum('dij,dj->di', matrices, vectors)
+    
+    
+    return np.array([ H.dot(x) for H,x in zip(matrices, vectors)])
 
 
 

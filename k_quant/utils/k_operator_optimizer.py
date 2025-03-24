@@ -43,7 +43,7 @@ def make_contiguous(obj: Any) -> Any:
     return obj
 
 
-def optimize_k_hamiltonian(user_func: Callable) -> Callable:
+def optimize_k_operator(user_func: Callable) -> Callable:
     """
     JIT compile the user function with automatic detection of global variables.
 

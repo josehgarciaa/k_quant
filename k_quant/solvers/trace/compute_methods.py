@@ -6,7 +6,7 @@ from k_quant.operators.operator import Operator
 from k_quant.utils.indices import create_iteration_indices
 from k_quant.solvers.spectral_representations.spectral_representation import SpectralRepresentations 
 
-from k_quant.linalg.vectorized_mat_vec import batch_dot_product
+from k_quant.linalg.vectorized_mat_vec import batch_dot_product, vectorized_apply_A
 from k_quant.utils.validators import validate_operator_dimensions
 import copy
 import numpy as np 
@@ -59,10 +59,24 @@ def exact_compute(operators,trace_vectors):
             y = copy.copy(x)
             for op in operators:
                 if isinstance(op, Operator):
-                    y = batch_dot_product(op.GetMatrix(), y)
-                if isinstance(op, SpectralOperator):
-                    y = batch_dot_product(op.GetMatrix(energy), y)                    
-            Tr_Es[e_idx] += np.dot(x.flatten(), y.flatten())
+                    this_matrix = op.GetMatrix()
+                elif isinstance(op, SpectralOperator):
+                    this_matrix = op.GetMatrix(energy)
+                else:
+                    raise ValueError(f"Unsupported operator type: {type(op)}")
+                
+                # Use vectorized_apply_A.
+                # Since vectorized_apply_A expects x to be either a flat array (if 1D)
+                # or a (D*n, k) 2D array, we first reshape y to a flat array.
+                D, n = y.shape
+                y_flat = y.reshape(-1)  # Shape (D*n,)
+                # Apply the block-diagonal operator in a vectorized way.
+                y_flat = vectorized_apply_A(this_matrix, y_flat)
+                # Reshape the result back to (D, n)
+                y = y_flat.reshape(D, n)
+
+#                    y = batch_dot_product(op.GetMatrix(energy), y)                    
+            Tr_Es[e_idx] += np.vdot(x.flatten(), y.flatten())
     return Tr_Es
  
  

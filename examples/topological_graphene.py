@@ -8,6 +8,7 @@ import k_quant.solvers.trace as ktr
 import k_quant.solvers.trace.strategies as ktr_strategy  
 
 import k_quant.operators.spectral_operators_strategies as ksp_type
+from k_quant.utils.k_operator_optimizer import  optimize_k_operator
 
 
 import matplotlib
@@ -92,7 +93,7 @@ def Vel_y(k):
     return H
 
 
-n0,n1 =100, 100 
+n0,n1 =300, 300 
 energies = np.linspace(-13,13,1000)
 kparam.set_lattice_vector(lat_vec)
 kparam.set_energy_grid(energies)
@@ -120,22 +121,19 @@ adv_DGF_op = kop.SpectralOperator(  strategy = ksp_type.DerivateAdvancedGreenFun
 
 
 my_trace  = ktr.Trace(ktr_strategy.ExactTrace())
-
-
-
-
+energies = kparam.get_energy_grid()
 
 #condxx_KERNEL = my_trace.compute(  velX_op, adv_DGF_op, velX_op, ImGF_op)
-#plt.plot(get_energy_grid(), np.pi*cumulative_integral(get_energy_grid(), np.imag(condxx_KERNEL /n0/n1)), label='case_1')
+#plt.plot(energies, np.pi*cumulative_integral(energies, np.imag(condxx_KERNEL /n0/n1)), label='case_1')
 
 #condxx = my_trace.compute(  velX_op, ImGF_op, velX_op, ImGF_op)
-#plt.plot(get_energy_grid(),  np.real(condxx) /n0/n1, label='case_1')
+#plt.plot(energies,  np.real(condxx) /n0/n1, label='case_1')
 
 
-#condxy_KERNEL = my_trace.compute(  velX_op, adv_DGF_op, velY_op, ImGF_op)
-#plt.plot(get_energy_grid(), np.pi*cumulative_integral(get_energy_grid(), np.imag(condxy_KERNEL /n0/n1)), label='case_1')
+condxy_KERNEL = my_trace.compute(  velX_op, adv_DGF_op, velY_op, ImGF_op)
+#plt.plot(energies, np.pi*cumulative_integral(energies, np.imag(condxy_KERNEL /n0/n1)), label='case_1')
 
 
-#plt.show()
-#input("Press Enter to exit...")  # Keeps the window open
+plt.show()
+input("Press Enter to exit...")  # Keeps the window open
 

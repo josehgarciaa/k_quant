@@ -1,5 +1,5 @@
 import numpy as np
-from k_quant.utils.ham_function_optimizer import optimize_k_hamiltonian, compute_hamiltonian
+from k_quant.utils.k_operator_optimizer import optimize_k_operator, compute_hamiltonian
 from k_quant.global_parameters import get_kmesh
 
 class Operator:

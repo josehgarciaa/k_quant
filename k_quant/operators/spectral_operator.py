@@ -1,46 +1,37 @@
 import numpy as np
 from k_quant.operators.operator import Operator
+from k_quant.operators.spectral_operators_strategies.spectra_operator_strategy import SpectralOperatorStrategy
+from k_quant.operators.spectral_operators_strategies.advanced_green_function import AdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.retarded_green_function import RetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_advanced_green_function import DerivateAdvancedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.derivative_retarded_green_function import DerivateRetardedGreenFuntion
+from k_quant.operators.spectral_operators_strategies.ImGreenFunction import ImGreenFunction
+
+
 
 class SpectralOperator:
 
-    def __init__(self,  hamiltonian_op, 
+    def __init__(self,  strategy: SpectralOperatorStrategy,
+                        hamiltonian_op, 
                         broadening, 
-                        spectral_function, 
                         name="spectral_operator"):
         self.name= name
+        self.strategy = strategy        
         self.hamiltonian_op = hamiltonian_op
         self.broadening = broadening
-        self.spectral_function = spectral_function 
         self.shape = hamiltonian_op.matrix.shape
 
-    def dot(self, other):
-        print("implement spectral doct")
 
-    def GetMatrix(self, energy):
+    def set_strategy(self, strategy: SpectralOperatorStrategy):
         """
-        Efficiently calculates the Green's function matrix using broadcasting.
+        Sets a new strategy for trace computation.
 
-        Parameters:
-        -----------
-        energy : float
-            The energy value used to compute the matrix.
-
-        Returns:
-        --------
-        np.ndarray
-            The Green's function matrix with shape (D, n, n).
+        Args:
+            strategy (TraceStrategy): The new trace computation strategy.
         """
-        hamiltonian_matrix = np.array(self.hamiltonian_op.GetMatrix())  # Shape (D, n, n)
-        n = hamiltonian_matrix.shape[1]
-                
-        # Create the diagonal adjustment using broadcasting
-        diag_adjustment = np.eye(n) * (energy + 1j * self.broadening)
-
-        # Use broadcasting to subtract the diagonal adjustment from each block
-        green_matrix = hamiltonian_matrix - diag_adjustment[np.newaxis, :, :]
-        green_matrix = np.array([ np.linalg.inv(G) for G in green_matrix ])     #OPTIMIZATION PROBLEM
+        self.strategy = strategy
         
-
-        return green_matrix
+    def GetMatrix(self, energy):
+        return self.strategy.GetMatrix(self.hamiltonian_op, self.broadening,energy)
 
         
