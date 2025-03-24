@@ -1,11 +1,7 @@
 from setuptools import setup, find_packages, Extension
+import sys
+import platform
 
-# Define the C extension
-c_extension = Extension(
-    'k_quant.lib.my_c_extension',
-    sources=['lib/src/c_extension.c'],
-    extra_compile_args=['-O3'],  # Optimize compilation
-)
 
 setup(
     name='k_quant',
@@ -26,7 +22,6 @@ setup(
     ],
     packages=find_packages(),
     python_requires='>=3.6',
-    ext_modules=[c_extension],  # Include the C extension
     install_requires=[
         'numpy',
         'matplotlib',

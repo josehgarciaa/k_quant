@@ -1,0 +1,11 @@
+numpy
+matplotlib
+scipy
+sympy
+numba
+setuptools
+cython
+
+[dev]
+pytest
+coverage
