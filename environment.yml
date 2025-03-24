@@ -1,0 +1,12 @@
+name: k_quant_env
+channels:
+  - defaults
+dependencies:
+  - python=3
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - pip
+  - pip:
+      - -r requirements.txt

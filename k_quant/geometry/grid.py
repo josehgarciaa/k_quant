@@ -1,4 +1,39 @@
-import numpy as np
+from k_quant.utils import create_mesh
+
+class Grid:
+    """
+    Represents the geometry of a 2D mesh grid based on k-point windows.
+
+    Attributes:
+        lat_vec (np.ndarray): Lattice vectors of the system.
+        kgrid (np.ndarray): The 2D mesh grid in reciprocal space.
+    """
+
+
+    def __init__(self, lat_vec, kdims):
+        """
+        Initializes the Grid object with lattice vectors and momentum grid dimensions.
+
+        Args:
+            lat_vec (np.ndarray): Lattice vectors of the system.
+            kdims (tuple): A three-dimensional tuple defining the dimensions of the momentum grid.
+        """
+        self.lat_vec = lat_vec
+        self.kdims = kdims
+
+
+    def resize(self, kdims) :
+        """
+        Generates a 2D mesh grid based on the supercell dimension (kdims).
+
+        Args:
+            kdims (tuple): A three-dimensional tuple defining the dimensions of the momentum grid.
+
+
+        """
+        self.kdims = kdims
+        return self
+    
 
 class Density:
 
